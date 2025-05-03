@@ -1,0 +1,29 @@
+.wrapper {
+  position: relative;
+  width: 400px;   /* or whatever size you need */
+  height: 300px;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.mask-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  /* no need to set width/height here—they’re set in TS */
+  pointer-events: none; /* allow clicks on the button below */
+}
+
+/* style the button as you like */
+button {
+  margin-top: 8px;
+}
