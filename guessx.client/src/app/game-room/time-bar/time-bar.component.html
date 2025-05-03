@@ -1,0 +1,39 @@
+<div class="flex flex-col gap-3 text-white font-medium p-4 bg-darkblue rounded-lg">
+  <div class="flex justify-between items-center">
+      <!-- Temporizador con ícono -->
+    <div class="flex items-center gap-2 text-gaming-neon text-lg">
+      <mat-icon>timer</mat-icon>
+      <span class="font-mono">{{ formattedTime }}</span>
+    </div>
+
+    <div class="flex items-center text-sm text-gray-300">
+      <!-- Hint -->
+      <div class="text-sm text-gaming-neon-pink">
+        Hint {{ currentHint }} of {{ maxHints }}
+      </div>
+
+      <!-- Botón Skip -->
+      <button
+        class="ml-2 self-end bg-purple-600 hover:bg-purple-700 text-white py-1 px-3 rounded flex items-center gap-1 transition duration-300 ease-in-out"
+        (click)="onSkip()">
+        <mat-icon class="text-purple-200">skip_next</mat-icon>
+        Skip
+      </button>
+    </div>
+
+  </div>
+
+  <div class="w-full h-2 bg-gray-700 rounded overflow-hidden relative">
+    <div
+      class="h-full absolute top-0 left-0 origin-left"
+      [style.width.%]="progress2"
+      [ngClass]="progressColor"
+      style="transition: width 50ms linear;">
+    </div>
+  </div>
+
+
+
+
+
+</div>

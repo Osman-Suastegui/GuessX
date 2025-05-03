@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { gameRoomRoutes } from './game-room.routes';
 import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TimeBarComponent } from './time-bar/time-bar.component';
 
 
 
@@ -18,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     LeaderboardComponent,
     ActivePlayersComponent,
     ChatComponent,
-    ImageViewerComponent
+    ImageViewerComponent,
+    TimeBarComponent
   ],
   imports: [
     CommonModule,
