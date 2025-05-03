@@ -1,24 +1,29 @@
-<div class="grid grid-cols-3 h-screen">
-  <!-- Imagen: toma 2/3 del ancho -->
-  <div class="col-span-2">
-    <app-image-viewer></app-image-viewer>
-  </div>
+<div class="grid grid-cols-2 h-screen page-container">
 
-  <!-- Contenedor derecho con distribución de altura -->
-  <div class="col-span-1 flex flex-col h-full">
-    <!-- Chat: 50% -->
-    <div class="basis-1/2 overflow-hidden">
-      <app-chat></app-chat>
+  <main class="main-container grid grid-cols-2 h-screen">
+    <!-- image view container -->
+    <div class="image-viewer-container">
+      <app-image-viewer></app-image-viewer>
     </div>
 
-    <!-- Leaderboard: 30% -->
-    <div class=" overflow-hidden">
-      <app-leaderboard></app-leaderboard>
+    <!-- Contenedor derecho con distribución de altura -->
+    <div class="flex flex-col h-full side-bar">
+      <!-- Chat: 50% -->
+      <section class="basis-1/2 overflow-hidden chat">
+        <app-chat></app-chat>
+      </section>
+
+      <!-- Leaderboard: 30% -->
+      <section class=" overflow-hidden leaderboard">
+        <app-leaderboard></app-leaderboard>
+      </section>
+
+      <!-- Active Players: 20% -->
+      <section class="overflow-hidden active-players">
+        <app-active-players></app-active-players>
+      </section>
     </div>
 
-    <!-- Active Players: 20% -->
-    <div class="overflow-hidden">
-      <app-active-players></app-active-players>
-    </div>
-  </div>
+  </main>
+
 </div>

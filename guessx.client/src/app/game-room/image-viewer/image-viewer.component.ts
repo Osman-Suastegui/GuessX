@@ -7,10 +7,10 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 })
 export class ImageViewerComponent {
 
-    src: string =  "/assets/demon_slayer.test_peque.png";
+    src: string =  "../../../assets/demon_slayer.webp";
     /** Size of each reveal window (in CSS px) */
-    @Input() fragWidth = 50;
-    @Input() fragHeight = 50;
+    @Input() fragWidth = 100;
+    @Input() fragHeight = 100;
 
     @ViewChild('imgEl',    { static: true }) imgRef!: ElementRef<HTMLImageElement>;
     @ViewChild('maskCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -50,7 +50,7 @@ export class ImageViewerComponent {
       this.ctx.scale(dpr, dpr);
 
       // fill entire canvas with semi-opaque mask
-      this.ctx.fillStyle = 'rgba(0,0,0,0.8)';
+      this.ctx.fillStyle = 'rgba(0,0,0,1)';
       this.ctx.fillRect(0, 0, this.displayW, this.displayH);
     }
 
