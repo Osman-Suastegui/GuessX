@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --card: 224 71% 4%;
+  --card-foreground: 213 31% 91%;
+}
+
+.bg-card {
+    background-color: hsl(var(--card));
+}
+
+.text-card-foreground {
+    background-color: hsl(var(--card-foreground));
+}
+
+.text-gaming-neon-pink {
+  --tw-text-opacity: 1;
+  color: rgb(255 45 182 / var(--tw-text-opacity));
+}
+
+.text-gaming-neon {
+  --tw-text-opacity: 1;
+  color: rgb(0 255 221 / var(--tw-text-opacity));
+}
+
+.bg-gaming-neon\/10 {
+  background-color: #00ffdd1a;
+}
