@@ -5,7 +5,11 @@ module.exports = {
 
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        gaming: ['Orbitron', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

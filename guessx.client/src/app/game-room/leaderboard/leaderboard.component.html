@@ -1,3 +1,23 @@
-<h1 class="text-3xl font-bold underline">
-  Hello world!
-  </h1>
+<div class="glassmorphism border rounded-t-lg rounded-b-lg bg-card ">
+  <div class="backdrop-blur-sm py-2 px-4 border-b border-purple-500/30 rounded-t-lg bg-purple-600/20 ">
+    <h3 class="font-gaming font-bold  text-gaming-neon">Leaderboard</h3>
+  </div>
+  <div class="p-2">
+    @for (player of leaderboard; track $index) {
+      <div class="flex items-center justify-between py-2 px-2 border-b border-purple-500/20 last:border-b-0">
+        <div class="flex items-center">
+          <span class="mr-3 text-gaming-neon-pink w-5 text-center">{{ $index + 1 }}</span>
+          <div class="bg-gaming-neon/10 w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium mr-3 text-gaming-neon">
+            {{ player.avatar }}
+          </div>
+          <div>
+            <p class="font-medium text-white">{{ player.name }}</p>
+            <p class="text-xs text-gaming-neon-pink">{{ player.correct }} correct</p>
+          </div>
+        </div>
+        <span class="font-bold text-lg text-gaming-neon">{{ player.score }}</span>
+      </div>
+    }
+  </div>
+
+</div>
