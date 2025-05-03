@@ -1,1 +1,22 @@
-<p>game-room works!</p>
+<div class="grid grid-cols-3 grid-rows-1 h-screen">
+  <!-- Imagen: toma 2/3 del ancho -->
+  <div class="col-span-2 row-span-3">
+    <app-image-viewer></app-image-viewer>
+  </div>
+
+  <!-- Contenedor derecho -->
+  <div class="col-span-1 grid grid-rows-3 h-full">
+    <!-- Chat: ocupa la mitad del espacio -->
+    <div class="row-span-1 h-1/2">
+      <app-chat></app-chat>
+    </div>
+    <!-- Leaderboard -->
+    <div class="row-span-1">
+      <app-leaderboard></app-leaderboard>
+    </div>
+    <!-- Active Players -->
+    <div class="row-span-1">
+      <app-active-players></app-active-players>
+    </div>
+  </div>
+</div>
