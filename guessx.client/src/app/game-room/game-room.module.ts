@@ -7,6 +7,8 @@ import { ChatComponent } from './chat/chat.component';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { RouterModule } from '@angular/router';
 import { gameRoomRoutes } from './game-room.routes';
+import { MaterialModule } from '../material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -20,6 +22,8 @@ import { gameRoomRoutes } from './game-room.routes';
   ],
   imports: [
     CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
     RouterModule.forChild(gameRoomRoutes)
   ]
 })
