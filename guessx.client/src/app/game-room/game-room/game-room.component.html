@@ -3,13 +3,7 @@
   <main class="main-container grid grid-cols-2 h-screen">
     <!-- image view container -->
     <div class="image-viewer-container rounded-lg">
-        <app-time-bar
-          [roundDuration]="30"
-          [currentHint]="1"
-          [maxHints]="5"
-          (skip)="handleSkip()"
-          (timeEnded)="handleTimeEnd()"
-        ></app-time-bar>
+
 
       <app-image-viewer></app-image-viewer>
     </div>

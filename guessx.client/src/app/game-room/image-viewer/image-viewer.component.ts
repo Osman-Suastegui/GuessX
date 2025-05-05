@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { TimeBarComponent } from '../time-bar/time-bar.component';
 
 @Component({
   selector: 'app-image-viewer',
@@ -6,6 +7,9 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
   styleUrl: './image-viewer.component.css'
 })
 export class ImageViewerComponent {
+
+  @ViewChild(TimeBarComponent) timerBar!: TimeBarComponent;
+
 
     src: string =  "../../../assets/demon_slayer.webp";
     /** Size of each reveal window (in CSS px) */
@@ -67,4 +71,19 @@ export class ImageViewerComponent {
       // clear that rectangle—leaving previous holes intact
       this.ctx.clearRect(x, y, this.fragWidth, this.fragHeight);
     }
+
+    reiniciarTemporizador(): void {
+      this.timerBar.resetTimer();
+    }
+
+    handleSkip(): void {
+      console.log('Usuario presionó skip');
+      this.timerBar.resetTimer();
+    }
+
+    handleTimeEnd(): void {
+      console.log('Tiempo finalizó');
+      this.timerBar.resetTimer();
+    }
+
 }

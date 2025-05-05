@@ -6,20 +6,6 @@ import { TimeBarComponent } from '../time-bar/time-bar.component';
   styleUrl: './game-room.component.css'
 })
 export class GameRoomComponent {
-  @ViewChild(TimeBarComponent) timerBar!: TimeBarComponent;
 
-  reiniciarTemporizador(): void {
-    this.timerBar.resetTimer();
-  }
-
-  handleSkip(): void {
-    console.log('Usuario presionó skip');
-    this.timerBar.resetTimer();
-  }
-
-  handleTimeEnd(): void {
-    console.log('Tiempo finalizó');
-    this.timerBar.resetTimer();
-  }
 
 }

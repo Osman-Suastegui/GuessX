@@ -1,4 +1,6 @@
 <div class="image-viewer-container rounded-lg">
+  <app-time-bar [roundDuration]="30" [currentHint]="1" [maxHints]="5" (skip)="handleSkip()"
+    (timeEnded)="handleTimeEnd()"></app-time-bar>
 
   <section class="wrapper-image">
     <img #imgEl [src]="src" alt="Full image doesnt workg" />
