@@ -1,11 +1,15 @@
 <div class="image-viewer-container rounded-lg">
-  <app-time-bar [roundDuration]="30" [currentHint]="1" [maxHints]="5" (skip)="handleSkip()"
+  <app-time-bar [roundDuration]="1" [currentHint]="currentHint" [maxHints]="maxHints" (skip)="handleSkip()"
     (timeEnded)="handleTimeEnd()"></app-time-bar>
 
+  <h1 class="image-viewer-anime-name pt-2">
+    <ng-content *ngIf="isMaximunHintsReached()">
+      {{animeInformation.name}}
+    </ng-content>
+  </h1>
   <section class="wrapper-image">
-    <img #imgEl [src]="src" alt="Full image doesnt workg" />
+    <img #imgEl [src]="animeInformation.src" alt="Full image doesnt workg" />
     <canvas #maskCanvas class="mask-canvas"></canvas>
   </section>
 
-  <button (click)="nextFragment()">Reveal Next Fragment</button>
 </div>
