@@ -26,6 +26,7 @@ export class ImageViewerComponent {
     name: "Demon Slayer",
     src: "../../../assets/demon_slayer.webp",
   }
+  public animeImageSrc: string = '';
 
   ngAfterViewInit() {
     const img = this.imgRef.nativeElement;
@@ -60,6 +61,7 @@ export class ImageViewerComponent {
     // fill entire canvas with semi-opaque mask
     this.ctx.fillStyle = 'rgba(0,0,0,1)';
     this.ctx.fillRect(0, 0, this.displayW, this.displayH);
+    this.animeImageSrc = this.animeInformation.src;
   }
 
   /** Call this to clear one more random hole */
