@@ -7,10 +7,33 @@
   --card: 224 71% 4%;
   --card-foreground: 213 31% 91%;
   --dark-blue: #030711;
+  --muted-foreground: 215 20% 65%;
+  --accent-foreground: 220 40% 2%;
+  --destructive: 0 62.8% 50.6%;
+  --destructive-foreground: 210 40% 98%;
+  --background: 230 20% 10%;
+  --tw-border-opacity: 1;
 }
 
 .bg-card {
     background-color: hsl(var(--card));
+}
+.bg-destructive {
+  background-color: hsl(var(--destructive));
+}
+
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+.text-accent-foreground {
+  color: hsl(var(--accent-foreground));
+}
+.text-destructive-foreground {
+  color: hsl(var(--destructive-foreground));
+}
+
+.bg-background {
+  background-color: hsl(var(--background));
 }
 
 .text-card-foreground {
@@ -30,10 +53,18 @@
 .bg-gaming-neon\/10 {
   background-color: #00ffdd1a;
 }
+.bg-gaming-neon-pink\/10 {
+  background-color: #ff2db61a;
+}
 
 .bg-darkblue {
   --tw-bg-opacity: 1;
   background-color: var(--dark-blue);
+}
+
+.border-gaming-neon-pink {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 45 182 / var(--tw-border-opacity));
 }
 
 .scroll-custom::-webkit-scrollbar {

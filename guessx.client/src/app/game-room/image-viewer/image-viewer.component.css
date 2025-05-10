@@ -1,6 +1,6 @@
 .wrapper-image {
   position: relative;
-  width: 400px;   /* or whatever size you need */
+  width: 300px;   /* or whatever size you need */
   height: 300px;
   overflow: hidden;
   display: inline-block;
@@ -34,11 +34,6 @@
   pointer-events: none; /* allow clicks on the button below */
 }
 
-/* style the button as you like */
-button {
-  background-color: white;
-  margin-top: 8px;
-}
 
 .image-viewer-anime-name{
   color: #ccc;
