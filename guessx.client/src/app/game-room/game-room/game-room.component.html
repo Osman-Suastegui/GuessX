@@ -1,29 +1,29 @@
-<div class="grid grid-cols-2 h-screen page-container bg-card">
+<div class="flex h-screen bg-card page-container">
+  <!-- Contenedor principal -->
+  <main class="flex w-full h-full main-container">
 
-  <main class="main-container grid grid-cols-2 h-screen">
-    <!-- image view container -->
-    <div class="image-viewer-container rounded-lg">
+    <!-- Image Viewer (60%) -->
+    <div class="w-[60%] image-viewer-container rounded-lg">
       <app-image-viewer></app-image-viewer>
     </div>
 
-    <!-- Contenedor derecho con distribución de altura -->
-    <div class="flex flex-col h-full side-bar">
-      <!-- Chat: 50% -->
-      <section class="basis-1/2 overflow-hidden chat rounded-lg">
+    <!-- Barra lateral derecha (40%) -->
+   <div class="w-[20%] flex flex-col h-full side-bar space-y-2">
+      <!-- Chat (50%) -->
+      <section class="basis-1/2 overflow-hidden rounded-lg chat">
         <app-chat></app-chat>
       </section>
 
-      <!-- Leaderboard: 30% -->
-      <section class=" overflow-hidden leaderboard rounded-lg">
+      <!-- Leaderboard (30%) -->
+      <section class="basis-[30%] overflow-hidden rounded-lg leaderboard">
         <app-leaderboard></app-leaderboard>
       </section>
 
-      <!-- Active Players: 20% -->
-      <section class="overflow-hidden active-players rounded-lg">
+      <!-- Active Players (20%) -->
+      <section class="grow overflow-hidden rounded-lg active-players">
         <app-active-players></app-active-players>
       </section>
     </div>
 
   </main>
-
 </div>
