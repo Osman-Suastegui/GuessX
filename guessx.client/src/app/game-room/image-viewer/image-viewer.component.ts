@@ -22,9 +22,10 @@ export class ImageViewerComponent {
 
   public currentHint: number = 1;
   public maxHints: number = 5;
-  public animeInformation: any = {
-    name: "Demon Slayer",
-    src: "../../../assets/demon_slayer.webp",
+  @Input() animeInformation: any = {
+    name: "",
+    src: "",
+    answers: []
   }
   public animeImageSrc: string = '';
 

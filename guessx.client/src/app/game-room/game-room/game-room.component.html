@@ -4,14 +4,14 @@
 
     <!-- Image Viewer (60%) -->
     <div class="w-[60%] image-viewer-container rounded-lg">
-      <app-image-viewer></app-image-viewer>
+      <app-image-viewer [animeInformation]="animeInformation"/>
     </div>
 
     <!-- Barra lateral derecha (40%) -->
    <div class="w-[20%] flex flex-col h-full side-bar space-y-2">
       <!-- Chat (50%) -->
       <section class="basis-1/2 overflow-hidden rounded-lg chat">
-        <app-chat></app-chat>
+        <app-chat [animeInformation]="animeInformation"></app-chat>
       </section>
 
       <!-- Leaderboard (30%) -->

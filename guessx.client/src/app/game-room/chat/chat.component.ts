@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
@@ -6,6 +7,16 @@ import { Component } from '@angular/core';
   styleUrl: './chat.component.css'
 })
 export class ChatComponent {
+  @ViewChild('chatContainer') private chatContainer!: ElementRef<HTMLElement>;
+
+   @Input() animeInformation: any = {
+      name: "",
+      src: "",
+      answers: []
+  }
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  answerFormControl = new FormControl('')
   players = [
     { id: 1, name: 'Player One', score: 1500, correct: 12, avatar: 'P1' },
     { id: 2, name: 'Player Two', score: 1400, correct: 11, avatar: 'P2' },
@@ -25,4 +36,21 @@ export class ChatComponent {
     { id: 7, text: 'Player Three: Let\'s do this!', sender: 'user', timestamp: new Date() }
   ];
 
+  sendAnswer() {
+    if(!this.answerFormControl.value) return;
+    this.messages.push({
+      id: this.messages.length + 1,
+      text: this.answerFormControl.value,
+      sender: 'user',
+      timestamp: new Date()
+    })
+    this.answerFormControl.setValue('');
+    this.cdr.detectChanges();
+    this.scrollToBottom()
+
+  }
+
+  private scrollToBottom(): void {
+    this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+  }
 }

@@ -6,6 +6,10 @@ import { TimeBarComponent } from '../time-bar/time-bar.component';
   styleUrl: './game-room.component.css'
 })
 export class GameRoomComponent {
-
+   animeInformation: any = {
+    name: "Demon Slayer",
+    src: "../../../assets/demon_slayer.webp",
+    answers: ["Demon Slayer", "Kimetsu no Yaiba"]
+  }
 
 }
