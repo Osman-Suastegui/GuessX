@@ -7,24 +7,29 @@
   <!-- Mensajes (Scroll interno) -->
   <div class="flex-1 overflow-y-auto scroll-custom p-4 gap-3 flex flex-col bg-white/5 " #chatContainer>
     @for (message of messages; track $index) {
-      <div class="bg-gaming-neon/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]">
-        <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
-        <span class="text-gaming-neon text-sm">{{ message.text }}</span>
-      </div>
+        @if (!message.ownMessage) {
+          <div class="bg-gaming-neon/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]">
+            <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
+            <span class="text-gaming-neon text-sm">{{ message.text }}</span>
+          </div>
+        }
+        @if (message.ownMessage) {
+          <div class="bg-gaming-neon-pink/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]">
+            <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
+            <span class="text-gaming-neon-pink text-sm">{{ message.text }}</span>
+          </div>
+        }
+
     }
   </div>
 
   <!-- Input de chat -->
-  <div class="py-3 px-4 border-t border-purple-500/30 bg-purple-600/20">
+  <form class="py-3 px-4 border-t border-purple-500/30 bg-purple-600/20"  (submit)="onSubmit($event)" >
     <div class="flex gap-2 items-center">
-      <input [formControl]="answerFormControl" type="text" placeholder="Type your guess..."
-        (keydown.enter)="sendAnswer()"
-
-        class="text-white py-2 px-3 bg-white/10 border border-white/20 rounded-md flex-1 w-full h-10"
-      />
-      <button (click)="sendAnswer()"  class="bg-purple-500/30 hover:bg-purple-500/50 text-white font-bold py-2 px-2 rounded-full flex items-center  transition duration-300 ease-in-out">
+      <input [formControl]="type" type="text" placeholder="Type your guess..."class="text-white py-2 px-3 bg-white/10 border border-white/20 rounded-md flex-1 w-full h-10"/>
+      <button type="submit" class="bg-purple-500/30 hover:bg-purple-500/50 text-white font-bold py-2 px-2 rounded-full flex items-center  transition duration-300 ease-in-out">
         <mat-icon class="text-purple-200">send</mat-icon>
       </button>
     </div>
-  </div>
+  </form>
 </div>
