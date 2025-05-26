@@ -1,0 +1,113 @@
+/* filter.component.css */
+
+/* full-page soft gradient */
+.page-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4ff 0%, #d9e8ff 100%);
+  padding: 2rem 1rem;
+}
+
+/* center & constrain */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* form styling */
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.filter-form input,
+.filter-form select {
+  flex: 1 1 200px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.filter-form input:focus,
+.filter-form select:focus {
+  outline: none;
+  border-color: #6c8ef0;
+  box-shadow: 0 0 4px rgba(108,142,240,0.4);
+}
+
+/* grid layout */
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* card styling */
+.anime-card {
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+}
+
+.anime-card:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.anime-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.anime-card h3 {
+  margin: 0.8rem 0 0.4rem;
+  font-size: 1.1rem;
+}
+
+.anime-card .subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* pagination */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.pagination-controls button {
+  padding: 0.6rem 1.2rem;
+  background: #6c8ef0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background: #557cd1;
+}
+
+.pagination-controls button:disabled {
+  background: #aac1f8;
+  cursor: not-allowed;
+}
+
+.pagination-controls span {
+  font-size: 1rem;
+  color: #333;
+}

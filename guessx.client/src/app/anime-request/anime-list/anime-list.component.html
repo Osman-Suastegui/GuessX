@@ -1,0 +1,37 @@
+<!-- filter.component.html -->
+<div class="page-wrapper">
+  <div class="container">
+    <form [formGroup]="form" class="filter-form">
+      <input type="text" formControlName="q" placeholder="Search anime…" />
+      <select formControlName="type">
+        <option value="">All Types</option>
+        <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+      </select>
+      <select formControlName="status">
+        <option value="">All Statuses</option>
+        <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+      </select>
+      <input type="number" formControlName="page" min="1" placeholder="Page #" />
+    </form>
+
+    <div class="anime-grid">
+      <div class="anime-card" *ngFor="let anime of animeList">
+        <img [src]="anime.images.jpg.large_image_url" [alt]="anime.title" />
+        <h3>{{ anime.title }}</h3>
+        <p class="subtitle" *ngIf="anime.title_english && anime.title_english !== anime.title">
+          ({{ anime.title_english }})
+        </p>
+      </div>
+    </div>
+
+    <div class="pagination-controls" *ngIf="pagination">
+      <button (click)="changePage(form.value.page - 1)" [disabled]="form.value.page <= 1">
+        ← Previous
+      </button>
+      <span>Page {{ form.value.page }} of {{ pagination.last_visible_page }}</span>
+      <button (click)="changePage(form.value.page + 1)" [disabled]="!pagination.has_next_page">
+        Next →
+      </button>
+    </div>
+  </div>
+</div>
