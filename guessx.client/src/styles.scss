@@ -78,5 +78,20 @@
   border-radius: 10px;
 }
 
+.custom-dialog-container{
+  background-color: hsl(var(--card));
+  padding: 2%;
+  border: none;
+  border-radius: 8px;
+}
+
+.custom-backdrop {
+  @apply backdrop-blur-sm bg-black/40;
+}
+
+
+
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

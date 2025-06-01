@@ -3,7 +3,7 @@
 /* full-page soft gradient */
 .page-wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f4ff 0%, #d9e8ff 100%);
+  /* background: linear-gradient(135deg, #f0f4ff 0%, #d9e8ff 100%); */
   padding: 2rem 1rem;
 }
 
@@ -18,7 +18,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  background: rgba(255, 255, 255, 0.85);
+  /* background: rgba(255, 255, 255, 0.85); */
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -28,7 +28,7 @@
 .filter-form select {
   flex: 1 1 200px;
   padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 4px;
   font-size: 0.95rem;
 }
@@ -50,7 +50,6 @@
 
 /* card styling */
 .anime-card {
-  background: #fff;
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
@@ -60,6 +59,8 @@
 
 .anime-card:hover {
   box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  cursor: pointer;
+  transform: translateY(-4px);
 }
 
 .anime-card img {

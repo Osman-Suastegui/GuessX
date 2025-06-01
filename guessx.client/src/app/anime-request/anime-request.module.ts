@@ -4,16 +4,20 @@ import { AnimeListComponent } from './anime-list/anime-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { animeRequestRoutes } from './anime-request.routes';
+import { AnimeImagesComponent } from './anime-images/anime-images.component';
+import { MaterialModule } from '../material/material.module';
 
 
 
 @NgModule({
   declarations: [
-    AnimeListComponent
+    AnimeListComponent,
+    AnimeImagesComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MaterialModule,
     RouterModule.forChild(animeRequestRoutes)
   ]
 })

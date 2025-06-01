@@ -1,8 +1,10 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Anime, AnimeSearchResponse } from '../anime.model';
 import { AnimeServiceService } from '../anime-service.service';
 import { debounceTime, merge } from 'rxjs';
+import { MatDialog} from '@angular/material/dialog';
+import { AnimeImagesComponent } from '../anime-images/anime-images.component';
 
 @Component({
   selector: 'app-anime-list',
@@ -13,11 +15,13 @@ export class AnimeListComponent implements AfterViewInit {
   animeList: Anime[] = [];
   pagination: any;
   form: FormGroup
+  dialog = inject(MatDialog)
 
   types = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 'cm', 'pv', 'tv_special'];
   statuses = ['airing', 'complete', 'upcoming'];
 
-  constructor(private fb: FormBuilder, private animeService: AnimeServiceService) {
+  constructor
+  (private fb: FormBuilder, private animeService: AnimeServiceService) {
     this.form = this.fb.group({
       q: [''],
       type: [''],
@@ -61,8 +65,21 @@ export class AnimeListComponent implements AfterViewInit {
     });
   }
 
+  selectAnime(anime: Anime) {
+    // Implement the logic to select an anime, e.g., navigate to a detail page or open a modal
+    this.dialog.open(AnimeImagesComponent, {
+      data: anime,
+      width: '90%',
+      maxWidth: '1500px',
+      height: '82%',
+      maxHeight: '1000px',
+      panelClass: 'custom-dialog-container',
+      backdropClass: 'custom-backdrop',
+    });
+  }
   changePage(page: number) {
     this.form.patchValue({ page });
     this.loadAnime();
   }
+
 }

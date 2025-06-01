@@ -1,21 +1,21 @@
 <!-- filter.component.html -->
-<div class="page-wrapper">
-  <div class="container">
-    <form [formGroup]="form" class="filter-form">
-      <input type="text" formControlName="q" placeholder="Search anime…" />
-      <select formControlName="type">
+<div class="page-wrapper bg-card">
+  <div class="container ">
+    <form [formGroup]="form" class="filter-form bg-white/5 p-4 rounded-lg mb-4">
+      <input type="text" formControlName="q" placeholder="Search anime…" class="text-white bg-white/10 border border-white/20 rounded-md" />
+      <select formControlName="type" class="text-white bg-white/10 border border-white/20 rounded-md">
         <option value="">All Types</option>
         <option *ngFor="let t of types" [value]="t">{{ t }}</option>
       </select>
-      <select formControlName="status">
+      <select formControlName="status" class="text-white bg-white/10 border border-white/20 rounded-md pr-1">
         <option value="">All Statuses</option>
-        <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        <option class="bg-white5" *ngFor="let s of statuses" [value]="s">{{ s }}</option>
       </select>
-      <input type="number" formControlName="page" min="1" placeholder="Page #" />
+      <input type="number" formControlName="page" min="1" placeholder="Page #" class="text-white bg-white/10 border border-white/20 rounded-md" />
     </form>
 
-    <div class="anime-grid">
-      <div class="anime-card" *ngFor="let anime of animeList">
+    <div class="anime-grid text-lg text-gaming-neon font-gaming ">
+      <div class="anime-card bg-white/5 border-purple-500/305" *ngFor="let anime of animeList" (click)="selectAnime(anime)">
         <img [src]="anime.images.jpg.large_image_url" [alt]="anime.title" />
         <h3>{{ anime.title }}</h3>
         <p class="subtitle" *ngIf="anime.title_english && anime.title_english !== anime.title">

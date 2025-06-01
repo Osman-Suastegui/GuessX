@@ -1,0 +1,13 @@
+.main-container{
+  border-radius: 0px;
+}
+
+::ng-deep .mat-mdc-dialog-surface {
+  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+
+.image:hover {
+  cursor: pointer;
+  border: 1px solid #6c8ef0;
+}
