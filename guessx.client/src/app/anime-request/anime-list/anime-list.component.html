@@ -3,11 +3,11 @@
   <div class="container ">
     <form [formGroup]="form" class="filter-form bg-white/5 p-4 rounded-lg mb-4">
       <input type="text" formControlName="q" placeholder="Search anime…" class="text-white bg-white/10 border border-white/20 rounded-md" />
-      <select formControlName="type" class="text-white bg-white/10 border border-white/20 rounded-md">
+      <select formControlName="type" class="text-gray-500 bg-white/10 border border-white/20 rounded-md">
         <option value="">All Types</option>
         <option *ngFor="let t of types" [value]="t">{{ t }}</option>
       </select>
-      <select formControlName="status" class="text-white bg-white/10 border border-white/20 rounded-md pr-1">
+      <select formControlName="status" class="text-gray-500 bg-white/10 border border-white/20 rounded-md pr-1">
         <option value="">All Statuses</option>
         <option class="bg-white5" *ngFor="let s of statuses" [value]="s">{{ s }}</option>
       </select>

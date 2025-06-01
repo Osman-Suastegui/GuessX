@@ -52,32 +52,30 @@ export class AnimeServiceService {
     return this.http.get<AnimeSearchResponse>(this.animeUrl, { params });
   }
 
- getAnimePictures(id: number): Observable<{ url: string }[]> {
-  const requests = this.animePicturesUrl.map(item => {
-    const url = `https://api.jikan.moe/v4/anime/${id}/${item.urlTerm}`;
-    return this.http.get<any>(url).pipe(
-      map(response => {
-        // Extraemos las urls usando la propiedad en item.imageProp (acceso dinámico)
-        // La propiedad puede ser anidada, entonces hacemos split y recorremos
-        const dataArray = response.data || [];
-        return dataArray.map((entry: any) => {
-          const props = item.imageProp.split('.');
-          let url = entry;
-          for (const prop of props) {
-            url = url?.[prop];
-            if (!url) break;
-          }
-          return { url };
-        }).filter((img: any) => img.url);
-      })
-    );
-  });
+  getAnimePictures(id: number): Observable<{ url: string, imageType: string, id: number }[]> {
+    const requests = this.animePicturesUrl.map(item => {
+      const url = `https://api.jikan.moe/v4/anime/${id}/${item.urlTerm}`;
+      return this.http.get<any>(url).pipe(
+        map(response => {
+          const dataArray = response.data || [];
+          return dataArray.map((entry: any) => {
+            const props = item.imageProp.split('.');
+            let url = entry;
+            for (const prop of props) {
+              url = url?.[prop];
+              if (!url) break;
+            }
+            return url ? { url, imageType: 'anime', id } : null;
+          }).filter((img: any) => img);
+        })
+      );
+    });
 
-  // forkJoin espera que todas las peticiones terminen y las combina
-  return forkJoin(requests).pipe(
-    map(resultsArrays => resultsArrays.flat()) // Aplanamos el array de arrays
-  );
-}
+    return forkJoin(requests).pipe(
+      map(resultsArrays => resultsArrays.flat())
+    );
+  }
+
 
 
 }
