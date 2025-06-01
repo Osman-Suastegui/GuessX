@@ -14,6 +14,14 @@ export interface Anime {
   type: string;
   status: string;
   score: number;
+  genres: Genre[];
+}
+
+export interface Genre {
+  mal_id: number;
+  type: string;
+  name: string;
+  url: string;
 }
 
 export interface TitleEntry {
