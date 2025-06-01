@@ -1,8 +1,18 @@
+using GuessX.Server.Controllers;
+using Microsoft.EntityFrameworkCore;
+using GuessX.Server.Data;
+using GuessX.Server.Application.Services;
+    
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
+builder.Services.AddScoped<CreatePictureService>();
+builder.Services.AddScoped<EditPictureService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
