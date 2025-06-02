@@ -5,7 +5,7 @@ public class CreateTitleDto
 {
     public int Id { get; set; }
     public string TitleName { get; set; }
-    public string Category { get; set; }
+    public string? Category { get; set; }
     public List<string>? Genres { get; set; }
     public List<TitleImageDto>? TitleImages { get; set; }
     public List<string>? TitleAnswers { get; set; }

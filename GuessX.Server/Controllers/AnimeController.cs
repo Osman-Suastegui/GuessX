@@ -16,12 +16,16 @@ namespace GuessX.Server.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly CreatePictureService _createPictureService;
         private readonly EditPictureService _editPictureService;
+        private readonly GetPictureByImageIdService _getPictureByImageIdService;
+        private readonly SearchPictureService _searchPictureService;
 
 
-        public AnimeController(CreatePictureService createPictureService, EditPictureService editPictureService)
+        public AnimeController(CreatePictureService createPictureService, EditPictureService editPictureService, GetPictureByImageIdService getPictureByImageIdService, SearchPictureService searchPictureService)
         {
             _createPictureService = createPictureService;
-            this._editPictureService = editPictureService;
+            _editPictureService = editPictureService;
+            _getPictureByImageIdService = getPictureByImageIdService;
+            _searchPictureService = searchPictureService;
         }
 
         // GET: api/anime
@@ -32,7 +36,7 @@ namespace GuessX.Server.Controllers
         }
 
 
-// CREATE PICTURE 
+        // CREATE PICTURE 
         [HttpPost]
         public async Task<IActionResult> CreateTitleAsync([FromBody] CreateTitleDto dto)
         {
@@ -71,6 +75,28 @@ namespace GuessX.Server.Controllers
             }
         }
 
+        [HttpGet("getPictureByImageId")]
+        public async Task<IActionResult> getAnimePictureByImageId(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid image ID.");
+            }
+            var picture = await _getPictureByImageIdService.GetPictureByImageIdAsync(id);
+            if (picture == null)
+            {
+                return NotFound("Picture not found.");
+            }
+            return Ok(picture);
 
+        }
+        [HttpGet("SearchPictureBy")]
+        public async Task<IActionResult> SearchPictureByTitleName(string titleName,int limit = 20)
+        {
+            
+            var titles = await _searchPictureService.SearchPicturesAsync(titleName,limit);
+         
+            return Ok(titles);
+        }
     }
 }
