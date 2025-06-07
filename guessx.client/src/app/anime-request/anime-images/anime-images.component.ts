@@ -1,16 +1,12 @@
 import { map } from 'rxjs';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, } from '@angular/material/dialog';
-import { Anime } from '../anime.model';
+import { Anime, AnimeImage, TitleData } from '../anime.model';
 import { AnimeServiceService } from '../anime-service.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { GeneralService } from '../../utils/general.service';
 
-export interface AnimeImage {
-  url: string;
-  selected?: boolean;
-  imageType?: string; // 'jpg' or 'webp'
-  id?: number; // optional, if needed for identification
-}
+
 @Component({
   selector: 'app-anime-images',
   templateUrl: './anime-images.component.html',
@@ -21,25 +17,34 @@ export class AnimeImagesComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<AnimeImagesComponent>);
   readonly data = inject<Anime>(MAT_DIALOG_DATA);
 
-  imagesUrls: { url: string }[] = [];
-  selectedImages: Set<AnimeImage> = new Set();
+  imagesUrls: { imageUrl: string }[] = [];
+  highlightedImage: AnimeImage | null = null;
 
   titlesForm: FormGroup = new FormGroup({});
-  genresControl = new FormControl("");
-
+  genresControl = new FormControl<string[]>([]);
   titleControl = new FormControl(this.data.title);
+  selectedImagesControl = new FormControl<AnimeImage[]>([]);
 
-  defaultGenres: string[] = [...this.data.genres.map(g => g.name)];
+  selectedImage: { imageUrl: string } | null = null;
+  defaultGenres: string[] = [];
 
 
-  constructor( private animeService: AnimeServiceService,private fb: FormBuilder) {}
+  constructor( 
+    private _animeService: AnimeServiceService,
+    private fb: FormBuilder,
+    private _generalService: GeneralService
+  ) {}
 
   ngOnInit(): void {
     console.log('Datos recibidos en el diálogo:', this.data);
 
     this.setTitles();
     this.getImages();
+    //Set Genres
+    this.defaultGenres = this.data.genres.map(g => g.name);
+    this.genresControl.setValue([...this.data.genres.map(g => g.name)]);
   }
+
 
   setTitles() {
     const uniqueTitles = new Set<string>();
@@ -64,9 +69,17 @@ export class AnimeImagesComponent implements OnInit {
     return this.titlesForm.get('titlesArray') as FormArray;
   }
 
+
+  selectAndPreview(image: { imageUrl: string }) {
+    this.selectedImage = image;
+    this.toggleSelection(image);
+  }
+
+
   getImages() {
-    this.animeService.getAnimePictures(this.data.mal_id).subscribe((response: any) => {
+    this._animeService.getAnimePictures(this.data.mal_id).subscribe((response: any) => {
       this.imagesUrls = response;
+      this.selectedImage = this.imagesUrls.length > 0 ? this.imagesUrls[0] : null;
     }, error => {
       console.error('Error fetching anime images:', error);
       this.dialogRef.close([]);
@@ -74,48 +87,65 @@ export class AnimeImagesComponent implements OnInit {
   }
 
   toggleSelection(image: AnimeImage): void {
-    if (this.selectedImages.has(image)) {
-      this.selectedImages.delete(image);
+    const selectedImages = this.selectedImagesControl.value ?? [];
+    const index = selectedImages.findIndex((img: AnimeImage) => img.imageUrl === image.imageUrl);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
     } else {
-      this.selectedImages.add(image);
+      selectedImages.push(image);
     }
+    this.selectedImagesControl.setValue([...selectedImages]);
+
   }
 
   isSelected(image: AnimeImage): boolean {
-    return this.selectedImages.has(image);
+    const selectedImages = this.selectedImagesControl.value ?? [];
+    return selectedImages.some((img: AnimeImage) => img.imageUrl === image.imageUrl);
+  }
+
+  getSelectedImagesCount(): number {
+    return this.selectedImagesControl.value?.length ?? 0;
   }
 
   save(): void {
-    const selectedImages = Array.from(this.selectedImages);
+    const selectedImages = this.selectedImagesControl.value ?? [];
     const answers = this.titlesArray.value;
     const title = this.titleControl.value;
     const genres = this.genresControl.value;
 
-    const addObject = {
-      titleName: title,
+    const addObject: TitleData = {
+      titleName: title || '' ,
       category: 'anime',
-      genres: genres,
-      titleImages: [...selectedImages],
-      titleAnswers: [...answers.map((answer: any) => answer.title)]
+      genres: genres || [],
+      titleImages: [...selectedImages] ,
+       titleAnswers: answers.map((answer: any) => answer.title),
     };
 
-    console.log('Datos a enviar:', addObject);
+    this._animeService.registerAnimeRequest(addObject).subscribe({
+      next: (response) => {
+        this._generalService.showMessage('Anime request registered successfully!', 'success');
+        this.dialogRef.close(response);
+      },
+      error: (error) => {
+        this._generalService.showMessage('Error registering anime request: ' + error.message, 'error');
+        this.dialogRef.close([]);
+      }
+    });
+
   }
 
   selectAll(): void {
-    if (this.selectedImages.size === this.imagesUrls.length) {
-      // Si ya están todas seleccionadas, limpiar la selección
-      this.selectedImages.clear();
+    const allSelected = this.selectedImagesControl.value?.length === this.imagesUrls.length;
+    if (allSelected) {
+      this.selectedImagesControl.setValue([]);
     } else {
-      // Si no están todas seleccionadas, seleccionar todas
-      this.imagesUrls.forEach((image: AnimeImage) =>
-        this.selectedImages.add({
-          url: image.url,
-          selected: true,
-          imageType: 'webp', // o 'jpg' según sea necesario
-          id: this.data.mal_id // o cualquier otro identificador relevante
-        })
-      );
+      const allImages: AnimeImage[] = this.imagesUrls.map((image, idx) => ({
+      imageUrl: image.imageUrl,
+      selected: true,
+      imageType: 'anime',
+      id: this.data.mal_id // o cualquier otro identificador relevante
+      }));
+      this.selectedImagesControl.setValue(allImages);
     }
   }
 

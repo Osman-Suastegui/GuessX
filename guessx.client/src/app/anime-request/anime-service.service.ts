@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AnimeSearchResponse } from './anime.model';
+import { AnimeSearchResponse, TitleData } from './anime.model';
 import { forkJoin, map, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ export class AnimeServiceService {
         - Todas las Opciones de respuestas seran editables
         - Saldran las que estan seleccionadas en un apestaña de opciones y las que no estan seleccionadas en otra pestaña
   */
+  api = 'https://localhost:7230/api/Anime';
 
   mangaUrl = 'https://api.jikan.moe/v4/manga';
   mangaPicturesUrl = [
@@ -65,7 +68,7 @@ export class AnimeServiceService {
               url = url?.[prop];
               if (!url) break;
             }
-            return url ? { url, imageType: 'anime', id } : null;
+            return url ? { imageUrl:url, imageType: 'anime', id } : null;
           }).filter((img: any) => img);
         })
       );
@@ -74,6 +77,13 @@ export class AnimeServiceService {
     return forkJoin(requests).pipe(
       map(resultsArrays => resultsArrays.flat())
     );
+  }
+
+  // Register a new anime request
+  registerAnimeRequest(animeRequest: TitleData): Observable<any> {
+    return this.http.post(this.api, animeRequest, {
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
 

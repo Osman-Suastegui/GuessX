@@ -70,9 +70,9 @@ export class AnimeListComponent implements AfterViewInit {
     this.dialog.open(AnimeImagesComponent, {
       data: anime,
       width: '90%',
-      maxWidth: '1500px',
-      height: '82%',
-      maxHeight: '1000px',
+      maxWidth: '1920px',
+      height: '100%',
+      maxHeight: '1080px',
       panelClass: 'custom-dialog-container',
       backdropClass: 'custom-backdrop',
     });

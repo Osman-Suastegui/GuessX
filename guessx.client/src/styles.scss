@@ -79,7 +79,6 @@
 }
 
 .custom-dialog-container{
-  background-color: hsl(var(--card));
   padding: 2%;
   border: none;
   border-radius: 8px;
@@ -89,6 +88,15 @@
   @apply backdrop-blur-sm bg-black/40;
 }
 
+.mat-snack-bar-container.success {
+  background-color: #22c55e; // Tailwind green-500
+  color: #fff;
+}
+
+.mat-snack-bar-container.error {
+  background-color: #ef4444; // Tailwind red-500
+  color: #fff;
+}
 
 
 

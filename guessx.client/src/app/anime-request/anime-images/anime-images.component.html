@@ -1,96 +1,87 @@
-<div class="bg-card h-full flex flex-col p-4 relative overflow-hidden">
-  <!-- Título fijo arriba -->
-  <div class="z-20 bg-card pb-2 flex items-center gap-2">
-    <input
-      [formControl]="titleControl"
-      class="text-xl font-bold text-gaming-neon-pink font-gaming flex-grow bg-transparent border-none outline-none"
-      type="text"
-    />
+<!-- CONTENIDO SCROLLABLE -->
+<div class="flex-1 overflow-y-auto space-x-6 flex p-4">
 
-    <!-- Botón menú títulos -->
-    <button mat-icon-button [matMenuTriggerFor]="titlesMenu"  aria-label="Mostrar títulos alternativos">
-      <mat-icon>settings</mat-icon>
-    </button>
+  <!-- PREVISUALIZACIÓN DE IMAGEN -->
+  <div *ngIf="selectedImage" class="w-1/3 aspect-video overflow-hidden flex-shrink-0">
+    <img [src]="selectedImage.imageUrl" class="w-full h-full object-cover border border-gaming-neon-pink" />
   </div>
 
+  <!-- CONTENIDO A LA DERECHA -->
+  <div class="w-2/3 space-y-6 overflow-y-auto pr-2 flex flex-col scroll-custom">
 
-  <!-- Scrollable container -->
-  <div class="flex-1 overflow-y-auto scroll-custom pr-1 pb-24">
-    <!-- Grid de imágenes -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-      <div class="relative rounded overflow-hidden w-full h-72" *ngFor="let image of imagesUrls">
-        <input
-          type="checkbox"
-          class="absolute top-2 left-2 z-10 w-10 h-16 accent-pink-500 focus:outline-none"
-          [checked]="isSelected(image)"
-          (change)="toggleSelection(image)"
-          (click)="$event.stopPropagation()"
-        />
-        <img
-          [src]="image.url"
-          class="image w-full h-full object-cover cursor-pointer"
-          (click)="toggleSelection(image)"
-        />
-      </div>
+    <!-- INPUT TÍTULO PRINCIPAL -->
+    <div class="pb-2 flex  gap-2 flex-col">
+      <h2 class="text-xl font-gaming text-gaming-neon mb-2">Título</h2>
+
+      <input [formControl]="titleControl"
+        class="text-xl font-gaming bg-background border border-gaming-neon-pink px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-gaming-neon-pink focus:border-gaming-neon-pink"
+        type="text" placeholder="Título principal" />
     </div>
-  </div>
 
-  <!-- Botón fijo al fondo -->
-  <div class="absolute bottom-0 left-0 right-0 p-4 z-20 bg-card">
-    <button
-      (click)="selectAll()"
-      class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:opacity-50 border border-gaming-neon-pink bg-background hover:text-accent-foreground h-9 rounded-md px-3 border-gaming-neon-pink text-gaming-neon-pink hover:bg-gaming-neon-pink/10"
-    >
-      Seleccionar todo
-    </button>
-    <button
-      (click)="save()"
-      class="ml-2 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors border border-gaming-neon-pink text-destructive-foreground hover:bg-destructive h-9 rounded-md px-3"
-    >
-      Guardar
-    </button>
-  </div>
-</div>
-
-<mat-menu #titlesMenu="matMenu">
-  <!-- TÍTULOS -->
-   <div class="flex flex-row gap-2">
-      <form [formGroup]="titlesForm" (click)="$event.stopPropagation()">
-        <div formArrayName="titlesArray" class="titles-list p-2 max-w-xs max-h-80 overflow-auto">
-          <mat-label class="font-gaming text-gaming-neon">Answers</mat-label>
-          <div *ngFor="let titleGroup of titlesArray.controls; let i = index"
-              [formGroupName]="i" class="flex items-center gap-2 mb-1">
-            <input
-              matInput
-              formControlName="title"
-              placeholder="Título"
-              class="flex-grow"
-            />
-            <button mat-icon-button color="warn" type="button"
-                    (click)="removeTitleInput(i)" aria-label="Eliminar título">
+    <!-- TÍTULOS ALTERNATIVOS -->
+    <div>
+      <h2 class="font-gaming text-gaming-neon mb-2">Títulos alternativos</h2>
+      <form [formGroup]="titlesForm">
+        <div formArrayName="titlesArray" class="space-y-2">
+          <div *ngFor="let titleGroup of titlesArray.controls; let i = index" [formGroupName]="i"
+            class="flex items-center gap-2">
+            <input matInput formControlName="title" placeholder="Título"
+              class="flex-grow bg-background border border-gaming-neon-pink px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-gaming-neon-pink focus:border-gaming-neon-pink" />
+            <button mat-icon-button color="warn" type="button" (click)="removeTitleInput(i)"
+              aria-label="Eliminar título">
               <mat-icon>close</mat-icon>
             </button>
           </div>
         </div>
-
-        <div class="flex justify-between items-center px-2 pt-2">
-          <button mat-mini-fab color="primary" type="button" (click)="addTitleInput()" aria-label="Agregar título">
-            <mat-icon>add</mat-icon>
-          </button>
-        </div>
+        <button mat-mini-fab color="primary" type="button" class="mt-2" (click)="addTitleInput()"
+          aria-label="Agregar título">
+          <mat-icon>add</mat-icon>
+        </button>
       </form>
+    </div>
 
-      <!-- GÉNEROS -->
-      <div class="px-2 pt-2 pb-3" (click)="$event.stopPropagation()">
-  <mat-label class="font-gaming text-gaming-neon">Géneros</mat-label>
+    <!-- GÉNEROS -->
+    <div>
+      <h2 class="font-gaming text-gaming-neon mb-2">Géneros</h2>
+      <mat-chip-listbox multiple [formControl]="genresControl" class="mat-mdc-chip-set-stacked">
+        <mat-chip-option *ngFor="let genre of defaultGenres" [value]="genre">
+          {{ genre }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </div>
 
-  <mat-chip-listbox multiple [formControl]="genresControl" class="mat-mdc-chip-set-stacked">
-    <mat-chip-option *ngFor="let genre of defaultGenres" [value]="genre">
-      {{ genre }}
-    </mat-chip-option>
-  </mat-chip-listbox>
-</div>
+    <!-- MINIATURAS DE IMÁGENES -->
+    <div>
+      <div class="flex items-center mb-2">
+        <h2 class="font-gaming text-gaming-neon mr-2">Imágenes</h2>
+        <span *ngIf="getSelectedImagesCount() > 0" class="text-sm text-gaming-neon-pink">
+          {{ getSelectedImagesCount() }} imagenes seleccionadas
+        </span>
+      </div>
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+        <div class="relative overflow-hidden aspect-video cursor-pointer border-2" [ngClass]="{
+      'border-gaming-neon-pink': isSelected(image),
+      'border-transparent': !isSelected(image)
+      }" *ngFor="let image of imagesUrls" (click)="selectAndPreview(image)">
+          <img [src]="image.imageUrl" class="w-full h-full object-cover" />
+          <input type="checkbox" class="absolute top-1 left-1 z-10 w-4 h-4 accent-pink-500"
+            [checked]="isSelected(image)" (change)="toggleSelection(image)" (click)="$event.stopPropagation()" />
+        </div>
+      </div>
+    </div>
 
+   
   </div>
 
-</mat-menu>
+</div>
+
+<div class="mt-auto pt-4 flex justify-end gap-2 p-4">
+  <button (click)="selectAll()"
+  class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:opacity-50 border border-gaming-neon-pink bg-background hover:text-accent-foreground h-9 rounded-md px-3 text-gaming-neon-pink hover:bg-gaming-neon-pink/10">
+  Seleccionar todo
+  </button>
+  <button (click)="save()"
+  class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors border border-gaming-neon-pink text-destructive-foreground hover:bg-destructive h-9 rounded-md px-3">
+  Guardar
+  </button>
+</div>  

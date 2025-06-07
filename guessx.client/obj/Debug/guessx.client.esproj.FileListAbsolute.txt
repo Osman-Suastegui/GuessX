@@ -1,2 +1,3 @@
 C:\Users\PC\Documents\GuessX\guessx.client\obj\Debug\guessx.client.esproj.CoreCompileInputs.cache
 C:\Users\werej\OneDrive\Documentos\GuessX\guessx.client\obj\Debug\guessx.client.esproj.CoreCompileInputs.cache
+C:\Users\pc\Documents\Projects\GuessX\guessx.client\obj\Debug\guessx.client.esproj.CoreCompileInputs.cache

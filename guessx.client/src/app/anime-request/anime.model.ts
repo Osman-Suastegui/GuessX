@@ -3,6 +3,22 @@ export interface AnimeSearchResponse {
   pagination: Pagination;
 }
 
+export interface AnimeImage {
+  imageUrl: string;
+  selected?: boolean;
+  imageType?: string; // 'jpg' or 'webp'
+  id?: number; // optional, if needed for identification
+}
+
+export interface TitleData {
+  id?: number;
+  titleName: string;
+  category: string;
+  genres: string[];
+  titleImages: AnimeImage[];
+  titleAnswers: string[];
+}
+
 export interface Anime {
   mal_id: number;
   url: string;
