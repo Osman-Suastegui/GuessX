@@ -20,10 +20,21 @@ builder.Services.AddScoped<SearchPictureService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policyBuilder => policyBuilder
+            .WithOrigins("http://localhost:53328") // Permite solicitudes desde este origen
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            );
+});
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
+app.UseCors("AllowSpecificOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
