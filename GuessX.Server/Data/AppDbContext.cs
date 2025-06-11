@@ -26,17 +26,17 @@ public partial class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=picture_gallery;Trusted_Connection=True;Encrypt=False;");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=picture_gallery;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Genre>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__genres__3213E83F11B2ACCC");
+            entity.HasKey(e => e.Id).HasName("PK__genres__3213E83F11A1BFCE");
 
             entity.ToTable("genres");
 
-            entity.HasIndex(e => e.Name, "UQ__genres__72E12F1B0D002016").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__genres__72E12F1BA4FD6A64").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
@@ -47,7 +47,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<TitleAnswer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__title_an__3213E83FE3A79BA0");
+            entity.HasKey(e => e.Id).HasName("PK__title_an__3213E83F43C4A7EC");
 
             entity.ToTable("title_answers");
 
@@ -61,18 +61,18 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Title).WithMany(p => p.TitleAnswers)
                 .HasForeignKey(d => d.TitleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__title_ans__title__5BE2A6F2");
+                .HasConstraintName("FK__title_ans__title__7B5B524B");
         });
 
         modelBuilder.Entity<TitleImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__title_im__3213E83FA4623572");
+            entity.HasKey(e => e.Id).HasName("PK__title_im__3213E83F2615F9A0");
 
             entity.ToTable("title_images");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.HasIndex(e => e.ImageUrl, "idx_image_url");
+
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ImageType)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -86,18 +86,16 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Title).WithMany(p => p.TitleImages)
                 .HasForeignKey(d => d.TitleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__title_ima__title__59063A47");
+                .HasConstraintName("FK__title_ima__title__787EE5A0");
         });
 
         modelBuilder.Entity<TitlePictureGallery>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__title_pi__3213E83F40A514FF");
+            entity.HasKey(e => e.Id).HasName("PK__title_pi__3213E83F65F656E0");
 
             entity.ToTable("title_picture_gallery");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Category)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -113,14 +111,14 @@ public partial class AppDbContext : DbContext
                     r => r.HasOne<Genre>().WithMany()
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__title_gen__genre__5629CD9C"),
+                        .HasConstraintName("FK__title_gen__genre__75A278F5"),
                     l => l.HasOne<TitlePictureGallery>().WithMany()
                         .HasForeignKey("TitleId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__title_gen__title__5535A963"),
+                        .HasConstraintName("FK__title_gen__title__74AE54BC"),
                     j =>
                     {
-                        j.HasKey("TitleId", "GenreId").HasName("PK__title_ge__21E6F1A38476D57C");
+                        j.HasKey("TitleId", "GenreId").HasName("PK__title_ge__21E6F1A3D62E87BC");
                         j.ToTable("title_genres");
                         j.IndexerProperty<int>("TitleId").HasColumnName("title_id");
                         j.IndexerProperty<int>("GenreId").HasColumnName("genre_id");

@@ -3,7 +3,7 @@ namespace GuessX.Server.Application.Dtos;
 
 public class CreateTitleDto
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public string TitleName { get; set; }
     public string? Category { get; set; }
     public List<string>? Genres { get; set; }
@@ -13,7 +13,7 @@ public class CreateTitleDto
 
 public class TitleImageDto
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     public string ImageUrl { get; set; }
     public string ImageType { get; set; }

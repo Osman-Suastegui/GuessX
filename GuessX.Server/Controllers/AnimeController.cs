@@ -98,5 +98,7 @@ namespace GuessX.Server.Controllers
          
             return Ok(titles);
         }
+
+        //[HttpGet]("get")
     }
 }

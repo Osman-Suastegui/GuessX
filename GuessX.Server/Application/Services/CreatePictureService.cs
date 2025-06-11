@@ -24,7 +24,6 @@ public class CreatePictureService
         {
             var title = new TitlePictureGallery
             {
-                Id = dto.Id,
                 TitleName = dto.TitleName,
                 Category = dto.Category,
                 Genres = new List<Genre>(),
@@ -66,33 +65,32 @@ public class CreatePictureService
 
                 // Handle title images
                 if (dto.TitleImages != null)
-            {
-                foreach (var img in dto.TitleImages)
                 {
-                    title.TitleImages.Add(new TitleImage
+                    foreach (var img in dto.TitleImages)
                     {
-                        Id = img.Id,
-                        ImageUrl = img.ImageUrl,
-                        ImageType = img.ImageType,
-                        Title = title
-                    });
+                        title.TitleImages.Add(new TitleImage
+                        {
+                            ImageUrl = img.ImageUrl,
+                            ImageType = img.ImageType,
+                            Title = title
+                        });
+                    }
                 }
-            }
 
-            // Handle title answers
-            if (dto.TitleAnswers != null)
-            {
-                foreach (var answer in dto.TitleAnswers)
+                // Handle title answers
+                if (dto.TitleAnswers != null)
                 {
-                    title.TitleAnswers.Add(new TitleAnswer
+                    foreach (var answer in dto.TitleAnswers)
                     {
-                        Answer = answer,
-                        Title = title
-                    });
+                        title.TitleAnswers.Add(new TitleAnswer
+                        {
+                            Answer = answer,
+                            Title = title
+                        });
+                    }
                 }
-            }
 
-            _context.TitlePictureGalleries.Add(title);
+                _context.TitlePictureGalleries.Add(title);
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
 

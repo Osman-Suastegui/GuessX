@@ -2,7 +2,8 @@ using GuessX.Server.Controllers;
 using Microsoft.EntityFrameworkCore;
 using GuessX.Server.Data;
 using GuessX.Server.Application.Services;
-    
+using GuessX.Server.GameHub;
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
@@ -24,7 +25,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         policyBuilder => policyBuilder
-            .WithOrigins("http://localhost:53328") // Permite solicitudes desde este origen
+            .WithOrigins("*") // Permite solicitudes desde este origen
             .AllowAnyHeader()
             .AllowAnyMethod()
             );
@@ -48,6 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+//app.MapHub<GameHub>("/hubs/game");
 
 app.MapFallbackToFile("/index.html");
 
