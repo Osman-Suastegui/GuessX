@@ -140,10 +140,9 @@ export class AnimeImagesComponent implements OnInit {
       this.selectedImagesControl.setValue([]);
     } else {
       const allImages: AnimeImage[] = this.imagesUrls.map((image, idx) => ({
-      imageUrl: image.imageUrl,
-      selected: true,
-      imageType: 'anime',
-      id: this.data.mal_id // o cualquier otro identificador relevante
+        imageUrl: image.imageUrl,
+        selected: true,
+        imageType: 'anime',
       }));
       this.selectedImagesControl.setValue(allImages);
     }

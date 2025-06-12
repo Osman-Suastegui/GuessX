@@ -68,7 +68,7 @@ export class AnimeServiceService {
               url = url?.[prop];
               if (!url) break;
             }
-            return url ? { imageUrl:url, imageType: 'anime', id } : null;
+            return url ? { imageUrl:url, imageType: 'anime' } : null;
           }).filter((img: any) => img);
         })
       );
