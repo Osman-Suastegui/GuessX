@@ -30,9 +30,20 @@ namespace GuessX.Server.Controllers
 
         // GET: api/anime
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return Ok("test"); // Returns a successful response with "test" as the body
+            var titles = await _createPictureService.GetAllTitlesAsync();
+            return Ok(titles); 
+        }
+
+        [HttpGet("{id}")] // <-- Indica que el ID vendrá como parte de la URL
+        public async Task<IActionResult> GetAnimeById(int id)
+        {
+            var title = await _createPictureService.GetTitleDtoByIdAsync(id);
+            if (title == null)
+                return NotFound();
+
+            return Ok(title);
         }
 
 

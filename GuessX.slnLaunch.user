@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "Defaultl",
+    "Projects": [
+      {
+        "Path": "GuessX.Server\\GuessX.Server.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

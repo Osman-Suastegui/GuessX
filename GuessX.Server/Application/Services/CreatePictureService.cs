@@ -85,7 +85,7 @@ public class CreatePictureService
                         title.TitleAnswers.Add(new TitleAnswer
                         {
                             Answer = answer,
-                            Title = title
+                            Title = title,
                         });
                     }
                 }
@@ -104,5 +104,60 @@ public class CreatePictureService
         }
 
     }
-}
+
+    public async Task<List<CreateTitleDto>> GetAllTitlesAsync()
+    {
+        var titles = await _context.TitlePictureGalleries
+            .Include(t => t.Genres)
+            .Include(t => t.TitleImages)
+            .Include(t => t.TitleAnswers)
+            .ToListAsync();
+
+        var result = titles.Select(title => new CreateTitleDto
+        {
+            Id = title.Id,
+            TitleName = title.TitleName,
+            Category = title.Category,
+            Genres = title.Genres?.Select(g => g.Name).ToList(),
+            TitleImages = title.TitleImages?.Select(img => new TitleImageDto
+            {
+                ImageUrl = img.ImageUrl,
+                ImageType = img.ImageType
+            }).ToList(),
+            TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList()
+        }).ToList();
+
+        return result;
+    }
+
+
+        public async Task<CreateTitleDto> GetTitleDtoByIdAsync(int id)
+    {
+        var title = await _context.TitlePictureGalleries
+            .Include(t => t.Genres)
+            .Include(t => t.TitleImages)
+            .Include(t => t.TitleAnswers)
+            .FirstOrDefaultAsync(t => t.Id == id);
+
+        if (title == null)
+            return null;
+
+        var dto = new CreateTitleDto
+        {
+            Id = title.Id,
+            TitleName = title.TitleName,
+            Category = title.Category,
+            Genres = title.Genres?.Select(g => g.Name).ToList(),
+            TitleImages = title.TitleImages?.Select(img => new TitleImageDto
+            {
+                ImageUrl = img.ImageUrl,
+                ImageType = img.ImageType
+            }).ToList(),
+            TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList()
+        };
+
+        return dto;
+    }
+
+  }
 }
