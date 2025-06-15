@@ -3,17 +3,17 @@ using GuessX.Server.Application.Dtos;
 using Microsoft.EntityFrameworkCore;
 namespace GuessX.Server.Application.Services
 {
-    public class GetPictureByImageIdService
+    public class GetPictureByImageUrlService
     {
         private readonly AppDbContext _context;
 
-        public GetPictureByImageIdService(AppDbContext context)
+        public GetPictureByImageUrlService(AppDbContext context)
         {
             _context = context;
         }
 
 
-        public async Task<GetPictureByImageIdDto?> GetPictureByImageIdAsync(int imageId)
+        public async Task<GetPictureByImageUrlDto?> GetPictureByImageUrlAsync(string imageUrl)
         {
             // Fetch the title by using the titleImages model
             var titleImage = await _context.TitleImages
@@ -23,7 +23,7 @@ namespace GuessX.Server.Application.Services
                 .ThenInclude(tpg => tpg.TitleImages)
             .Include(ti => ti.Title)
                 .ThenInclude(tpg => tpg.Genres)
-            .FirstOrDefaultAsync(ti => ti.Id == imageId);
+            .FirstOrDefaultAsync(ti => ti.ImageUrl == imageUrl);
 
             if (titleImage == null)
             {
@@ -48,7 +48,7 @@ namespace GuessX.Server.Application.Services
             .ToList();
 
 
-            return new GetPictureByImageIdDto
+            return new GetPictureByImageUrlDto
             {
                 Id = titleImage.Title.Id,
                 TitleName = titleImage.Title.TitleName,

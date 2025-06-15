@@ -1,6 +1,6 @@
 ﻿namespace GuessX.Server.Application.Dtos
 {
-    public class GetPictureByImageIdDto
+    public class GetPictureByImageUrlDto
     {
         public int Id { get; set; }
         public string TitleName { get; set; }

@@ -13,7 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
 builder.Services.AddScoped<CreatePictureService>();
 builder.Services.AddScoped<EditPictureService>();
-builder.Services.AddScoped<GetPictureByImageIdService>();
+builder.Services.AddScoped<GetPictureByImageUrlService>();
 builder.Services.AddScoped<SearchPictureService>();
 
 

@@ -12,11 +12,11 @@ namespace GuessX.Server.Application.Services
             _context = context;
         }
 
-        public async Task<List<GetPictureByImageIdDto>> SearchPicturesAsync(string searchTerm,int limit = 20 )
+        public async Task<List<GetPictureByImageUrlDto>> SearchPicturesAsync(string searchTerm,int limit = 20 )
         {
             var results = await _context.TitlePictureGalleries
                 .Where(t => EF.Functions.Like(t.TitleName, $"%{searchTerm}%"))
-                .Select(title => new GetPictureByImageIdDto
+                .Select(title => new GetPictureByImageUrlDto
                 {
                     Id = title.Id,
                     TitleName = title.TitleName,

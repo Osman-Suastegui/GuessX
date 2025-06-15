@@ -16,15 +16,15 @@ namespace GuessX.Server.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly CreatePictureService _createPictureService;
         private readonly EditPictureService _editPictureService;
-        private readonly GetPictureByImageIdService _getPictureByImageIdService;
+        private readonly GetPictureByImageUrlService _getPictureByImageUrlService;
         private readonly SearchPictureService _searchPictureService;
 
 
-        public AnimeController(CreatePictureService createPictureService, EditPictureService editPictureService, GetPictureByImageIdService getPictureByImageIdService, SearchPictureService searchPictureService)
+        public AnimeController(CreatePictureService createPictureService, EditPictureService editPictureService, GetPictureByImageUrlService getPictureByImageIdService, SearchPictureService searchPictureService)
         {
             _createPictureService = createPictureService;
             _editPictureService = editPictureService;
-            _getPictureByImageIdService = getPictureByImageIdService;
+            _getPictureByImageUrlService = getPictureByImageIdService;
             _searchPictureService = searchPictureService;
         }
 
@@ -75,14 +75,11 @@ namespace GuessX.Server.Controllers
             }
         }
 
-        [HttpGet("getPictureByImageId")]
-        public async Task<IActionResult> getAnimePictureByImageId(int id)
+        [HttpGet("getPictureByImageUrl")]
+        public async Task<IActionResult> getAnimePictureByImageUrl(string imageUrl)
         {
-            if (id <= 0)
-            {
-                return BadRequest("Invalid image ID.");
-            }
-            var picture = await _getPictureByImageIdService.GetPictureByImageIdAsync(id);
+            
+            var picture = await _getPictureByImageUrlService.GetPictureByImageUrlAsync(imageUrl);
             if (picture == null)
             {
                 return NotFound("Picture not found.");

@@ -47,32 +47,6 @@ namespace GuessX.Server.Application.Services
                     }
                 }
 
-                //// --- Update Genres ---
-                //if (dto.Genres != null)
-                //{
-                //    var uniqueGenreNames = dto.Genres.Distinct().ToList();
-                //    var existingGenres = await _context.Genres
-                //        .Where(g => uniqueGenreNames.Contains(g.Name))
-                //        .ToListAsync();
-
-                //    var newGenreNames = uniqueGenreNames
-                //        .Except(existingGenres.Select(g => g.Name))
-                //        .ToList();
-
-                //    foreach (var genreName in newGenreNames)
-                //    {
-                //        var newGenre = new Genre { Name = genreName };
-                //        _context.Genres.Add(newGenre);
-                //        existingGenres.Add(newGenre);
-                //    }
-
-                //    if (newGenreNames.Any())
-                //        await _context.SaveChangesAsync();
-
-                //    title.Genres.Clear();
-                //    foreach (var genre in existingGenres)
-                //        title.Genres.Add(genre);
-                //}
 
                 // --- Synchronize Images ---
                 if (dto.TitleImages != null)

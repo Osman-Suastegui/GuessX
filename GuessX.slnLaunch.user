@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "GuessX.Server\\GuessX.Server.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
