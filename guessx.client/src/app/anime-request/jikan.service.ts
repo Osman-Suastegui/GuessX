@@ -8,19 +8,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class AnimeServiceService {
+export class JikanService {
   // URLs for the Jikan API
   // The Jikan API is a RESTful API for the MyAnimeList website
   // It provides access to anime, manga.
-
-  /*
-    filtro de Tipo de contenido (Anima/Manga/All)
-    Modal que cargue las imagenes, se puedan seleccionar y devuelva un arreglo de imagenes(urls)
-        - Aparecera una lista de posibles respuestas para adivinar ademas de las default (incluir las que estan por idioma)
-        - Todas las Opciones de respuestas seran editables
-        - Saldran las que estan seleccionadas en un apestaña de opciones y las que no estan seleccionadas en otra pestaña
-  */
-  api = 'https://localhost:7230/api/Anime';
 
   mangaUrl = 'https://api.jikan.moe/v4/manga';
   mangaPicturesUrl = [
@@ -78,14 +69,5 @@ export class AnimeServiceService {
       map(resultsArrays => resultsArrays.flat())
     );
   }
-
-  // Register a new anime request
-  registerAnimeRequest(animeRequest: TitleData): Observable<any> {
-    return this.http.post(this.api, animeRequest, {
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
-
 
 }

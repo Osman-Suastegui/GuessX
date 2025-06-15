@@ -1,37 +1,115 @@
 <!-- filter.component.html -->
 <div class="page-wrapper bg-card">
-  <div class="container ">
+  <div class="container">
     <form [formGroup]="form" class="filter-form bg-white/5 p-4 rounded-lg mb-4">
-      <input type="text" formControlName="q" placeholder="Search anime…" class="text-white bg-white/10 border border-white/20 rounded-md" />
-      <select formControlName="type" class="text-gray-500 bg-white/10 border border-white/20 rounded-md">
+      <input
+        type="text"
+        formControlName="q"
+        placeholder="Search anime…"
+        class="text-white bg-white/10 border border-white/20 rounded-md"
+      />
+      <select
+        formControlName="type"
+        class="text-gray-500 bg-white/10 border border-white/20 rounded-md"
+      >
         <option value="">All Types</option>
         <option *ngFor="let t of types" [value]="t">{{ t }}</option>
       </select>
-      <select formControlName="status" class="text-gray-500 bg-white/10 border border-white/20 rounded-md pr-1">
+      <select
+        formControlName="status"
+        class="text-gray-500 bg-white/10 border border-white/20 rounded-md pr-1"
+      >
         <option value="">All Statuses</option>
-        <option class="bg-white5" *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
       </select>
-      <input type="number" formControlName="page" min="1" placeholder="Page #" class="text-white bg-white/10 border border-white/20 rounded-md" />
+      <input
+        type="number"
+        formControlName="page"
+        min="1"
+        placeholder="Page #"
+        class="text-white bg-white/10 border border-white/20 rounded-md"
+      />
     </form>
 
-    <div class="anime-grid text-lg text-gaming-neon font-gaming ">
-      <div class="anime-card bg-white/5 border-purple-500/305" *ngFor="let anime of animeList" (click)="selectAnime(anime)">
-        <img [src]="anime.images.jpg.large_image_url" [alt]="anime.title" />
-        <h3>{{ anime.title }}</h3>
-        <p class="subtitle" *ngIf="anime.title_english && anime.title_english !== anime.title">
-          ({{ anime.title_english }})
-        </p>
+    <!-- Tabs -->
+    <div class="tabs flex gap-4 mb-4 text-white">
+      <button
+        class="px-4 py-2 rounded bg-white/10"
+        [class.bg-purple-700]="activeTab === 'all'"
+        (click)="activeTab = 'all'"
+      >
+        Todos
+      </button>
+      <button
+        class="px-4 py-2 rounded bg-white/10"
+        [class.bg-purple-700]="activeTab === 'saved'"
+        (click)="activeTab = 'saved'"
+      >
+        Guardados
+      </button>
+    </div>
+
+    <!-- Lista de todos los animes -->
+    <div *ngIf="activeTab === 'all'">
+      <div class="anime-grid text-lg text-gaming-neon font-gaming">
+        <div
+          class="anime-card bg-white/5 border-purple-500/305"
+          *ngFor="let anime of animeList"
+          (click)="selectAnime(anime)"
+        >
+          <img [src]="anime.images.jpg.large_image_url" [alt]="anime.title" />
+          <h3>{{ anime.title }}</h3>
+          <p
+            class="subtitle"
+            *ngIf="anime.title_english && anime.title_english !== anime.title"
+          >
+            ({{ anime.title_english }})
+          </p>
+        </div>
+      </div>
+
+      <div class="pagination-controls" *ngIf="pagination">
+        <button
+          (click)="changePage(form.value.page - 1)"
+          [disabled]="form.value.page <= 1"
+        >
+          ← Previous
+        </button>
+        <span
+          >Page {{ form.value.page }} of
+          {{ pagination.last_visible_page }}</span
+        >
+        <button
+          (click)="changePage(form.value.page + 1)"
+          [disabled]="!pagination.has_next_page"
+        >
+          Next →
+        </button>
       </div>
     </div>
 
-    <div class="pagination-controls" *ngIf="pagination">
-      <button (click)="changePage(form.value.page - 1)" [disabled]="form.value.page <= 1">
-        ← Previous
-      </button>
-      <span>Page {{ form.value.page }} of {{ pagination.last_visible_page }}</span>
-      <button (click)="changePage(form.value.page + 1)" [disabled]="!pagination.has_next_page">
-        Next →
-      </button>
+    <!-- Lista de guardados -->
+    <div *ngIf="activeTab === 'saved'">
+      <div class="anime-grid text-lg text-gaming-neon font-gaming">
+        <div
+          class="anime-card bg-white/5 border-purple-500/30"
+          *ngFor="let anime of savedAnime"
+        >
+          <img
+            *ngIf="anime.titleImages && anime.titleImages.length > 0"
+            [src]="anime.titleImages[0].imageUrl"
+            [alt]="anime.titleName"
+            class="w-full h-60 object-cover rounded-t"
+          />
+          <h3 class="px-2 py-1 text-center">{{ anime.titleName }}</h3>
+        </div>
+        <div
+          *ngIf="!savedAnime || savedAnime.length === 0"
+          class="col-span-full text-center text-gray-400 py-8"
+        >
+          No hay animes guardados.
+        </div>
+      </div>
     </div>
   </div>
 </div>

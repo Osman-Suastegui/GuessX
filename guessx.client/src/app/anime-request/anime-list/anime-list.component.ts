@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Anime, AnimeSearchResponse } from '../anime.model';
-import { AnimeServiceService } from '../anime-service.service';
+import { Anime, AnimeSearchResponse, TitleData } from '../anime.model';
+import { JikanService } from '../jikan.service';
 import { debounceTime, merge } from 'rxjs';
 import { MatDialog} from '@angular/material/dialog';
-import { AnimeImagesComponent } from '../anime-images/anime-images.component';
+import { AnimeImagesComponent } from '../anime-details/anime-images.component';
+import { AnimeService } from '../anime.service';
 
 @Component({
   selector: 'app-anime-list',
@@ -16,12 +17,18 @@ export class AnimeListComponent implements AfterViewInit {
   pagination: any;
   form: FormGroup
   dialog = inject(MatDialog)
+  savedAnime: TitleData[] = [];
+  activeTab = 'all'; 
 
   types = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 'cm', 'pv', 'tv_special'];
   statuses = ['airing', 'complete', 'upcoming'];
 
   constructor
-  (private fb: FormBuilder, private animeService: AnimeServiceService) {
+  (
+    private fb: FormBuilder, 
+    private _jikanService: JikanService,
+    private _animeService: AnimeService
+  ) {
     this.form = this.fb.group({
       q: [''],
       type: [''],
@@ -33,6 +40,7 @@ export class AnimeListComponent implements AfterViewInit {
 
 
   ngOnInit() {
+    this.loadJikanAnime();
     this.loadAnime();
   }
 
@@ -44,7 +52,7 @@ export class AnimeListComponent implements AfterViewInit {
   private setSearchBarListener() {
     this.form.get('q')?.valueChanges.pipe(debounceTime(300)).subscribe((value: string) => {
       this.form.patchValue({ page: 1 }, { emitEvent: false });
-      this.loadAnime();
+      this.loadJikanAnime();
     });
   }
 
@@ -53,15 +61,22 @@ export class AnimeListComponent implements AfterViewInit {
       this.form.get('type')!.valueChanges,
       this.form.get('status')!.valueChanges,
       this.form.get('page')!.valueChanges,
-    ).subscribe(() => this.loadAnime());
+    ).subscribe(() => this.loadJikanAnime());
   }
 
-  loadAnime() {
+  loadJikanAnime() {
     const query = this.form.value;
-    this.animeService.getAnimeList(query).subscribe((res: AnimeSearchResponse) => {
+    this._jikanService.getAnimeList(query).subscribe((res: AnimeSearchResponse) => {
       console.log(res);
       this.animeList = res.data;
       this.pagination = res.pagination;
+    });
+  }
+
+  loadAnime(): void {
+    this._animeService.getAnimeRequests().subscribe((res: TitleData[]) => {
+      console.log(res);
+      this.savedAnime = res;
     });
   }
 
@@ -79,7 +94,7 @@ export class AnimeListComponent implements AfterViewInit {
   }
   changePage(page: number) {
     this.form.patchValue({ page });
-    this.loadAnime();
+    this.loadJikanAnime();
   }
 
 }

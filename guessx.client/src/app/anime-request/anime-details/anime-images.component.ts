@@ -1,10 +1,10 @@
-import { map } from 'rxjs';
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import {  Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, } from '@angular/material/dialog';
 import { Anime, AnimeImage, TitleData } from '../anime.model';
-import { AnimeServiceService } from '../anime-service.service';
+import { JikanService } from '../jikan.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { GeneralService } from '../../utils/general.service';
+import { AnimeService } from '../anime.service';
 
 
 @Component({
@@ -30,7 +30,8 @@ export class AnimeImagesComponent implements OnInit {
 
 
   constructor( 
-    private _animeService: AnimeServiceService,
+    private _jikanService: JikanService,
+    private _animeService: AnimeService,
     private fb: FormBuilder,
     private _generalService: GeneralService
   ) {}
@@ -77,7 +78,7 @@ export class AnimeImagesComponent implements OnInit {
 
 
   getImages() {
-    this._animeService.getAnimePictures(this.data.mal_id).subscribe((response: any) => {
+    this._jikanService.getAnimePictures(this.data.mal_id).subscribe((response: any) => {
       this.imagesUrls = response;
       this.selectedImage = this.imagesUrls.length > 0 ? this.imagesUrls[0] : null;
     }, error => {
