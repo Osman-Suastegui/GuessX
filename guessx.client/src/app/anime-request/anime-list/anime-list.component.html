@@ -55,7 +55,7 @@
         <div
           class="anime-card bg-white/5 border-purple-500/305"
           *ngFor="let anime of animeList"
-          (click)="selectAnime(anime)"
+          (click)="selectSavedAnime(anime)"
         >
           <img [src]="anime.images.jpg.large_image_url" [alt]="anime.title" />
           <h3>{{ anime.title }}</h3>
@@ -96,6 +96,7 @@
           *ngFor="let anime of savedAnime"
         >
           <img
+            (click)="selectSavedAnime(anime)"
             *ngIf="anime.titleImages && anime.titleImages.length > 0"
             [src]="anime.titleImages[0].imageUrl"
             [alt]="anime.titleName"

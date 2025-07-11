@@ -51,8 +51,14 @@ export class AnimeListComponent implements AfterViewInit {
 
   private setSearchBarListener() {
     this.form.get('q')?.valueChanges.pipe(debounceTime(300)).subscribe((value: string) => {
-      this.form.patchValue({ page: 1 }, { emitEvent: false });
-      this.loadJikanAnime();
+      if(this.activeTab === 'saved') {
+        // HACE FALTA LA IMPLEMENTACION DE LA BUSQUEDA EN EL BACKEND
+      }
+
+      if(this.activeTab === 'all') {
+        this.form.patchValue({ page: 1 }, { emitEvent: false });
+        this.loadJikanAnime();
+      }
     });
   }
 
@@ -75,23 +81,22 @@ export class AnimeListComponent implements AfterViewInit {
 
   loadAnime(): void {
     this._animeService.getAnimeRequests().subscribe((res: TitleData[]) => {
-      console.log(res);
       this.savedAnime = res;
     });
   }
 
-  selectAnime(anime: Anime) {
-    // Implement the logic to select an anime, e.g., navigate to a detail page or open a modal
-    this.dialog.open(AnimeImagesComponent, {
-      data: anime,
-      width: '90%',
-      maxWidth: '1920px',
-      height: '100%',
-      maxHeight: '1080px',
-      panelClass: 'custom-dialog-container',
-      backdropClass: 'custom-backdrop',
-    });
-  }
+ selectSavedAnime(anime: TitleData | Anime) {
+  this.dialog.open(AnimeImagesComponent, {
+    data: anime,
+    width: '90%',
+    maxWidth: '1920px',
+    height: '100%',
+    maxHeight: '1080px',
+    panelClass: 'custom-dialog-container',
+    backdropClass: 'custom-backdrop',
+  });
+}
+
   changePage(page: number) {
     this.form.patchValue({ page });
     this.loadJikanAnime();
