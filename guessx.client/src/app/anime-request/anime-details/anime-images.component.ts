@@ -5,6 +5,7 @@ import { JikanService } from '../jikan.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { GeneralService } from '../../utils/general.service';
 import { AnimeService } from '../anime.service';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-anime-images',
@@ -12,7 +13,6 @@ import { AnimeService } from '../anime.service';
   styleUrl: './anime-images.component.css'
 })
 export class AnimeImagesComponent implements OnInit {
-
   readonly dialogRef = inject(MatDialogRef<AnimeImagesComponent>);
   readonly data = inject<Anime | TitleData>(MAT_DIALOG_DATA);
 
@@ -23,10 +23,11 @@ export class AnimeImagesComponent implements OnInit {
   genresControl = new FormControl<string[]>([]);
   titleControl = new FormControl('');
   selectedImagesControl = new FormControl<AnimeImage[]>([]);
-
   selectedImage: { imageUrl: string } | null = null;
-  defaultGenres: string[] = [];
 
+  searchControl = new FormControl('');
+  searchResults: Anime[] = [];
+  defaultGenres: string[] = [];
   isSaved = false;
 
   constructor(
@@ -37,9 +38,6 @@ export class AnimeImagesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('Datos recibidos en el diálogo:', this.data);
-
-    // Detectar si es TitleData (guardado) o Anime (nuevo)
     this.isSaved = !('mal_id' in this.data);
 
     if (this.isSaved) {
@@ -65,21 +63,19 @@ export class AnimeImagesComponent implements OnInit {
       this.setTitles(anime);
       this.getImages(anime.mal_id);
     }
+
+    this.searchControl.valueChanges.pipe(debounceTime(250)).subscribe((data: string | null) => {
+      this.searchAnime(data ?? '');
+    });
   }
 
   setTitles(anime: Anime) {
     const uniqueTitles = new Set<string>();
-
     for (const t of anime.titles) {
       if (t.title) uniqueTitles.add(t.title);
     }
-
-    const titlesControls = Array.from(uniqueTitles).map(title =>
-      this.fb.group({ title: [title] })
-    );
-
-    const formArray = this.fb.array(titlesControls);
-    this.titlesForm.setControl('titlesArray', formArray);
+    const titlesControls = Array.from(uniqueTitles).map(title => this.fb.group({ title: [title] }));
+    this.titlesForm.setControl('titlesArray', this.fb.array(titlesControls));
   }
 
   get titlesArray() {
@@ -122,6 +118,31 @@ export class AnimeImagesComponent implements OnInit {
 
   getSelectedImagesCount(): number {
     return this.selectedImagesControl.value?.length ?? 0;
+  }
+
+  searchAnime(query: string = ''): void {
+    if (!query) return;
+    this._jikanService.getAnimeList({ q: query, limit: 10 }).subscribe(res => {
+      this.searchResults = res.data;
+    });
+  }
+
+  linkAnime(anime: Anime) {
+    this._jikanService.getAnimePictures(anime.mal_id).subscribe(res => {
+      const newImages = res.map((img: any) => ({
+        imageUrl: img.imageUrl,
+        selected: false,
+        imageType: 'anime',
+      }));
+      this.imagesUrls = [...this.imagesUrls, ...newImages];
+
+      const existingTitles = new Set(this.titlesArray.value.map((t: any) => t.title));
+      const newTitles = anime.titles
+        .map(t => t.title)
+        .filter(t => t && !existingTitles.has(t));
+
+      newTitles.forEach(title => this.titlesArray.push(this.fb.group({ title })));
+    });
   }
 
   save(): void {

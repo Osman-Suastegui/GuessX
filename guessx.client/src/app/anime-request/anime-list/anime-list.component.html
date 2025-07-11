@@ -94,6 +94,8 @@
         <div
           class="anime-card bg-white/5 border-purple-500/30"
           *ngFor="let anime of savedAnime"
+          (click)="selectSavedAnime(anime)"
+
         >
           <img
             (click)="selectSavedAnime(anime)"
@@ -114,3 +116,4 @@
     </div>
   </div>
 </div>
+

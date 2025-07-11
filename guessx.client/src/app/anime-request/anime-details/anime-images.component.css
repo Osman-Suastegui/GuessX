@@ -8,3 +8,9 @@
   border: 1px solid #6c8ef0;
 }
 
+::ng-deep .link-anime-menu.mat-mdc-menu-panel {
+  min-width: 300px !important;  /* Aumenta el ancho mínimo */
+  max-width: none !important;   /* Elimina el límite por defecto */
+  width: 100% !important;      /* O fija un ancho */
+}
+
