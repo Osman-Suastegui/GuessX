@@ -53,6 +53,14 @@ export class AnimeImagesComponent implements OnInit {
         this.fb.group({ title: [title] })
       );
       this.titlesForm.setControl('titlesArray', this.fb.array(titlesControls));
+
+      // Marcar imágenes como seleccionadas
+      const selectedImages: AnimeImage[] = (saved.titleImages || []).map(img => ({
+        ...img,
+        selected: true,
+        imageType: 'anime',
+      }));
+      this.selectedImagesControl.setValue(selectedImages);
     } else {
       const anime = this.data as Anime;
       this.titleControl.setValue(anime.title);
@@ -159,16 +167,31 @@ export class AnimeImagesComponent implements OnInit {
       titleAnswers: answers.map((answer: any) => answer.title),
     };
 
-    this._animeService.registerAnimeRequest(addObject).subscribe({
-      next: (response) => {
-        this._generalService.showMessage('Anime request registered successfully!', 'success');
-        this.dialogRef.close(response);
-      },
-      error: (error) => {
-        this._generalService.showMessage('Error registering anime request: ' + error.message, 'error');
-        this.dialogRef.close([]);
-      }
-    });
+    // Si viene desde la edición, usar update
+    const id = (this.data as TitleData).id;
+    if (this.isSaved && id !== undefined) {
+      this._animeService.updateAnimeRequest(id, addObject).subscribe({
+        next: (response) => {
+          this._generalService.showMessage('Anime request updated successfully!', 'success');
+          this.dialogRef.close(response);
+        },
+        error: (error) => {
+          this._generalService.showMessage('Error updating anime request: ' + error.message, 'error');
+          this.dialogRef.close([]);
+        }
+      });
+    } else {
+      this._animeService.registerAnimeRequest(addObject).subscribe({
+        next: (response) => {
+          this._generalService.showMessage('Anime request registered successfully!', 'success');
+          this.dialogRef.close(response);
+        },
+        error: (error) => {
+          this._generalService.showMessage('Error registering anime request: ' + error.message, 'error');
+          this.dialogRef.close([]);
+        }
+      });
+    }
   }
 
   selectAll(): void {

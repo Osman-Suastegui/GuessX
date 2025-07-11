@@ -35,22 +35,22 @@
     <div class="tabs flex gap-4 mb-4 text-white">
       <button
         class="px-4 py-2 rounded bg-white/10"
-        [class.bg-purple-700]="activeTab === 'all'"
-        (click)="activeTab = 'all'"
+        [class.bg-purple-700]="activeTab.value === 'all'"
+        (click)="activeTab.setValue('all')"
       >
         Todos
       </button>
       <button
         class="px-4 py-2 rounded bg-white/10"
-        [class.bg-purple-700]="activeTab === 'saved'"
-        (click)="activeTab = 'saved'"
+        [class.bg-purple-700]="activeTab.value === 'saved'"
+        (click)="activeTab.setValue('saved')"
       >
         Guardados
       </button>
     </div>
 
     <!-- Lista de todos los animes -->
-    <div *ngIf="activeTab === 'all'">
+    <div *ngIf="activeTab.value === 'all'">
       <div class="anime-grid text-lg text-gaming-neon font-gaming">
         <div
           class="anime-card bg-white/5 border-purple-500/305"
@@ -89,7 +89,7 @@
     </div>
 
     <!-- Lista de guardados -->
-    <div *ngIf="activeTab === 'saved'">
+    <div *ngIf="activeTab.value === 'saved'">
       <div class="anime-grid text-lg text-gaming-neon font-gaming">
         <div
           class="anime-card bg-white/5 border-purple-500/30"
@@ -98,7 +98,6 @@
 
         >
           <img
-            (click)="selectSavedAnime(anime)"
             *ngIf="anime.titleImages && anime.titleImages.length > 0"
             [src]="anime.titleImages[0].imageUrl"
             [alt]="anime.titleName"

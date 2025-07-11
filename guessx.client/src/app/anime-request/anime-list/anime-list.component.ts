@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Anime, AnimeSearchResponse, TitleData } from '../anime.model';
 import { JikanService } from '../jikan.service';
 import { debounceTime, merge } from 'rxjs';
@@ -18,16 +18,16 @@ export class AnimeListComponent implements AfterViewInit {
   form: FormGroup
   dialog = inject(MatDialog)
   savedAnime: TitleData[] = [];
-  activeTab = 'all'; 
+  activeTab:FormControl = new FormControl('all');
 
   types = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 'cm', 'pv', 'tv_special'];
   statuses = ['airing', 'complete', 'upcoming'];
 
   constructor
   (
-    private fb: FormBuilder, 
+    public fb: FormBuilder, 
     private _jikanService: JikanService,
-    private _animeService: AnimeService
+    private _animeService: AnimeService,
   ) {
     this.form = this.fb.group({
       q: [''],
@@ -36,12 +36,17 @@ export class AnimeListComponent implements AfterViewInit {
       page: [1],
       limit: [20]
     });
+    
   }
 
 
   ngOnInit() {
     this.loadJikanAnime();
-    this.loadAnime();
+    this.activeTab.valueChanges.subscribe((value: string) => {
+      if (value === 'saved') {
+        this.loadAnime();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -51,11 +56,11 @@ export class AnimeListComponent implements AfterViewInit {
 
   private setSearchBarListener() {
     this.form.get('q')?.valueChanges.pipe(debounceTime(300)).subscribe((value: string) => {
-      if(this.activeTab === 'saved') {
+      if(this.activeTab.value === 'saved') {
         // HACE FALTA LA IMPLEMENTACION DE LA BUSQUEDA EN EL BACKEND
       }
 
-      if(this.activeTab === 'all') {
+      if(this.activeTab.value === 'all') {
         this.form.patchValue({ page: 1 }, { emitEvent: false });
         this.loadJikanAnime();
       }
@@ -85,8 +90,8 @@ export class AnimeListComponent implements AfterViewInit {
     });
   }
 
- selectSavedAnime(anime: TitleData | Anime) {
-  this.dialog.open(AnimeImagesComponent, {
+selectSavedAnime(anime: TitleData | Anime) {
+  const dialogRef = this.dialog.open(AnimeImagesComponent, {
     data: anime,
     width: '90%',
     maxWidth: '1920px',
@@ -94,6 +99,10 @@ export class AnimeListComponent implements AfterViewInit {
     maxHeight: '1080px',
     panelClass: 'custom-dialog-container',
     backdropClass: 'custom-backdrop',
+  });
+
+  dialogRef.afterClosed().subscribe(() => {
+    this.loadAnime();
   });
 }
 

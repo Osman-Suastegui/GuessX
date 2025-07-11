@@ -24,29 +24,6 @@
         <button mat-icon-button [matMenuTriggerFor]="linkAnimeMenu" aria-label="Vincular otro anime">
           <mat-icon>link</mat-icon>
         </button>
-        <mat-menu #linkAnimeMenu="matMenu" class="link-anime-menu">
-          <div class="p-2 w-96 scroll-custom" (click)="$event.stopPropagation()">
-            <div class="mb-2">
-              <h2 class="font-gaming text-gaming-neon mb-2 text-base">Agregar contenido de otro anime</h2>
-              <div class="flex gap-2">
-              <input [formControl]="searchControl" placeholder="Buscar anime para vincular"
-                class="bg-background border border-gaming-neon-pink px-2 py-1 text-white w-full" />
-              <button (click)="searchAnime()"
-                class="text-sm px-3 py-1 rounded bg-gaming-neon-pink text-black hover:bg-pink-600">
-                Buscar
-              </button>
-              </div>
-            </div>
-            <div *ngIf="searchResults.length > 0" class="mt-2 space-y-2 max-h-72 overflow-y-auto scroll-custom border border-white/10 p-2 rounded">
-              <div *ngFor="let anime of searchResults"
-          (click)="linkAnime(anime); $event.stopPropagation()"
-          class="cursor-pointer hover:bg-white/10 px-2 py-1 rounded text-white">
-          {{ anime.title }} <span *ngIf="anime.title_english && anime.title !== anime.title_english">
-            ({{ anime.title_english }})</span>
-              </div>
-            </div>
-          </div>
-        </mat-menu>
       </div>
       <input [formControl]="titleControl"
         class="text-xl font-gaming bg-background border border-gaming-neon-pink px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-gaming-neon-pink focus:border-gaming-neon-pink"
@@ -54,35 +31,37 @@
     </div>
 
     <!-- TÍTULOS ALTERNATIVOS -->
-    <div>
-      <h2 class="font-gaming text-gaming-neon mb-2">Títulos alternativos</h2>
-      <form [formGroup]="titlesForm">
-        <div formArrayName="titlesArray" class="space-y-2">
-          <div *ngFor="let titleGroup of titlesArray.controls; let i = index" [formGroupName]="i"
-            class="flex items-center gap-2">
-            <input matInput formControlName="title" placeholder="Título"
-              class="flex-grow bg-background border border-gaming-neon-pink px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-gaming-neon-pink focus:border-gaming-neon-pink" />
-            <button mat-icon-button color="warn" type="button" (click)="removeTitleInput(i)"
-              aria-label="Eliminar título">
-              <mat-icon>close</mat-icon>
-            </button>
+    <div class="flex gap-4">
+      <!-- TÍTULOS ALTERNATIVOS -->
+      <div class="w-1/2">
+        <h2 class="font-gaming text-gaming-neon mb-2">Títulos alternativos</h2>
+        <form [formGroup]="titlesForm">
+          <div formArrayName="titlesArray" class="space-y-2">
+            <div *ngFor="let titleGroup of titlesArray.controls; let i = index" [formGroupName]="i"
+              class="flex items-center gap-2">
+              <input matInput formControlName="title" placeholder="Título"
+                class="flex-grow bg-background border border-gaming-neon-pink px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-gaming-neon-pink focus:border-gaming-neon-pink" />
+              <button mat-icon-button color="warn" type="button" (click)="removeTitleInput(i)"
+                aria-label="Eliminar título">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
           </div>
-        </div>
-        <button mat-mini-fab color="primary" type="button" class="mt-2" (click)="addTitleInput()"
-          aria-label="Agregar título">
-          <mat-icon>add</mat-icon>
-        </button>
-      </form>
-    </div>
-
-    <!-- GÉNEROS -->
-    <div>
-      <h2 class="font-gaming text-gaming-neon mb-2">Géneros</h2>
-      <mat-chip-listbox multiple [formControl]="genresControl" class="mat-mdc-chip-set-stacked">
-        <mat-chip-option *ngFor="let genre of defaultGenres" [value]="genre">
-          {{ genre }}
-        </mat-chip-option>
-      </mat-chip-listbox>
+          <button mat-mini-fab color="primary" type="button" class="mt-2" (click)="addTitleInput()"
+            aria-label="Agregar título">
+            <mat-icon>add</mat-icon>
+          </button>
+        </form>
+      </div>
+      <!-- GÉNEROS -->
+      <div class="w-1/2">
+        <h2 class="font-gaming text-gaming-neon mb-2">Géneros</h2>
+        <mat-chip-listbox multiple [formControl]="genresControl" class="mat-mdc-chip-set-stacked">
+          <mat-chip-option *ngFor="let genre of defaultGenres" [value]="genre">
+            {{ genre }}
+          </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
     </div>
 
     <!-- MINIATURAS DE IMÁGENES -->
@@ -119,3 +98,29 @@
   Guardar
   </button>
 </div>  
+
+
+//MENU
+<mat-menu #linkAnimeMenu="matMenu" class="link-anime-menu">
+  <div class="p-2 w-96 scroll-custom" (click)="$event.stopPropagation()">
+    <div class="mb-2">
+      <h2 class="font-gaming text-gaming-neon mb-2 text-base">Agregar contenido de otro anime</h2>
+      <div class="flex gap-2">
+      <input [formControl]="searchControl" placeholder="Buscar anime para vincular"
+        class="bg-background border border-gaming-neon-pink px-2 py-1 text-white w-full" />
+      <button (click)="searchAnime()"
+        class="text-sm px-3 py-1 rounded bg-gaming-neon-pink text-black hover:bg-pink-600">
+        Buscar
+      </button>
+      </div>
+    </div>
+    <div *ngIf="searchResults.length > 0" class="mt-2 space-y-2 max-h-72 overflow-y-auto scroll-custom border border-white/10 p-2 rounded">
+      <div *ngFor="let anime of searchResults"
+  (click)="linkAnime(anime); $event.stopPropagation()"
+  class="cursor-pointer hover:bg-white/10 px-2 py-1 rounded text-white">
+  {{ anime.title }} <span *ngIf="anime.title_english && anime.title !== anime.title_english">
+    ({{ anime.title_english }})</span>
+      </div>
+    </div>
+  </div>
+</mat-menu>

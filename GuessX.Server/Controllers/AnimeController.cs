@@ -86,6 +86,26 @@ namespace GuessX.Server.Controllers
             }
         }
 
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchTitleAsync(int id, [FromBody] CreateTitleDto patchDto)
+        {
+            if (patchDto == null)
+            return BadRequest("Invalid patch data.");
+
+            try
+            {
+            var updated = await _editPictureService.PatchTitleAsync(id, patchDto);
+            if (!updated)
+                return NotFound();
+
+            return Ok();
+            }
+            catch (Exception ex)
+            {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpGet("getPictureByImageUrl")]
         public async Task<IActionResult> getAnimePictureByImageUrl(string imageUrl)
         {

@@ -18,6 +18,13 @@ export class AnimeService {
     });
   }
 
+  // Update an existing anime request
+  updateAnimeRequest(id: number, animeRequest: TitleData): Observable<any> {
+    return this.http.patch(`${this.api}/${id}`, animeRequest, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   // Get the list of anime requests
   getAnimeRequests(): Observable<TitleData[]> {
     return this.http.get<TitleData[]>(this.api);
