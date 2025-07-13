@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@microsoft/signalr": "^8.0.7",
+    "@tailwindcss/postcss": "^4.1.11",
     "jest-editor-support": "*",
     "run-script-os": "*",
     "rxjs": "~7.8.0",
@@ -42,7 +43,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.5.2"
   }

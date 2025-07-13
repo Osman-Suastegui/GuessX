@@ -16,7 +16,7 @@
 }
 
 .bg-card {
-    background-color: hsl(var(--card));
+  background-color: hsl(var(--card));
 }
 .bg-destructive {
   background-color: hsl(var(--destructive));
@@ -37,7 +37,7 @@
 }
 
 .text-card-foreground {
-    background-color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card-foreground));
 }
 
 .text-gaming-neon-pink {
@@ -78,7 +78,7 @@
   border-radius: 10px;
 }
 
-.custom-dialog-container{
+.custom-dialog-container {
   padding: 2%;
   border: none;
   border-radius: 8px;
@@ -87,7 +87,6 @@
 .custom-backdrop {
   @apply backdrop-blur-sm bg-black/40;
 }
-
 
 .mat-snack-bar-container.success {
   background-color: #22c55e; // Tailwind green-500
@@ -99,8 +98,17 @@
   color: #fff;
 }
 
+/* Gaming font styles */
+.font-gaming {
+  font-family: "Orbitron", monospace, sans-serif;
+  font-weight: 600;
+}
 
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

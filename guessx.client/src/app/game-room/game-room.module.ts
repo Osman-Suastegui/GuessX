@@ -1,17 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { GameRoomComponent } from './game-room/game-room.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { ActivePlayersComponent } from './active-players/active-players.component';
-import { ChatComponent } from './chat/chat.component';
-import { ImageViewerComponent } from './image-viewer/image-viewer.component';
-import { RouterModule } from '@angular/router';
-import { gameRoomRoutes } from './game-room.routes';
-import { MaterialModule } from '../material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TimeBarComponent } from './time-bar/time-bar.component';
-
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { GameRoomComponent } from "./game-room/game-room.component";
+import { LeaderboardComponent } from "./leaderboard/leaderboard.component";
+import { ActivePlayersComponent } from "./active-players/active-players.component";
+import { ChatComponent } from "./chat/chat.component";
+import { ImageViewerComponent } from "./image-viewer/image-viewer.component";
+import { RouterModule } from "@angular/router";
+import { gameRoomRoutes } from "./game-room.routes";
+import { MaterialModule } from "../material/material.module";
+import { ReactiveFormsModule } from "@angular/forms";
+import { TimeBarComponent } from "./time-bar/time-bar.component";
 
 @NgModule({
   declarations: [
@@ -20,13 +18,13 @@ import { TimeBarComponent } from './time-bar/time-bar.component';
     ActivePlayersComponent,
     ChatComponent,
     ImageViewerComponent,
-    TimeBarComponent
+    TimeBarComponent,
   ],
   imports: [
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    RouterModule.forChild(gameRoomRoutes)
-  ]
+    RouterModule.forChild(gameRoomRoutes),
+  ],
 })
-export class GameRoomModule { }
+export class GameRoomModule {}
