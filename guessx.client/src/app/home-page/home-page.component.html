@@ -69,9 +69,28 @@
             (click)="onStartGame()"
             [class]="getButtonClasses()"
             class="w-full py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
+            *ngIf="!isNameValid()"
           >
-            {{ getButtonText() }}
+            {{ 'Enter name'  }}
           </button>
+          <div *ngIf="isNameValid()" class="flex gap-4">
+            <button
+              (click)="requestJoiningCode()"
+              [class]="getButtonClasses()"
+              class="w-1/2 py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
+            >
+              {{ 'Join Room'  }}
+            </button>
+
+            <button
+              [disabled]="!isNameValid() || isLoading"
+              (click)="onStartGame()"
+              [class]="getButtonClasses()"
+              class="w-1/2 bg-pink-500 hover:bg-pink-600 py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
+            >
+              {{ 'Create Room'  }}
+            </button>
+          </div>
         </div>
       </div>
 

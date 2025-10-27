@@ -93,6 +93,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  requestJoiningCode() {
+    //Abrir un modal para solicitar el código de unión
+    alert("Feature coming soon!");
+  }
+
   onNameChange(event: Event) {
     const target = event.target as HTMLInputElement;
     this.playerName = target.value;
@@ -133,16 +138,5 @@ export class HomePageComponent implements OnInit, OnDestroy {
     return "bg-cyan-500 hover:bg-cyan-600 text-white border border-cyan-400 hover:border-cyan-300 transform hover:scale-105";
   }
 
-  // Get button text
-  getButtonText(): string {
-    if (this.isLoading) {
-      return "Starting...";
-    }
 
-    if (!this.isNameValid()) {
-      return "Enter Name";
-    }
-
-    return "Start Game";
-  }
 }
