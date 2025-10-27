@@ -20,9 +20,10 @@ namespace GuessX.Server.GameHub
 
         public async Task JoinRoom(string roomId, string userName)
         {
+            Console.WriteLine("user name " + userName);
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-
-            await Clients.Group(roomId).SendAsync("NewUser", $"{userName} entró al canal");
+           
+            await Clients.Group(roomId).SendAsync("UserJoined", userName);
 
 
         }

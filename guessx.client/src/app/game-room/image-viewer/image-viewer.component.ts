@@ -40,7 +40,7 @@ export class ImageViewerComponent {
 
   private setupCanvas() {
     const img = this.imgRef.nativeElement;
-    console.log('Image loaded', img.clientWidth, img.clientHeight);
+    // console.log('Image loaded', img.clientWidth, img.clientHeight);
     // measure actual display size
     this.displayW = img.clientWidth;
     this.displayH = img.clientHeight;

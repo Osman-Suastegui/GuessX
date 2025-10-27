@@ -14,8 +14,23 @@ export class GameRoomComponent implements AfterViewInit {
   // GameSignalRService
   constructor(public gameSignalRService: GameSignalRService) {
   }
+
   async ngAfterViewInit() {
     await this.gameSignalRService.startConnection("https://localhost:7230/gameHub");
-    this.gameSignalRService.invoke("CreateRoom");
+
+    let roomId: string = "";
+    try {
+      roomId = await this.gameSignalRService.invoke("CreateRoom")
+      console.log("Room created with ID:", roomId);
+    } catch (error) {
+      console.error("Error creating room:", error);
+    }
+
+    try {
+      await this.gameSignalRService.invoke("JoinRoom", roomId, "TestUser");
+    } catch (error) {
+      console.error("Error joining room:", error);
+    }
+
   }
 }

@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameSignalRService {
   private hubConnection!: signalR.HubConnection;
+  public users$ = new BehaviorSubject<any[]>([]);
 
   constructor() { }
 
@@ -19,6 +21,11 @@ export class GameSignalRService {
 
     try {
       await this.hubConnection.start();
+      this.hubConnection.on('UserJoined', (newUserJoined: string) => {
+        console.log(`New user in room:`, newUserJoined);
+        const updatedUsers = [...this.users$.value, newUserJoined];
+        this.users$.next(updatedUsers);
+      });
       console.log('Connected to SignalR hub');
     } catch (err) {
       console.error('Error connecting to hub:', err);
