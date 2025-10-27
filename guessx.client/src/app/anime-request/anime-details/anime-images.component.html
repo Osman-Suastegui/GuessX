@@ -115,11 +115,14 @@
       </div>
     </div>
     <div *ngIf="searchResults.length > 0" class="mt-2 space-y-2 max-h-72 overflow-y-auto scroll-custom border border-white/10 p-2 rounded">
-      <div *ngFor="let anime of searchResults"
-  (click)="linkAnime(anime); $event.stopPropagation()"
-  class="cursor-pointer hover:bg-white/10 px-2 py-1 rounded text-white">
-  {{ anime.title }} <span *ngIf="anime.title_english && anime.title !== anime.title_english">
-    ({{ anime.title_english }})</span>
+      <div *ngFor="let anime of searchResults" (click)="linkAnime(anime); $event.stopPropagation()" class="flex cursor-pointer hover:bg-white/10 px-2 py-1 rounded text-white">
+        <img [src]="anime.images.webp.small_image_url" alt="{{ anime.title }}" class="w-8 h-12 inline-block mr-2 object-cover align-middle" />
+        <div class="inline-block align-middle ">
+          {{ anime.title }} 
+          <span *ngIf="anime.title_english && anime.title !== anime.title_english">
+            ({{ anime.title_english }})
+          </span> 
+        </div>
       </div>
     </div>
   </div>

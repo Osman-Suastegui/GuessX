@@ -35,10 +35,13 @@ builder.Services.AddCors(options =>
 
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins("https://localhost:53328") // frontend origin
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials(); // important for SignalR
+        policy.WithOrigins(// frontend origin
+           "https://localhost:53328",
+           "https://127.0.0.1:53328"
+        ) 
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials(); // important for SignalR
     });
 });
 
