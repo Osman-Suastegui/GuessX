@@ -15,6 +15,9 @@ builder.Services.AddScoped<CreatePictureService>();
 builder.Services.AddScoped<EditPictureService>();
 builder.Services.AddScoped<GetPictureByImageUrlService>();
 builder.Services.AddScoped<SearchPictureService>();
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<RoomManager>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,13 +32,24 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod()
             );
+
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("https://localhost:53328") // frontend origin
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // important for SignalR
+    });
 });
 
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.UseCors("AllowSpecificOrigin");
+//app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAngular");
+
+app.MapHub<GameHub>("/gamehub");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
