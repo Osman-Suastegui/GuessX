@@ -25,7 +25,15 @@ namespace GuessX.Server.GameHub
            
             await Clients.Group(roomId).SendAsync("UserJoined", userName);
 
-
+        }
+        // Send chat only to this room
+        public async Task SendMessage(string roomId, string message, string userName)
+        {
+            await Clients.Group(roomId).SendAsync("MessageReceived", new
+            {
+                User = userName,
+                Text = message
+            });
         }
 
     }

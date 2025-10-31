@@ -11,6 +11,7 @@ export class GameRoomComponent implements AfterViewInit {
     src: "../../../assets/demon_slayer.webp",
     answers: ["Demon Slayer", "Kimetsu no Yaiba"],
   };
+  roomId: string = "";
   // GameSignalRService
   constructor(public gameSignalRService: GameSignalRService) {
   }
@@ -18,16 +19,16 @@ export class GameRoomComponent implements AfterViewInit {
   async ngAfterViewInit() {
     await this.gameSignalRService.startConnection("https://localhost:7230/gameHub");
 
-    let roomId: string = "";
+    this.roomId = "";
     try {
-      roomId = await this.gameSignalRService.invoke("CreateRoom")
-      console.log("Room created with ID:", roomId);
+      this.roomId = await this.gameSignalRService.createRoom();
+      console.log("Room created with ID:", this.roomId);
     } catch (error) {
       console.error("Error creating room:", error);
     }
 
     try {
-      await this.gameSignalRService.invoke("JoinRoom", roomId, "TestUser");
+      await this.gameSignalRService.joinRoom(this.roomId, "TestUser");
     } catch (error) {
       console.error("Error joining room:", error);
     }

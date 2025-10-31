@@ -26,10 +26,23 @@ export class GameSignalRService {
         const updatedUsers = [...this.users$.value, newUserJoined];
         this.users$.next(updatedUsers);
       });
+
+        this.hubConnection.on('MessageReceived', (msg) => {
+          console.log('Message received from hub:', msg);
+        });
+
       console.log('Connected to SignalR hub');
     } catch (err) {
       console.error('Error connecting to hub:', err);
     }
+  }
+
+  createRoom() {
+    return this.invoke("CreateRoom")
+  }
+
+  joinRoom(roomId: string, username: string) {
+    return this.invoke("JoinRoom", roomId, username)
   }
 
   invoke(method: string, ...args: any[]) {

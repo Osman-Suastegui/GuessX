@@ -1,5 +1,6 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { GameSignalRService } from '../../services/game-signal-r.service';
 
 @Component({
   selector: 'app-chat',
@@ -8,13 +9,15 @@ import { FormControl } from '@angular/forms';
 })
 export class ChatComponent {
   @ViewChild('chatContainer') private chatContainer!: ElementRef<HTMLElement>;
-
-   @Input() animeInformation: any = {
-      name: "",
-      src: "",
-      answers: []
+  @Input() roomId: string = "";
+  @Input() animeInformation: any = {
+    name: "",
+    src: "",
+    answers: []
   }
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public gameSignalRService: GameSignalRService) { }
 
   answerFormControl = new FormControl('')
 
@@ -30,7 +33,7 @@ export class ChatComponent {
 
   // Chat Messages, mockup data, system messages, and user messages
   messages = [
-    { id: 1, text: 'Welcome to the game!', sender: 'system', timestamp: new Date() , ownMessage: false },
+    { id: 1, text: 'Welcome to the game!', sender: 'system', timestamp: new Date(), ownMessage: false },
     { id: 2, text: 'Player One has joined the game.', sender: 'system', timestamp: new Date(), ownMessage: false },
     { id: 3, text: 'Player Two has joined the game.', sender: 'system', timestamp: new Date(), ownMessage: false },
     { id: 4, text: 'Player Three has joined the game.', sender: 'system', timestamp: new Date(), ownMessage: false },
@@ -45,7 +48,7 @@ export class ChatComponent {
   }
 
 
-   onSubmit(event: Event) {
+  onMessageSend(event: Event) {
     event.preventDefault(); // ❌ Previene la recarga
 
     const value = this.type.value;
@@ -57,6 +60,7 @@ export class ChatComponent {
       timestamp: new Date(),
       ownMessage: true
     });
+    this.gameSignalRService.invoke("SendMessage", this.roomId, value,"Osman S.");
 
     this.type.setValue('');
     this.cdr.detectChanges();
