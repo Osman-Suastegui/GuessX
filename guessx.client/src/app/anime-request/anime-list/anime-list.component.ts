@@ -18,6 +18,7 @@ export class AnimeListComponent implements AfterViewInit {
   form: FormGroup
   dialog = inject(MatDialog)
   savedAnime: TitleData[] = [];
+  archviedAnime: TitleData[] = [];
   activeTab:FormControl = new FormControl('all');
 
   types = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 'cm', 'pv', 'tv_special'];
@@ -45,6 +46,9 @@ export class AnimeListComponent implements AfterViewInit {
     this.activeTab.valueChanges.subscribe((value: string) => {
       if (value === 'saved') {
         this.loadAnime();
+      }
+      if (value === 'archived') {
+        this.loadArchivedAnime();
       }
     });
   }
@@ -85,8 +89,14 @@ export class AnimeListComponent implements AfterViewInit {
   }
 
   loadAnime(): void {
-    this._animeService.getAnimeRequests().subscribe((res: TitleData[]) => {
-      this.savedAnime = res;
+    this._animeService.getAnimeRequests({}).subscribe((res: TitleData[]) => {
+      this.savedAnime = res.filter(anime => anime.status !== 'Archived');
+    });
+  }
+
+  loadArchivedAnime(): void {
+    this._animeService.getAnimeRequests({'status':'Archived'}).subscribe((res: TitleData[]) => {
+      this.archviedAnime = res;
     });
   }
 
@@ -103,6 +113,7 @@ selectSavedAnime(anime: TitleData | Anime) {
 
   dialogRef.afterClosed().subscribe(() => {
     this.loadAnime();
+    this.loadArchivedAnime();
   });
 }
 

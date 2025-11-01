@@ -47,6 +47,13 @@
       >
         Guardados
       </button>
+          <button
+        class="px-4 py-2 rounded bg-white/10"
+        [class.bg-purple-700]="activeTab.value === 'saved'"
+        (click)="activeTab.setValue('archived')"
+      >
+        Archivados
+      </button>
     </div>
 
     <!-- Lista de todos los animes -->
@@ -110,6 +117,32 @@
           class="col-span-full text-center text-gray-400 py-8"
         >
           No hay animes guardados.
+        </div>
+      </div>
+    </div>
+
+     <!-- Lista de guardados -->
+    <div *ngIf="activeTab.value === 'archived'">
+      <div class="anime-grid text-lg text-gaming-neon font-gaming">
+        <div
+          class="anime-card bg-white/5 border-purple-500/30"
+          *ngFor="let anime of archviedAnime"
+          (click)="selectSavedAnime(anime)"
+
+        >
+          <img
+            *ngIf="anime.titleImages && anime.titleImages.length > 0"
+            [src]="anime.titleImages[0].imageUrl"
+            [alt]="anime.titleName"
+            class="w-full h-60 object-cover rounded-t"
+          />
+          <h3 class="px-2 py-1 text-center">{{ anime.titleName }}</h3>
+        </div>
+        <div
+          *ngIf="!archviedAnime || archviedAnime.length === 0"
+          class="col-span-full text-center text-gray-400 py-8"
+        >
+          No hay animes archivados.
         </div>
       </div>
     </div>

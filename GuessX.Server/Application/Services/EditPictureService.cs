@@ -113,6 +113,9 @@ namespace GuessX.Server.Application.Services
             if (dto.Category != null)
                 title.Category = dto.Category;
 
+            if (dto.Status != null)
+                title.Status = dto.Status;
+
             if (dto.TitleAnswers != null)
             {
                 _context.TitleAnswers.RemoveRange(title.TitleAnswers);

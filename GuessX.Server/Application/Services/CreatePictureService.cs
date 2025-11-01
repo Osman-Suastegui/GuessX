@@ -1,7 +1,8 @@
+﻿using GuessX.Server.Application.Dtos;
 using GuessX.Server.Data;
 using GuessX.Server.Entities;
-using GuessX.Server.Application.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace GuessX.Server.Application.Services
 {
@@ -105,15 +106,72 @@ public class CreatePictureService
 
     }
 
-    public async Task<List<CreateTitleDto>> GetAllTitlesAsync()
+    public async Task<List<CreateTitleDto>> GetAllTitlesAsync(Dictionary<string, string>? filters = null)
     {
-        var titles = await _context.TitlePictureGalleries
+        var query = _context.TitlePictureGalleries
             .Include(t => t.Genres)
             .Include(t => t.TitleImages)
             .Include(t => t.TitleAnswers)
-            .ToListAsync();
+            .AsQueryable();
 
-        var result = titles.Select(title => new CreateTitleDto
+        // 🧩 Si hay filtros, se aplican dinámicamente
+        if (filters != null && filters.Count > 0)
+        {
+            var allowedProps = typeof(TitlePictureGallery).GetProperties()
+                .Select(p => p.Name)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var filter in filters)
+            {
+                if (!allowedProps.Contains(filter.Key))
+                    continue;
+
+                var property = typeof(TitlePictureGallery).GetProperty(filter.Key);
+                if (property == null)
+                    continue;
+
+                var parameter = Expression.Parameter(typeof(TitlePictureGallery), "t");
+                var left = Expression.Property(parameter, property);
+
+                // 🔍 Detecta si el valor enviado es null o vacío
+                object? convertedValue = null;
+                if (filter.Value != null &&
+                    !string.IsNullOrEmpty(filter.Value.ToString()) &&
+                    !string.Equals(filter.Value.ToString(), "null", StringComparison.OrdinalIgnoreCase))
+                {
+                    try
+                    {
+                        convertedValue = Convert.ChangeType(filter.Value, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
+                    }
+                    catch
+                    {
+                        // Si falla la conversión, ignora este filtro
+                        continue;
+                    }
+                }
+
+                Expression equality;
+                if (convertedValue == null)
+                {
+                    // Genera expresión: t.Property == null
+                    equality = Expression.Equal(left, Expression.Constant(null, property.PropertyType));
+                }
+                else
+                {
+                    // Genera expresión: t.Property == value
+                    equality = Expression.Equal(left, Expression.Constant(convertedValue));
+                }
+
+                var lambda = Expression.Lambda<Func<TitlePictureGallery, bool>>(equality, parameter);
+                query = query.Where(lambda);
+            }
+        }
+
+        // 📦 Ejecuta la consulta
+        var titles = await query.ToListAsync();
+
+        // 🔁 Mapea a DTO
+        return titles.Select(title => new CreateTitleDto
         {
             Id = title.Id,
             TitleName = title.TitleName,
@@ -124,14 +182,14 @@ public class CreatePictureService
                 ImageUrl = img.ImageUrl,
                 ImageType = img.ImageType
             }).ToList(),
-            TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList()
+            TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList(),
+            Status = title.Status
         }).ToList();
-
-        return result;
     }
 
 
-        public async Task<CreateTitleDto> GetTitleDtoByIdAsync(int id)
+
+    public async Task<CreateTitleDto> GetTitleDtoByIdAsync(int id)
     {
         var title = await _context.TitlePictureGalleries
             .Include(t => t.Genres)

@@ -17,6 +17,7 @@ export interface TitleData {
   genres: string[];
   titleImages: AnimeImage[];
   titleAnswers: string[];
+  status?: string;
 }
 
 export interface Anime {

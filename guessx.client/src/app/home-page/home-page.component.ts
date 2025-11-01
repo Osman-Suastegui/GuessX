@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
+import { GameSignalRService } from "../services/game-signal-r.service";
 
 @Component({
   selector: "app-home-page",
@@ -15,6 +16,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   currentStep: number = 0;
   steps: number[] = [0, 1, 2, 3];
+  roomId: string = "";
   private carouselInterval: any;
 
   instructionSteps = [
@@ -48,7 +50,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
     },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private gameSignalRService: GameSignalRService
+  ) {}
 
   ngOnInit() {
     // Auto-advance carousel every 4 seconds
@@ -71,7 +76,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  onStartGame() {
+  async onStartGame() {
     if (!this.playerName.trim()) {
       return;
     }
@@ -83,14 +88,22 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.stopCarousel();
 
-    // Simulate loading time
-    setTimeout(() => {
+    try {
       // Store player name in localStorage for game use
       localStorage.setItem("playerName", this.playerName.trim());
 
-      // Navigate to game room or create room
-      this.router.navigate(["/game-room"]);
-    }, 1000);
+      // Start SignalR connection
+      await this.gameSignalRService.startConnection("https://localhost:7230/gameHub");
+
+      // Create room and navigate to game room
+      this.roomId = await this.gameSignalRService.createRoom();
+      console.log("Room created with ID:", this.roomId);
+      this.router.navigate(["/game-room/", this.roomId]);
+    } catch (error) {
+      console.error("Error starting game:", error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   requestJoiningCode() {

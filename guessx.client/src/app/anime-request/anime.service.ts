@@ -26,7 +26,11 @@ export class AnimeService {
   }
 
   // Get the list of anime requests
-  getAnimeRequests(): Observable<TitleData[]> {
-    return this.http.get<TitleData[]>(this.api);
+  getAnimeRequests(filters: { [key: string]: any }): Observable<TitleData[]> {
+    let params = new HttpParams();
+    Object.keys(filters).forEach((key) => {
+      params = params.set(key, filters[key]);
+    });
+    return this.http.get<TitleData[]>(this.api, { params });
   }
 }

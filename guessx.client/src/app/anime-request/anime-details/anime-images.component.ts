@@ -153,6 +153,38 @@ export class AnimeImagesComponent implements OnInit {
     });
   }
 
+  activate(active:boolean): void {
+    const selectedImages = this.selectedImagesControl.value ?? [];
+    const answers = this.titlesArray.value;
+    const title = this.titleControl.value;
+    const genres = this.genresControl.value;
+
+    const addObject: TitleData = {
+      titleName: title || '',
+      category: 'anime',
+      genres: genres || [],
+      titleImages: [...selectedImages],
+      titleAnswers: answers.map((answer: any) => answer.title),
+      status: active ? 'Active' : 'Archived',
+    };
+    const id = (this.data as TitleData).id ;
+    if (id !== undefined) {
+      this._animeService.updateAnimeRequest(id, addObject).subscribe({
+      next: (response) => {
+        this._generalService.showMessage('Anime request updated successfully!', 'success');
+        this.dialogRef.close(response);
+      },
+      error: (error) => {
+        this._generalService.showMessage('Error updating anime request: ' + error.message, 'error');
+        this.dialogRef.close([]);
+      }
+      });
+    } else {
+      this._generalService.showMessage('Invalid ID: Unable to update anime request.', 'error');
+      this.dialogRef.close([]);
+    }
+  }
+
   save(): void {
     const selectedImages = this.selectedImagesControl.value ?? [];
     const answers = this.titlesArray.value;
