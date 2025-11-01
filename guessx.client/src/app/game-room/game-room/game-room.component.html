@@ -1,6 +1,17 @@
 <div class="flex h-screen bg-card page-container">
+  <!-- Link de la sala roomId con boton para copiar el link -->
+  <div class="absolute top-4 right-4 flex items-center gap-4">
+    <div class="text-sm font-medium text-gaming-neon-pink border-2 border-gaming-neon-pink p-2 rounded-md bg-gaming-neon-pink/10">
+      Sala ID: {{ roomId }}
+    </div>
+    <button class="inline-flex items-center justify-center gap-2 text-sm font-medium border border-gaming-neon-pink bg-background hover:text-accent-foreground h-9 rounded-md px-3 text-gaming-neon-pink hover:bg-gaming-neon-pink/10"
+      (click)="copyRoomLink()">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </div>
   <!-- Contenedor principal -->
   <main class="flex w-full h-full main-container">
+    
     <!-- Image Viewer (60%) -->
     <div class="w-[60%] image-viewer-container rounded-lg">
       <app-image-viewer [animeInformation]="animeInformation" />
