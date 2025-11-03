@@ -9,7 +9,7 @@ public class CreateTitleDto
     public string? Status { get; set; }
     public List<string>? Genres { get; set; }
     public List<TitleImageDto>? TitleImages { get; set; }
-    public List<string>? TitleAnswers { get; set; }
+    public List<string> TitleAnswers { get; set; } = [];
 }
 
 public class TitleImageDto

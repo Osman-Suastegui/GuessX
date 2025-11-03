@@ -77,11 +77,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   async onStartGame() {
-    if (!this.playerName.trim()) {
-      return;
-    }
-
-    if (this.playerName.trim().length < 2) {
+    let playerName = this.playerName.trim();
+    if (!playerName || playerName.length < 2) {
       return;
     }
 
@@ -90,14 +87,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     try {
       // Store player name in localStorage for game use
-      localStorage.setItem("playerName", this.playerName.trim());
+      localStorage.setItem("playerName", playerName);
 
       // Start SignalR connection
       await this.gameSignalRService.startConnection("https://localhost:7230/gameHub");
 
       // Create room and navigate to game room
-      this.roomId = await this.gameSignalRService.createRoom();
-      console.log("Room created with ID:", this.roomId);
+      this.roomId = await this.gameSignalRService.createRoom(playerName);
       this.router.navigate(["/game-room/", this.roomId]);
     } catch (error) {
       console.error("Error starting game:", error);

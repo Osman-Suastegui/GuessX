@@ -20,26 +20,37 @@ export class GameRoomComponent implements AfterViewInit {
   ) {
   }
 
-  async ngAfterViewInit() {
-    //sacar el id de la ruta
+  ngAfterViewInit() {
+    this.setListeners();
+    this.initializeRoom();
+  }
+
+  private async initializeRoom() {
+    // sacar el id de la ruta
     this.roomId = window.location.pathname.split("/").pop() || "";
+    let playerName: string = localStorage.getItem("playerName") || "";
 
     try {
-      await this.gameSignalRService.joinRoom(this.roomId, "TestUser");
+      this.gameSignalRService.joinRoom(this.roomId, playerName);
     } catch (error) {
       console.error("Error joining room:", error);
     }
+  }
 
+  private setListeners() {
+    this.gameSignalRService.roomState$.subscribe((roomState) => {
+      console.log("Room state updated:", roomState);
+    });
   }
 
   copyRoomLink(): void {
     const roomLink = window.location.href;
     navigator.clipboard.writeText(roomLink).then(
       () => {
-      this.generalService.showMessage('Room link copied to clipboard!', 'snackbar-success');
+        this.generalService.showMessage('Room link copied to clipboard!', 'snackbar-success');
       },
       (err) => {
-      this.generalService.showMessage('Failed to copy the room link.', 'snackbar-error');
+        this.generalService.showMessage('Failed to copy the room link.', 'snackbar-error');
       }
     );
   }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using GuessX.Server.Application.Dtos;
+using System.Collections.Concurrent;
 
 namespace GuessX.Server.GameHub
 {
@@ -6,12 +7,14 @@ namespace GuessX.Server.GameHub
     {
         private readonly ConcurrentDictionary<string, Room> _rooms = new();
 
-        public Room CreateRoom()
+        public Room CreateRoom(List<CreateTitleDto> titles, string owner)
         {
             var id = Guid.NewGuid().ToString("N");
-            var room = new Room
+            Room room = new Room
             {
                 RoomId = id,
+                Images = titles,
+                Owner = owner
             };
             _rooms[id] = room;
             return room;
@@ -20,6 +23,11 @@ namespace GuessX.Server.GameHub
         public void AddUser(string roomId, string user)
         {
             Console.WriteLine($"User {user} added to room {roomId}");
+        }
+
+        public Room GetRoom(string roomId)
+        {
+            return this._rooms[roomId];
         }
     }
 }

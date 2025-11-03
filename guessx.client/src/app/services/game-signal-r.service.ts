@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 export class GameSignalRService {
   private hubConnection!: signalR.HubConnection;
   public users$ = new BehaviorSubject<any[]>([]);
+  public roomState$ = new BehaviorSubject<any>(null);
 
   constructor() { }
 
@@ -37,12 +38,14 @@ export class GameSignalRService {
     }
   }
 
-  createRoom() {
-    return this.invoke("CreateRoom")
+  createRoom(owner:string) {
+    return this.invoke("CreateRoom", owner);
   }
 
-  joinRoom(roomId: string, username: string) {
-    return this.invoke("JoinRoom", roomId, username)
+  async joinRoom(roomId: string, username: string) {
+    let roomState = await this.invoke("JoinRoom", roomId, username)
+    this.roomState$.next(roomState);
+    return roomState;
   }
 
   invoke(method: string, ...args: any[]) {
