@@ -26,7 +26,7 @@ export class AnimeListComponent implements AfterViewInit {
 
   constructor
   (
-    public fb: FormBuilder, 
+    public fb: FormBuilder,
     private _jikanService: JikanService,
     private _animeService: AnimeService,
   ) {
@@ -37,7 +37,7 @@ export class AnimeListComponent implements AfterViewInit {
       page: [1],
       limit: [20]
     });
-    
+
   }
 
 
@@ -95,7 +95,7 @@ export class AnimeListComponent implements AfterViewInit {
   }
 
   loadArchivedAnime(): void {
-    this._animeService.getAnimeRequests({'status':'Archived'}).subscribe((res: TitleData[]) => {
+    this._animeService.getAnimeRequests({'status':'Archived'},true).subscribe((res: TitleData[]) => {
       this.archviedAnime = res;
     });
   }

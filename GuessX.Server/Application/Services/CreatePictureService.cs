@@ -106,7 +106,7 @@ public class CreatePictureService
 
     }
 
-    public async Task<List<CreateTitleDto>> GetAllTitlesAsync(Dictionary<string, string>? filters = null)
+        public async Task<List<CreateTitleDto>> GetAllTitlesAsync(Dictionary<string, string>? filters = null, bool isArchived = false)
     {
         var query = _context.TitlePictureGalleries
             .Include(t => t.Genres)
@@ -114,58 +114,66 @@ public class CreatePictureService
             .Include(t => t.TitleAnswers)
             .AsQueryable();
 
+            if (isArchived)
+            {
+                query = query.Where(title => title.Status == "Archived");
+            }else
+            {
+                query = query.Where(title => title.Status != "Archived");
+            }
+
         // 🧩 Si hay filtros, se aplican dinámicamente
         if (filters != null && filters.Count > 0)
-        {
-            var allowedProps = typeof(TitlePictureGallery).GetProperties()
-                .Select(p => p.Name)
-                .ToHashSet(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var filter in filters)
             {
-                if (!allowedProps.Contains(filter.Key))
-                    continue;
+                var allowedProps = typeof(TitlePictureGallery).GetProperties()
+                    .Select(p => p.Name)
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-                var property = typeof(TitlePictureGallery).GetProperty(filter.Key);
-                if (property == null)
-                    continue;
-
-                var parameter = Expression.Parameter(typeof(TitlePictureGallery), "t");
-                var left = Expression.Property(parameter, property);
-
-                // 🔍 Detecta si el valor enviado es null o vacío
-                object? convertedValue = null;
-                if (filter.Value != null &&
-                    !string.IsNullOrEmpty(filter.Value.ToString()) &&
-                    !string.Equals(filter.Value.ToString(), "null", StringComparison.OrdinalIgnoreCase))
+                foreach (var filter in filters)
                 {
-                    try
-                    {
-                        convertedValue = Convert.ChangeType(filter.Value, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
-                    }
-                    catch
-                    {
-                        // Si falla la conversión, ignora este filtro
+                    if (!allowedProps.Contains(filter.Key))
                         continue;
+
+                    var property = typeof(TitlePictureGallery).GetProperty(filter.Key);
+                    if (property == null)
+                        continue;
+
+                    var parameter = Expression.Parameter(typeof(TitlePictureGallery), "t");
+                    var left = Expression.Property(parameter, property);
+
+                    // 🔍 Detecta si el valor enviado es null o vacío
+                    object? convertedValue = null;
+                    if (filter.Value != null &&
+                        !string.IsNullOrEmpty(filter.Value.ToString()) &&
+                        !string.Equals(filter.Value.ToString(), "null", StringComparison.OrdinalIgnoreCase))
+                    {
+                        try
+                        {
+                            convertedValue = Convert.ChangeType(filter.Value, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
+                        }
+                        catch
+                        {
+                            // Si falla la conversión, ignora este filtro
+                            continue;
+                        }
                     }
-                }
 
-                Expression equality;
-                if (convertedValue == null)
-                {
-                    // Genera expresión: t.Property == null
-                    equality = Expression.Equal(left, Expression.Constant(null, property.PropertyType));
-                }
-                else
-                {
-                    // Genera expresión: t.Property == value
-                    equality = Expression.Equal(left, Expression.Constant(convertedValue));
-                }
+                    Expression equality;
+                    if (convertedValue == null)
+                    {
+                        // Genera expresión: t.Property == null
+                        equality = Expression.Equal(left, Expression.Constant(null, property.PropertyType));
+                    }
+                    else
+                    {
+                        // Genera expresión: t.Property == value
+                        equality = Expression.Equal(left, Expression.Constant(convertedValue));
+                    }
 
-                var lambda = Expression.Lambda<Func<TitlePictureGallery, bool>>(equality, parameter);
-                query = query.Where(lambda);
+                    var lambda = Expression.Lambda<Func<TitlePictureGallery, bool>>(equality, parameter);
+                    query = query.Where(lambda);
+                }
             }
-        }
 
         // 📦 Ejecuta la consulta
         var titles = await query.ToListAsync();

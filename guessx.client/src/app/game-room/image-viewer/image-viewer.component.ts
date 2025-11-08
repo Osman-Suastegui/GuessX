@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { TimeBarComponent } from '../time-bar/time-bar.component';
 
 @Component({
@@ -6,7 +6,7 @@ import { TimeBarComponent } from '../time-bar/time-bar.component';
   templateUrl: './image-viewer.component.html',
   styleUrl: './image-viewer.component.css'
 })
-export class ImageViewerComponent {
+export class ImageViewerComponent implements AfterViewInit,OnChanges {
 
   @ViewChild(TimeBarComponent) timerBar!: TimeBarComponent;
   /** Size of each reveal window (in CSS px) */
@@ -29,7 +29,16 @@ export class ImageViewerComponent {
   }
   public animeImageSrc: string = '';
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['animeInformation']) {
+      this.setUpImageViewer();
+    }
+  }
   ngAfterViewInit() {
+    this.setUpImageViewer();
+  }
+
+  setUpImageViewer(){
     const img = this.imgRef.nativeElement;
     img.onload = () => this.setupCanvas();
     // If already loaded
@@ -37,6 +46,8 @@ export class ImageViewerComponent {
       this.setupCanvas();
     }
   }
+
+
 
   private setupCanvas() {
     const img = this.imgRef.nativeElement;

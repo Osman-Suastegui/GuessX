@@ -1,12 +1,13 @@
 import { GeneralService } from '../../utils/general.service';
 import { GameSignalRService } from './../../services/game-signal-r.service';
-import { AfterViewInit, Component } from "@angular/core";
+import { AfterViewInit, Component, OnDestroy } from "@angular/core";
+import { RoomState } from '../room.model';
 @Component({
   selector: "app-game-room",
   templateUrl: "./game-room.component.html",
   styleUrl: "./game-room.component.css",
 })
-export class GameRoomComponent implements AfterViewInit {
+export class GameRoomComponent implements AfterViewInit,OnDestroy {
   animeInformation: any = {
     name: "Demon Slayer",
     src: "../../../assets/demon_slayer.webp",
@@ -38,8 +39,18 @@ export class GameRoomComponent implements AfterViewInit {
   }
 
   private setListeners() {
-    this.gameSignalRService.roomState$.subscribe((roomState) => {
-      console.log("Room state updated:", roomState);
+    this.gameSignalRService.roomState$.subscribe((roomState: RoomState | null) => {
+      if (roomState) {
+        console.log("Room state updated:", roomState);
+        let src = roomState.images[roomState.currentImageIndex].titleImages[0].imageUrl;
+        let answers = roomState.images[roomState.currentImageIndex].titleAnswers;
+        let name = roomState.images[roomState.currentImageIndex].titleName;
+        this.animeInformation = {
+          name: name,
+          src: src,
+          answers: answers
+        };
+      }
     });
   }
 
@@ -53,5 +64,9 @@ export class GameRoomComponent implements AfterViewInit {
         this.generalService.showMessage('Failed to copy the room link.', 'snackbar-error');
       }
     );
+  }
+  ngOnDestroy(): void {
+    this.gameSignalRService.roomState$.unsubscribe();
+    this.gameSignalRService.users$.unsubscribe();
   }
 }

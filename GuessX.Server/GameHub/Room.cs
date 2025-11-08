@@ -14,5 +14,12 @@ namespace GuessX.Server.GameHub
         //public int CurrentImageIndex { get; set; } = 0;
         //public List<ChatMessage> RecentChat { get; } = new();
         //public object Lock = new object();
+
+        public override string ToString()
+        {
+            return $"RoomId: {RoomId}, Owner: {Owner}, CurrentImageIndex: {CurrentImageIndex}";
+        }
+
     }
+
 }

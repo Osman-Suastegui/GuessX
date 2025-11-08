@@ -33,19 +33,26 @@ namespace GuessX.Server.GameHub
 
         }
         // Send chat only to this room
-        public void SendMessage(string roomId, string message, string userName)
+        public async Task SendMessage(string roomId, string message, string userName)
         {
             Room room = _rooms.GetRoom(roomId);
             List<string> answers = room.Images[room.CurrentImageIndex].TitleAnswers;
 
             string foundAnswer = answers.Find(answer => answer.ToLower() == message.ToLower());
-
-            Clients.Group(roomId).SendAsync("MessageReceived", new
+            await Clients.Group(roomId).SendAsync("MessageReceived", new
             {
                 User = userName,
                 Text = message,
                 isAnswer = foundAnswer
             });
+
+            if (foundAnswer != null){
+                room.CurrentImageIndex++;
+                Console.WriteLine($"Room: {room.ToString()}");
+                await Clients.Group(roomId).SendAsync("roomUpdated", room);
+            }
+
+
         }
 
     }
