@@ -7,19 +7,31 @@
   <!-- Mensajes (Scroll interno) -->
   <div class="flex-1 overflow-y-auto scroll-custom p-4 gap-3 flex flex-col bg-white/5 " #chatContainer>
     @for (message of messages; track $index) {
-        @if (!message.ownMessage) {
-          <div class="bg-gaming-neon/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]">
+        @if (message.sender === 'system') {
+          <div class="bg-gray-600/20 border border-gray-500/30 rounded-lg p-2 text-gray-300 text-center text-xs italic max-w-[90%] mx-auto">
+            <span>{{ message.text }}</span>
+          </div>
+        } @else if (!message.ownMessage) {
+          <div class="bg-gaming-neon/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]"
+               [class.border-green-500]="message.isAnswer"
+               [class.bg-green-500-20]="message.isAnswer">
             <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
-            <span class="text-gaming-neon text-sm">{{ message.text }}</span>
+            <span class="text-gaming-neon text-sm" [class.text-green-400]="message.isAnswer" [class.font-bold]="message.isAnswer">{{ message.text }}</span>
+            @if (message.isAnswer) {
+              <span class="text-green-400 text-xs">✓ Correct answer!</span>
+            }
+          </div>
+        } @else {
+          <div class="bg-gaming-neon-pink/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%] ml-auto"
+               [class.border-green-500]="message.isAnswer"
+               [class.bg-green-500]="message.isAnswer">
+            <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
+            <span class="text-gaming-neon-pink text-sm" [class.text-green-400]="message.isAnswer" [class.font-bold]="message.isAnswer">{{ message.text }}</span>
+            @if (message.isAnswer) {
+              <span class="text-green-400 text-xs">✓ Correct answer!</span>
+            }
           </div>
         }
-        @if (message.ownMessage) {
-          <div class="bg-gaming-neon-pink/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]">
-            <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
-            <span class="text-gaming-neon-pink text-sm">{{ message.text }}</span>
-          </div>
-        }
-
     }
   </div>
 

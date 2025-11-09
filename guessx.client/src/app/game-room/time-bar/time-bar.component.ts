@@ -54,7 +54,7 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
     }, 50); // actualiza cada 50ms (20 veces por segundo)
   }
 
-  private restartTimer(): void {
+  public restartTimer(): void {
     this.clearTimer();
     this.startTimer();
   }

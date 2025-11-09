@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { UserRoom } from '../room.model';
 
 @Component({
   selector: 'app-leaderboard',
@@ -7,12 +8,5 @@ import { Component } from '@angular/core';
 })
 export class LeaderboardComponent {
 
-  leaderboard = [
-    { id: 1, name: 'Player One', score: 1500, correct: 12, avatar: 'P1' },
-    { id: 2, name: 'Player Two', score: 1400, correct: 11, avatar: 'P2' },
-    { id: 3, name: 'Player Three', score: 0, correct: 10, avatar: 'P3' },
-
-    // ...otros jugadores
-  ];
-
+  @Input() users: UserRoom[] = [];
 }

@@ -11,7 +11,7 @@
   </div>
   <!-- Contenedor principal -->
   <main class="flex w-full h-full main-container">
-    
+
     <!-- Image Viewer (60%) -->
     <div class="w-[60%] image-viewer-container rounded-lg">
       <app-image-viewer [animeInformation]="animeInformation" />
@@ -29,12 +29,12 @@
 
       <!-- Leaderboard (30%) -->
       <section class="basis-[30%] overflow-hidden rounded-lg leaderboard">
-        <app-leaderboard></app-leaderboard>
+        <app-leaderboard [users]="roomState?.users || []"></app-leaderboard>
       </section>
 
       <!-- Active Players (20%) -->
       <section class="grow overflow-hidden rounded-lg active-players">
-        <app-active-players></app-active-players>
+        <app-active-players ></app-active-players>
       </section>
     </div>
   </main>

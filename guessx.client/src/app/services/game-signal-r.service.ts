@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { BehaviorSubject } from 'rxjs';
-import { RoomState } from '../game-room/room.model';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { RoomState, ChatMessage } from '../game-room/room.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameSignalRService {
   private hubConnection!: signalR.HubConnection;
-  public users$ = new BehaviorSubject<any[]>([]);
   public roomState$ = new BehaviorSubject<RoomState | null>(null);
+
+  public messages$ = new Subject<ChatMessage>()
 
   constructor() { }
 
@@ -23,14 +24,22 @@ export class GameSignalRService {
 
     try {
       await this.hubConnection.start();
-      this.hubConnection.on('UserJoined', (newUserJoined: string) => {
-        console.log(`New user in room:`, newUserJoined);
-        const updatedUsers = [...this.users$.value, newUserJoined];
-        this.users$.next(updatedUsers);
-      });
+      // this.hubConnection.on('UserJoined', (newUserJoined: string) => {
+      //   console.log(`New user in room:`, newUserJoined);
+      // });
 
-        this.hubConnection.on('MessageReceived', (msg) => {
+        this.hubConnection.on('MessageReceived', (msg: { user: string; text: string; isAnswer?: boolean }) => {
           console.log('Message received from hub:', msg);
+          const currentPlayerName = localStorage.getItem("playerName") || "";
+          const chatMessage: ChatMessage = {
+            text: msg.text,
+            sender: msg.user,
+            timestamp: new Date(),
+            ownMessage: msg.user === currentPlayerName,
+            isAnswer: msg.isAnswer
+          };
+          this.messages$.next(chatMessage);
+          console.log("chat message",chatMessage)
         });
 
         this.hubConnection.on('roomUpdated', (roomUpdated: RoomState) => {

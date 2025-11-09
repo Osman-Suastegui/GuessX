@@ -6,9 +6,9 @@ import { TimeBarComponent } from '../time-bar/time-bar.component';
   templateUrl: './image-viewer.component.html',
   styleUrl: './image-viewer.component.css'
 })
-export class ImageViewerComponent implements AfterViewInit,OnChanges {
+export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
-  @ViewChild(TimeBarComponent) timerBar!: TimeBarComponent;
+  @ViewChild(TimeBarComponent, { static: true }) timerBar!: TimeBarComponent;
   /** Size of each reveal window (in CSS px) */
   @Input() fragWidth = 100;
   @Input() fragHeight = 100;
@@ -31,6 +31,8 @@ export class ImageViewerComponent implements AfterViewInit,OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
+      this.currentHint = 1;
+      this.restartTimer();
       this.setUpImageViewer();
     }
   }
@@ -38,7 +40,7 @@ export class ImageViewerComponent implements AfterViewInit,OnChanges {
     this.setUpImageViewer();
   }
 
-  setUpImageViewer(){
+  setUpImageViewer() {
     const img = this.imgRef.nativeElement;
     img.onload = () => this.setupCanvas();
     // If already loaded
@@ -90,8 +92,8 @@ export class ImageViewerComponent implements AfterViewInit,OnChanges {
     this.ctx.clearRect(x, y, this.fragWidth, this.fragHeight);
   }
 
-  reiniciarTemporizador(): void {
-    this.timerBar.resetTimer();
+  restartTimer(): void {
+    this.timerBar.restartTimer();
   }
 
   handleSkip(): void {

@@ -25,10 +25,16 @@ namespace GuessX.Server.GameHub
 
         public async Task<Room> JoinRoom(string roomId, string userName)
         {
+            Room room = _rooms.GetRoom(roomId);
+            room.Users.Add(new UserRoom { name = userName, score = 0 });
+
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
 
             await Clients.Group(roomId).SendAsync("UserJoined", userName);
 
+            await Clients.Group(roomId).SendAsync("roomUpdated", room);
+
+            await SendMessage(roomId,$"{userName} has joined!","system");
             return _rooms.GetRoom(roomId);
 
         }
@@ -47,6 +53,7 @@ namespace GuessX.Server.GameHub
             });
 
             if (foundAnswer != null){
+                _rooms.UpdateUserScore(roomId, userName, 1);
                 room.CurrentImageIndex++;
                 Console.WriteLine($"Room: {room.ToString()}");
                 await Clients.Group(roomId).SendAsync("roomUpdated", room);

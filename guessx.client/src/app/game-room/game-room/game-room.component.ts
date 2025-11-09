@@ -14,6 +14,7 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
     answers: ["Demon Slayer", "Kimetsu no Yaiba"],
   };
   roomId: string = "";
+  roomState: RoomState | null = null;
   // GameSignalRService
   constructor(
     public gameSignalRService: GameSignalRService,
@@ -40,6 +41,7 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
 
   private setListeners() {
     this.gameSignalRService.roomState$.subscribe((roomState: RoomState | null) => {
+      this.roomState = roomState;
       if (roomState) {
         console.log("Room state updated:", roomState);
         let src = roomState.images[roomState.currentImageIndex].titleImages[0].imageUrl;
@@ -67,6 +69,5 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
   }
   ngOnDestroy(): void {
     this.gameSignalRService.roomState$.unsubscribe();
-    this.gameSignalRService.users$.unsubscribe();
   }
 }

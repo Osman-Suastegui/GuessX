@@ -1,13 +1,15 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { GameSignalRService } from '../../services/game-signal-r.service';
+import { ChatMessage } from '../room.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatContainer') private chatContainer!: ElementRef<HTMLElement>;
   @Input() roomId: string = "";
   @Input() animeInformation: any = {
@@ -23,44 +25,42 @@ export class ChatComponent {
 
   type: FormControl = new FormControl("");
 
-  players = [
-    { id: 1, name: 'Player One', score: 1500, correct: 12, avatar: 'P1' },
-    { id: 2, name: 'Player Two', score: 1400, correct: 11, avatar: 'P2' },
-    { id: 3, name: 'Player Three', score: 0, correct: 10, avatar: 'P3' },
-
-    // ...otros jugadores
-  ];
+  private messageSubscription?: Subscription;
 
   // Chat Messages, mockup data, system messages, and user messages
-  messages = [
+  messages: ChatMessage[] = [
     { id: 1, text: 'Welcome to the game!', sender: 'system', timestamp: new Date(), ownMessage: false },
-    { id: 2, text: 'Player One has joined the game.', sender: 'system', timestamp: new Date(), ownMessage: false },
-    { id: 3, text: 'Player Two has joined the game.', sender: 'system', timestamp: new Date(), ownMessage: false },
-    { id: 4, text: 'Player Three has joined the game.', sender: 'system', timestamp: new Date(), ownMessage: false },
-    { id: 5, text: 'Player One: Hello everyone!', sender: 'user', timestamp: new Date(), ownMessage: false },
-    { id: 6, text: 'Player Two: Ready to play!', sender: 'user', timestamp: new Date(), ownMessage: false },
-    { id: 7, text: 'Player Three: Let\'s do this!', sender: 'user', timestamp: new Date(), ownMessage: false },
   ];
 
+  ngOnInit(): void {
+    // Subscribe to incoming messages
+    this.messageSubscription = this.gameSignalRService.messages$.subscribe((message: ChatMessage) => {
+      // New message from another user or system
+      message.id = this.messages.length + 1;
+      this.messages.push(message);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.messageSubscription) {
+      this.messageSubscription.unsubscribe();
+    }
+  }
 
   private scrollToBottom(): void {
     this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
   }
 
-
   onMessageSend(event: Event) {
     event.preventDefault(); // ❌ Previene la recarga
+    let playerName: string = localStorage.getItem("playerName") || ""
+    const message = this.type.value?.trim();
 
-    const value = this.type.value;
+    if (!message || message.length === 0) {
+      return;
+    }
 
-    this.messages.push({
-      id: this.messages.length + 1,
-      text: value,
-      sender: 'user',
-      timestamp: new Date(),
-      ownMessage: true
-    });
-    this.gameSignalRService.invoke("SendMessage", this.roomId, value,"Osman S.");
+    this.gameSignalRService.invoke("SendMessage", this.roomId, message, playerName);
 
     this.type.setValue('');
     this.cdr.detectChanges();

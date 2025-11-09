@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GameSignalRService } from "../services/game-signal-r.service";
+import { MatDialog } from "@angular/material/dialog";
+import { RoomIdDialogComponent } from "./room-id-dialog/room-id-dialog.component";
 
 @Component({
   selector: "app-home-page",
@@ -52,7 +54,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private gameSignalRService: GameSignalRService
+    private gameSignalRService: GameSignalRService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -102,9 +105,36 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  requestJoiningCode() {
-    //Abrir un modal para solicitar el código de unión
-    alert("Feature coming soon!");
+  async requestJoiningCode() {
+    // Validate player name first
+    let playerName = this.playerName.trim();
+    if (!playerName || playerName.length < 2) {
+      return;
+    }
+
+    // Open dialog to get room ID
+    const dialogRef = this.dialog.open(RoomIdDialogComponent, {
+      width: '450px',
+      disableClose: false,
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(async (roomId: string | undefined) => {
+      if (roomId && roomId.trim().length > 0) {
+        // Store player name in localStorage
+        localStorage.setItem("playerName", playerName);
+
+        // Start SignalR connection if not already started
+        try {
+          await this.gameSignalRService.startConnection("https://localhost:7230/gameHub");
+
+          // Navigate to game room with the entered roomId
+          this.router.navigate(["/game-room/", roomId.trim()]);
+        } catch (error) {
+          console.error("Error connecting to SignalR:", error);
+        }
+      }
+    });
   }
 
   onNameChange(event: Event) {
