@@ -7,7 +7,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AnimeService {
-  api = 'https://localhost:7230/api/Anime';
+  api = 'http://localhost:5290/api/Anime';
 
   constructor(private http: HttpClient) {}
 

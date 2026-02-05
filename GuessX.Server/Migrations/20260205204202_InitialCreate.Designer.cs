@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuessX.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251101031245_InitialCreate")]
+    [Migration("20260205204202_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -127,6 +127,11 @@ namespace GuessX.Server.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("category");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("status");
 
                     b.Property<string>("TitleName")
                         .IsRequired()

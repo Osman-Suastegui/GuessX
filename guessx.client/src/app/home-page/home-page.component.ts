@@ -93,7 +93,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       localStorage.setItem("playerName", playerName);
 
       // Start SignalR connection
-      await this.gameSignalRService.startConnection("https://localhost:7230/gameHub");
+      await this.gameSignalRService.startConnection("http://localhost:5290/gameHub");
 
       // Create room and navigate to game room
       this.roomId = await this.gameSignalRService.createRoom(playerName);
@@ -126,7 +126,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         // Start SignalR connection if not already started
         try {
-          await this.gameSignalRService.startConnection("https://localhost:7230/gameHub");
+          await this.gameSignalRService.startConnection("http://localhost:5290/gameHub");
 
           // Navigate to game room with the entered roomId
           this.router.navigate(["/game-room/", roomId.trim()]);
