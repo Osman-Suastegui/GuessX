@@ -28,10 +28,11 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     answers: []
   }
   public animeImageSrc: string = '';
+  public isTheWholeAnimeRevealed: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
-      this.currentHint = 1;
+      this.currentHint = 0;
       this.restartTimer();
       this.setUpImageViewer();
     }
@@ -117,11 +118,12 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   }
 
   isMaximunHintsReached(): boolean {
-    return this.currentHint >= this.maxHints;
+    return this.currentHint >= this.maxHints ;
   }
 
   revealTheWholeAnime() {
     this.ctx.clearRect(0, 0, this.displayW, this.displayH);
+    this.isTheWholeAnimeRevealed = true;
   }
 
 }

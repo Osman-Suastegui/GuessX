@@ -33,6 +33,8 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
     let playerName: string = localStorage.getItem("playerName") || "";
 
     try {
+      await this.gameSignalRService.startConnection("http://localhost:5290/gameHub");
+
       this.gameSignalRService.joinRoom(this.roomId, playerName);
     } catch (error) {
       console.error("Error joining room:", error);

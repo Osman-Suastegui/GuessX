@@ -23,11 +23,11 @@
 
     </header>
 
-  <app-time-bar #timerBar [roundDuration]="1" [currentHint]="currentHint" [maxHints]="maxHints" (skip)="handleSkip()"
+  <app-time-bar #timerBar [roundDuration]="15" [currentHint]="currentHint" [maxHints]="maxHints" (skip)="handleSkip()"
     (timeEnded)="handleTimeEnd()"></app-time-bar>
 
   <h1 class="image-viewer-anime-name pt-2">
-    <ng-content *ngIf="isMaximunHintsReached()">
+    <ng-content *ngIf="isTheWholeAnimeRevealed">
       {{animeInformation.name}}
     </ng-content>
   </h1>
