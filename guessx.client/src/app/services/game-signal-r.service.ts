@@ -52,8 +52,8 @@ export class GameSignalRService {
     }
   }
 
-  createRoom(owner:string) {
-    return this.invoke("CreateRoom", owner);
+  createRoom(owner:string,numberOfPictures:number) {
+    return this.invoke("CreateRoom", owner, numberOfPictures);
   }
 
   async joinRoom(roomId: string, username: string) {

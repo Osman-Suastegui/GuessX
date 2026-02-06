@@ -30,7 +30,7 @@ namespace GuessX.Server.Controllers
 
         // GET: api/anime
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] string? status, [FromQuery] string? category, [FromQuery] bool isArchived = false)
+        public async Task<IActionResult> Index([FromQuery] string? status, [FromQuery] string? category, [FromQuery] int? limit, [FromQuery] bool isArchived = false)
         {
             var filters = new Dictionary<string, string>();
 
@@ -39,7 +39,7 @@ namespace GuessX.Server.Controllers
             if (!string.IsNullOrEmpty(category))
                 filters["Category"] = category;
 
-            var result = await _createPictureService.GetAllTitlesAsync(filters,isArchived);
+            var result = await _createPictureService.GetAllTitlesAsync(limit,filters,isArchived);
             return Ok(result);
         }
 

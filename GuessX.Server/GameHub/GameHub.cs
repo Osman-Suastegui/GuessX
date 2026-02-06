@@ -14,10 +14,12 @@ namespace GuessX.Server.GameHub
             _createPictureService = createPictureService;
         }
 
-        public async Task<string> CreateRoom(string owner)
+        // the variable numberOfPictures tell us how many pictures the game will show in the current game
+        // the owner variable is for tracking who created the room,so we can give the owner specifics permissions
+        public async Task<string> CreateRoom(string owner,int numberOfPictures)
         {
-
-            var titles = await this._createPictureService.GetAllTitlesAsync();
+            Console.WriteLine("number of pictures" + numberOfPictures);
+            var titles = await this._createPictureService.GetAllTitlesAsync(numberOfPictures);
             var room = _rooms.CreateRoom(titles, owner);
             await Groups.AddToGroupAsync(Context.ConnectionId, room.RoomId);
             return room.RoomId; // caller builds share link: /room/{roomId}

@@ -32,6 +32,12 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
     this.roomId = window.location.pathname.split("/").pop() || "";
     let playerName: string = localStorage.getItem("playerName") || "";
 
+    // if we dont have a play name, we open a prompt to ask for it, and save it in local storage
+    if (!playerName) {
+      playerName = prompt("Please enter your name:") || "Anonymous";
+      localStorage.setItem("playerName", playerName);
+    }
+    
     try {
       await this.gameSignalRService.startConnection("http://localhost:5290/gameHub");
 

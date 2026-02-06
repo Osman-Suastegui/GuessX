@@ -66,7 +66,6 @@
           <!-- Start Button -->
           <button
             [disabled]="!isNameValid() || isLoading"
-            (click)="onStartGame()"
             [class]="getButtonClasses()"
             class="w-full py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
             *ngIf="!isNameValid()"
@@ -84,7 +83,7 @@
 
             <button
               [disabled]="!isNameValid() || isLoading"
-              (click)="onStartGame()"
+              (click)="createGame()"
               [class]="getButtonClasses()"
               class="w-1/2 bg-pink-500 hover:bg-pink-600 py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
             >

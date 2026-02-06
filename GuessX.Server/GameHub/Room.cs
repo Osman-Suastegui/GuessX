@@ -11,6 +11,8 @@ namespace GuessX.Server.GameHub
         public string Owner { get; init; } = "";
         public int CurrentImageIndex { get; set; } = 0;
         public List<UserRoom> Users { get; set; } = new List<UserRoom>();
+
+
         //public List<ChatMessage> RecentChat { get; } = new();
         //public object Lock = new object();
 

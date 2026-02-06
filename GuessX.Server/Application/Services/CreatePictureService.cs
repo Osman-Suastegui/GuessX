@@ -106,7 +106,7 @@ public class CreatePictureService
 
     }
 
-        public async Task<List<CreateTitleDto>> GetAllTitlesAsync(Dictionary<string, string>? filters = null, bool isArchived = false)
+        public async Task<List<CreateTitleDto>> GetAllTitlesAsync(int? limit = null, Dictionary<string, string>? filters = null, bool isArchived = false)
     {
         var query = _context.TitlePictureGalleries
             .Include(t => t.Genres)
@@ -121,6 +121,10 @@ public class CreatePictureService
             {
                 query = query.Where(title => title.Status != "Archived");
             }
+        if (limit.HasValue)
+        {
+            query = query.Take(limit.Value);
+        }
 
         // 🧩 Si hay filtros, se aplican dinámicamente
         if (filters != null && filters.Count > 0)

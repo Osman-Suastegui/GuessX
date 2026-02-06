@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NumberValueAccessor } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GameSignalRService } from "../services/game-signal-r.service";
 import { MatDialog } from "@angular/material/dialog";
 import { RoomIdDialogComponent } from "./room-id-dialog/room-id-dialog.component";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   selector: "app-home-page",
@@ -79,11 +80,27 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  async onStartGame() {
+  async createGame() {
     let playerName = this.playerName.trim();
     if (!playerName || playerName.length < 2) {
       return;
     }
+
+     // Open dialog to get room ID
+    const dialogRef = this.dialog.open(RoomIdDialogComponent, {
+      width: '450px',
+      disableClose: false,
+      data: null
+    });
+
+    let numberOfPictures = await firstValueFrom(dialogRef.afterClosed())
+    if (numberOfPictures && numberOfPictures.trim().length > 0) {
+       numberOfPictures = numberOfPictures.trim();
+    }
+    if (isNaN(numberOfPictures)){
+      return;
+    }
+
 
     this.isLoading = true;
     this.stopCarousel();
@@ -96,7 +113,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       await this.gameSignalRService.startConnection("http://localhost:5290/gameHub");
 
       // Create room and navigate to game room
-      this.roomId = await this.gameSignalRService.createRoom(playerName);
+      this.roomId = await this.gameSignalRService.createRoom(playerName, parseInt(numberOfPictures));
       this.router.navigate(["/game-room/", this.roomId]);
     } catch (error) {
       console.error("Error starting game:", error);
