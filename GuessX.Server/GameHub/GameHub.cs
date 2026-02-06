@@ -26,7 +26,11 @@ namespace GuessX.Server.GameHub
         public async Task<Room> JoinRoom(string roomId, string userName)
         {
             Room room = _rooms.GetRoom(roomId);
-            room.Users.Add(new UserRoom { name = userName, score = 0 });
+
+            if (!room.Users.Any(u => u.name == userName))
+            {
+                room.Users.Add(new UserRoom { name = userName, score = 0 });
+            }
 
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
 
