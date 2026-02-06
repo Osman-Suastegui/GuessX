@@ -28,6 +28,7 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
   }
 
   private async initializeRoom() {
+    console.log("Initializing room...");
     // sacar el id de la ruta
     this.roomId = window.location.pathname.split("/").pop() || "";
     let playerName: string = localStorage.getItem("playerName") || "";
@@ -39,7 +40,10 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
     }
     
     try {
-      await this.gameSignalRService.startConnection("http://localhost:5290/gameHub");
+      if(!this.gameSignalRService.isHubConnected()) {
+        console.log("Hub not connected, starting connection...");
+        await this.gameSignalRService.startConnection("http://localhost:5290/gameHub");
+      }
 
       this.gameSignalRService.joinRoom(this.roomId, playerName);
     } catch (error) {

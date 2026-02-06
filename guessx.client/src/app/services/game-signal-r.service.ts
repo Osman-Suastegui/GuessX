@@ -21,7 +21,6 @@ export class GameSignalRService {
       .withUrl(hubUrl)
       .withAutomaticReconnect()
       .build();
-
     try {
       await this.hubConnection.start();
       // this.hubConnection.on('UserJoined', (newUserJoined: string) => {
@@ -39,7 +38,6 @@ export class GameSignalRService {
             isAnswer: msg.isAnswer
           };
           this.messages$.next(chatMessage);
-          console.log("chat message",chatMessage)
         });
 
         this.hubConnection.on('roomUpdated', (roomUpdated: RoomState) => {
@@ -50,6 +48,11 @@ export class GameSignalRService {
     } catch (err) {
       console.error('Error connecting to hub:', err);
     }
+  }
+
+  // Check if the connection is established
+  isHubConnected(): boolean {
+    return this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected;
   }
 
   createRoom(owner:string,numberOfPictures:number) {
