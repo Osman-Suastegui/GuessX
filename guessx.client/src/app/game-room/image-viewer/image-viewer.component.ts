@@ -17,11 +17,14 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   @ViewChild('maskCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private ctx!: CanvasRenderingContext2D;
-  private displayW = 0;
-  private displayH = 0;
 
+  // canvas and image are the same size 
+  private displayW = 0; // canvas or image width size 
+  private displayH = 0; // canvas or image height size
+  
+  private availableSquares: { r: number, c: number }[] = [];
   public currentHint: number = 1;
-  public maxHints: number = 5;
+  public maxHints: number = 9;
   @Input() animeInformation: any = {
     name: "",
     src: "",
@@ -30,8 +33,15 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   public animeImageSrc: string = '';
   public isTheWholeAnimeRevealed: boolean = false;
 
+  // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3, 
+  // the image will be divided into 15 fragments (5 rows x 3 columns). 
+  // Each hint will reveal one of these fragments
+  private gridRows = 5;
+  private gridCols = 3;
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
+      this.initAvailableSquares();
       this.currentHint = 0;
       this.restartTimer();
       this.setUpImageViewer();
@@ -43,54 +53,63 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
   setUpImageViewer() {
     const img = this.imgRef.nativeElement;
-    img.onload = () => this.setupCanvas();
+    img.onload = () => {
+      this.setupCanvas();
+      // this is for show the first hint immediately, if the image is not already loaded
+      this.revealHint();
+    };
     // If already loaded
     if (img.complete) {
       this.setupCanvas();
     }
   }
 
-
+  initAvailableSquares() {
+    this.availableSquares = [];
+    for (let r = 0; r < this.gridRows; r++) {
+      for (let c = 0; c < this.gridCols; c++) {
+        this.availableSquares.push({ r, c });
+      }
+    }
+  }
 
   private setupCanvas() {
     const img = this.imgRef.nativeElement;
-    // console.log('Image loaded', img.clientWidth, img.clientHeight);
     // measure actual display size
     this.displayW = img.clientWidth;
     this.displayH = img.clientHeight;
 
     const canvas = this.canvasRef.nativeElement;
-    const dpr = window.devicePixelRatio || 1;
 
-    // size the canvas backing store
-    canvas.width = this.displayW * dpr;
-    canvas.height = this.displayH * dpr;
-    // keep CSS size
-    canvas.style.width = `${this.displayW}px`;
-    canvas.style.height = `${this.displayH}px`;
+    // // size the canvas backing store
+    canvas.width = this.displayW
+    canvas.height = this.displayH
 
     this.ctx = canvas.getContext('2d')!;
-    // scale so drawing commands use CSS px
-    this.ctx.scale(dpr, dpr);
 
     // fill entire canvas with semi-opaque mask
     this.ctx.fillStyle = 'rgba(0,0,0,1)';
     this.ctx.fillRect(0, 0, this.displayW, this.displayH);
     this.animeImageSrc = this.animeInformation.src;
+
   }
 
   /** Call this to clear one more random hole */
   nextFragment() {
     if (!this.ctx) return;
 
-    // pick a random top-left so the window stays inside image
-    const maxX = this.displayW - this.fragWidth;
-    const maxY = this.displayH - this.fragHeight;
-    const x = Math.floor(Math.random() * (maxX + 1));
-    const y = Math.floor(Math.random() * (maxY + 1));
+    // pick a random available square
+    let randomIndex = Math.floor(Math.random() * this.availableSquares.length);
+    
+    const { r, c } = this.availableSquares[randomIndex];
+    // remove that square from the available ones so we dont repeat it
+    this.availableSquares.splice(randomIndex, 1);
 
-    // clear that rectangle—leaving previous holes intact
-    this.ctx.clearRect(x, y, this.fragWidth, this.fragHeight);
+    const x = c * (this.displayW / this.gridCols);
+    const y = r * (this.displayH / this.gridRows);
+
+    // clear a rectangle in that position to reveal part of the image
+    this.ctx.clearRect(x, y, this.displayW / this.gridCols, this.displayH / this.gridRows);
   }
 
   restartTimer(): void {
@@ -118,7 +137,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   }
 
   isMaximunHintsReached(): boolean {
-    return this.currentHint >= this.maxHints ;
+    return this.currentHint >= this.maxHints;
   }
 
   revealTheWholeAnime() {
