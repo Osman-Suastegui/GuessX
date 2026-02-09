@@ -60,7 +60,7 @@ export class GameSignalRService {
   }
 
   async joinRoom(roomId: string, username: string) {
-    let roomState = await this.invoke("JoinRoom", roomId, username)
+    const roomState = await this.invoke("JoinRoom", roomId, username)
     this.roomState$.next(roomState);
     return roomState;
   }

@@ -99,7 +99,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     if (!this.ctx) return;
 
     // pick a random available square
-    let randomIndex = Math.floor(Math.random() * this.availableSquares.length);
+    const randomIndex = Math.floor(Math.random() * this.availableSquares.length);
     
     const { r, c } = this.availableSquares[randomIndex];
     // remove that square from the available ones so we dont repeat it

@@ -93,7 +93,7 @@
   class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:opacity-50 border border-yellow-500 bg-background hover:text-accent-foreground h-9 rounded-md px-3 text-yellow-500 hover:bg-yellow-500/10">
     Archivar
   </button>
-  <button *ngIf="isSaved && data.status == 'Archived' " (click)="activate(true)"
+  <button *ngIf="isSaved && data.status === 'Archived' " (click)="activate(true)"
   class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:opacity-50 border border-green-500 bg-background hover:text-accent-foreground h-9 rounded-md px-3 text-green-500 hover:bg-green-500/10">
     Activar
   </button>

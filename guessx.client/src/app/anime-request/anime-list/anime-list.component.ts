@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Anime, AnimeSearchResponse, TitleData } from '../anime.model';
 import { JikanService } from '../jikan.service';
@@ -12,7 +12,7 @@ import { AnimeService } from '../anime.service';
   templateUrl: './anime-list.component.html',
   styleUrl: './anime-list.component.css'
 })
-export class AnimeListComponent implements AfterViewInit {
+export class AnimeListComponent implements AfterViewInit, OnInit {
   animeList: Anime[] = [];
   pagination: any;
   form: FormGroup

@@ -16,7 +16,7 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
   roomId: string = "";
   roomState: RoomState | null = null;
   // GameSignalRService
-  constructor(
+constructor(
     public gameSignalRService: GameSignalRService,
     public generalService: GeneralService
   ) {
@@ -56,9 +56,9 @@ export class GameRoomComponent implements AfterViewInit,OnDestroy {
       this.roomState = roomState;
       if (roomState) {
         console.log("Room state updated:", roomState);
-        let src = roomState.images[roomState.currentImageIndex].titleImages[0].imageUrl;
-        let answers = roomState.images[roomState.currentImageIndex].titleAnswers;
-        let name = roomState.images[roomState.currentImageIndex].titleName;
+        const src = roomState.images[roomState.currentImageIndex].titleImages[0].imageUrl;
+        const answers = roomState.images[roomState.currentImageIndex].titleAnswers;
+        const name = roomState.images[roomState.currentImageIndex].titleName;
         this.animeInformation = {
           name: name,
           src: src,

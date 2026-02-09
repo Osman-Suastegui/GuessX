@@ -81,7 +81,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   async createGame() {
-    let playerName = this.playerName.trim();
+    const playerName = this.playerName.trim();
     if (!playerName || playerName.length < 2) {
       return;
     }
@@ -124,7 +124,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   async requestJoiningCode() {
     // Validate player name first
-    let playerName = this.playerName.trim();
+    const playerName = this.playerName.trim();
     if (!playerName || playerName.length < 2) {
       return;
     }

@@ -53,7 +53,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   onMessageSend(event: Event) {
     event.preventDefault(); // ❌ Previene la recarga
-    let playerName: string = localStorage.getItem("playerName") || ""
+    const playerName: string = localStorage.getItem("playerName") || ""
     const message = this.type.value?.trim();
 
     if (!message || message.length === 0) {
