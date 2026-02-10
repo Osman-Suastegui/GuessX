@@ -16,7 +16,6 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   @ViewChild('maskCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private ctx!: CanvasRenderingContext2D;
-
   // canvas and image are the same size
   private displayW = 0; // canvas or image width size
   private displayH = 0; // canvas or image height size
