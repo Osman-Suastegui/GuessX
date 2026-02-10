@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { TitleData } from './anime.model';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { TitleData } from './anime.model';
 
 @Injectable({
   providedIn: 'root',

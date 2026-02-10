@@ -25,7 +25,6 @@ export interface RoomState {
   owner: string;
   currentImageIndex: number;
   users: UserRoom[];
-
 }
 
 export interface ChatMessage {
@@ -36,4 +35,3 @@ export interface ChatMessage {
   ownMessage: boolean;
   isAnswer?: boolean;
 }
-

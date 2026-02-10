@@ -4,10 +4,9 @@ import { TimeBarComponent } from '../time-bar/time-bar.component';
 @Component({
   selector: 'app-image-viewer',
   templateUrl: './image-viewer.component.html',
-  styleUrl: './image-viewer.component.css'
+  styleUrl: './image-viewer.component.css',
 })
 export class ImageViewerComponent implements AfterViewInit, OnChanges {
-
   @ViewChild(TimeBarComponent, { static: true }) timerBar!: TimeBarComponent;
   /** Size of each reveal window (in CSS px) */
   @Input() fragWidth = 100;
@@ -18,23 +17,23 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
   private ctx!: CanvasRenderingContext2D;
 
-  // canvas and image are the same size 
-  private displayW = 0; // canvas or image width size 
+  // canvas and image are the same size
+  private displayW = 0; // canvas or image width size
   private displayH = 0; // canvas or image height size
-  
-  private availableSquares: { r: number, c: number }[] = [];
+
+  private availableSquares: { r: number; c: number }[] = [];
   public currentHint: number = 1;
   public maxHints: number = 9;
   @Input() animeInformation: any = {
-    name: "",
-    src: "",
-    answers: []
-  }
+    name: '',
+    src: '',
+    answers: [],
+  };
   public animeImageSrc: string = '';
   public isTheWholeAnimeRevealed: boolean = false;
 
-  // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3, 
-  // the image will be divided into 15 fragments (5 rows x 3 columns). 
+  // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3,
+  // the image will be divided into 15 fragments (5 rows x 3 columns).
   // Each hint will reveal one of these fragments
   private gridRows = 5;
   private gridCols = 3;
@@ -82,8 +81,8 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     const canvas = this.canvasRef.nativeElement;
 
     // // size the canvas backing store
-    canvas.width = this.displayW
-    canvas.height = this.displayH
+    canvas.width = this.displayW;
+    canvas.height = this.displayH;
 
     this.ctx = canvas.getContext('2d')!;
 
@@ -91,7 +90,6 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     this.ctx.fillStyle = 'rgba(0,0,0,1)';
     this.ctx.fillRect(0, 0, this.displayW, this.displayH);
     this.animeImageSrc = this.animeInformation.src;
-
   }
 
   /** Call this to clear one more random hole */
@@ -100,7 +98,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
     // pick a random available square
     const randomIndex = Math.floor(Math.random() * this.availableSquares.length);
-    
+
     const { r, c } = this.availableSquares[randomIndex];
     // remove that square from the available ones so we dont repeat it
     this.availableSquares.splice(randomIndex, 1);
@@ -144,5 +142,4 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     this.ctx.clearRect(0, 0, this.displayW, this.displayH);
     this.isTheWholeAnimeRevealed = true;
   }
-
 }

@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges,OnInit, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-time-bar',
   templateUrl: './time-bar.component.html',
-  styleUrl: './time-bar.component.css'
+  styleUrl: './time-bar.component.css',
 })
 export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   @Input() roundDuration!: number;
@@ -22,7 +22,6 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   private endTime!: number;
 
   ngOnInit(): void {
-
     this.startTimer();
   }
 
@@ -46,7 +45,7 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
       const remaining = Math.max(this.endTime - now, 0);
       this.timeLeft = Math.ceil(remaining / 1000);
       this.progress = (remaining / (this.roundDuration * 1000)) * 100;
-      this.progress2 = 100- (remaining / (this.roundDuration * 1000)) * 100;
+      this.progress2 = 100 - (remaining / (this.roundDuration * 1000)) * 100;
       if (remaining <= 0) {
         this.clearTimer();
         this.timeEnded.emit();
@@ -90,8 +89,4 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
       return 'bg-rose-500';
     }
   }
-
-
-
-
 }

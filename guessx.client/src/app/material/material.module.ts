@@ -1,13 +1,13 @@
 // material.module.ts
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   exports: [
@@ -18,7 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatMenuModule,
     MatChipsModule,
     MatProgressSpinnerModule,
-    MatDialogModule
-  ]
+    MatDialogModule,
+  ],
 })
-export class MaterialModule { }
+export class MaterialModule {}

@@ -8,9 +8,8 @@ describe('ImageViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ImageViewerComponent]
-    })
-    .compileComponents();
+      declarations: [ImageViewerComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ImageViewerComponent);
     component = fixture.componentInstance;

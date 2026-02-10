@@ -6,54 +6,30 @@
       <h1 class="text-5xl font-bold text-white mb-2 font-gaming">
         <span class="text-cyan-400">Guess</span>
         <span class="text-white">X</span>
-        <img
-          src="assets/logo/coloredLogoTransparent.png"
-          class="inline-block w-32 h-32 mx-2"
-          alt="Logo"
-        />
+        <img src="assets/logo/coloredLogoTransparent.png" class="inline-block w-32 h-32 mx-2" alt="Logo" />
       </h1>
-      <p class="text-cyan-300 text-lg uppercase tracking-wider font-gaming">
-        Anime Drawing Game
-      </p>
+      <p class="text-cyan-300 text-lg uppercase tracking-wider font-gaming">Anime Drawing Game</p>
     </div>
 
     <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
       <!-- Left Section - Player Setup -->
       <div class="space-y-6">
-        <div
-          class="bg-gray-700 border border-cyan-400/30 rounded-lg p-6 h-full flex flex-col"
-        >
-          <h2
-            class="text-xl font-bold text-cyan-400 mb-4 text-center uppercase tracking-wide font-gaming"
-          >
-            Join the Game
-          </h2>
+        <div class="bg-gray-700 border border-cyan-400/30 rounded-lg p-6 h-full flex flex-col">
+          <h2 class="text-xl font-bold text-cyan-400 mb-4 text-center uppercase tracking-wide font-gaming">Join the Game</h2>
 
           <!-- Player Avatar -->
           <div class="flex justify-center mb-6">
-            <div
-              class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center border-2 border-cyan-300"
-            >
-              <svg
-                class="w-10 h-10 text-white"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                />
+            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center border-2 border-cyan-300">
+              <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
               </svg>
             </div>
           </div>
 
           <!-- Name Input -->
           <div class="mb-6 flex-grow">
-            <label
-              class="block text-cyan-300 text-sm font-medium mb-2 uppercase tracking-wide font-gaming"
-            >
-              Player Name
-            </label>
+            <label class="block text-cyan-300 text-sm font-medium mb-2 uppercase tracking-wide font-gaming"> Player Name </label>
             <input
               type="text"
               placeholder="Enter your name..."
@@ -70,7 +46,7 @@
             class="w-full py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
             *ngIf="!isNameValid()"
           >
-            {{ 'Enter name'  }}
+            {{ "Enter name" }}
           </button>
           <div *ngIf="isNameValid()" class="flex gap-4">
             <button
@@ -78,7 +54,7 @@
               [class]="getButtonClasses()"
               class="w-1/2 py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
             >
-              {{ 'Join Room'  }}
+              {{ "Join Room" }}
             </button>
 
             <button
@@ -87,7 +63,7 @@
               [class]="getButtonClasses()"
               class="w-1/2 bg-pink-500 hover:bg-pink-600 py-3 px-6 rounded font-bold uppercase tracking-wide transition-all duration-200 font-gaming"
             >
-              {{ 'Create Room'  }}
+              {{ "Create Room" }}
             </button>
           </div>
         </div>
@@ -96,9 +72,7 @@
       <!-- Right Section - Instructions Carousel -->
       <div class="space-y-6 flex flex-col justify-center p-0">
         <!-- Carousel Container -->
-        <div
-          class="relative bg-gray-700 border border-cyan-400/30 rounded-lg p-6 h-full overflow-hidden flex flex-col items-center justify-center"
-        >
+        <div class="relative bg-gray-700 border border-cyan-400/30 rounded-lg p-6 h-full overflow-hidden flex flex-col items-center justify-center">
           <!-- Carousel Content -->
           <div class="relative h-full w-full">
             <!-- Instruction Steps using ng-template -->
@@ -111,17 +85,13 @@
                 [class.translate-x-full]="currentStep > i"
                 [class.-translate-x-full]="currentStep < i"
               >
-                <ng-container
-                  *ngTemplateOutlet="instructionCard; context: { step: step }"
-                ></ng-container>
+                <ng-container *ngTemplateOutlet="instructionCard; context: { step: step }"></ng-container>
               </div>
             </ng-container>
           </div>
 
           <!-- Carousel Navigation Dots -->
-          <div
-            class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 carousel-dots gap-4"
-          >
+          <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 carousel-dots gap-4">
             <button
               *ngFor="let step of steps; let i = index"
               (click)="setCurrentStep(i)"
@@ -137,18 +107,8 @@
             (click)="previousStep()"
             class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-cyan-400/20 hover:bg-cyan-400/40 rounded-full flex items-center justify-center transition-colors duration-200"
           >
-            <svg
-              class="w-4 h-4 text-cyan-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              ></path>
+            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
 
@@ -156,18 +116,8 @@
             (click)="nextStep()"
             class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-cyan-400/20 hover:bg-cyan-400/40 rounded-full flex items-center justify-center transition-colors duration-200"
           >
-            <svg
-              class="w-4 h-4 text-cyan-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              ></path>
+            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
           </button>
         </div>
@@ -176,9 +126,7 @@
 
     <!-- Footer -->
     <div class="mt-8 text-center">
-      <p class="text-gray-400 text-sm font-gaming">
-        Ready to test your anime knowledge? Join now and start a game!
-      </p>
+      <p class="text-gray-400 text-sm font-gaming">Ready to test your anime knowledge? Join now and start a game!</p>
     </div>
   </div>
 </div>
@@ -186,13 +134,8 @@
 <!-- Instruction Card Template -->
 <ng-template #instructionCard let-step="step">
   <div class="text-center w-full">
-    <div
-      class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-      [class]="step.bgColor"
-    >
-      <span class="text-white font-bold text-2xl font-gaming">{{
-        step.number
-      }}</span>
+    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" [class]="step.bgColor">
+      <span class="text-white font-bold text-2xl font-gaming">{{ step.number }}</span>
     </div>
     <h3 class="text-lg font-bold text-white mb-2 font-gaming">
       {{ step.title }}

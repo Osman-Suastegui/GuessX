@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './room-id-dialog.component.html',
-  styleUrl: './room-id-dialog.component.css'
+  styleUrl: './room-id-dialog.component.css',
 })
 export class RoomIdDialogComponent {
   readonly dialogRef = inject(MatDialogRef<RoomIdDialogComponent>);
@@ -37,4 +37,3 @@ export class RoomIdDialogComponent {
     return this.roomId.trim().length > 0;
   }
 }
-

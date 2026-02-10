@@ -8,9 +8,8 @@ describe('TimeBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimeBarComponent]
-    })
-    .compileComponents();
+      declarations: [TimeBarComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TimeBarComponent);
     component = fixture.componentInstance;

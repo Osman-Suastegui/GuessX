@@ -1,16 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Anime, AnimeImage, TitleData } from '../anime.model';
-import { JikanService } from '../jikan.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { GeneralService } from '../../utils/general.service';
-import { AnimeService } from '../anime.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime } from 'rxjs';
+import { GeneralService } from '../../utils/general.service';
+import { Anime, AnimeImage, TitleData } from '../anime.model';
+import { AnimeService } from '../anime.service';
+import { JikanService } from '../jikan.service';
 
 @Component({
   selector: 'app-anime-images',
   templateUrl: './anime-images.component.html',
-  styleUrl: './anime-images.component.css'
+  styleUrl: './anime-images.component.css',
 })
 export class AnimeImagesComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<AnimeImagesComponent>);
@@ -34,7 +34,7 @@ export class AnimeImagesComponent implements OnInit {
     private _jikanService: JikanService,
     private _animeService: AnimeService,
     private fb: FormBuilder,
-    private _generalService: GeneralService
+    private _generalService: GeneralService,
   ) {}
 
   ngOnInit(): void {
@@ -49,13 +49,11 @@ export class AnimeImagesComponent implements OnInit {
       this.defaultGenres = saved.genres;
       this.genresControl.setValue(saved.genres);
 
-      const titlesControls = saved.titleAnswers.map(title =>
-        this.fb.group({ title: [title] })
-      );
+      const titlesControls = saved.titleAnswers.map((title) => this.fb.group({ title: [title] }));
       this.titlesForm.setControl('titlesArray', this.fb.array(titlesControls));
 
       // Marcar imágenes como seleccionadas
-      const selectedImages: AnimeImage[] = (saved.titleImages || []).map(img => ({
+      const selectedImages: AnimeImage[] = (saved.titleImages || []).map((img) => ({
         ...img,
         selected: true,
         imageType: 'anime',
@@ -65,7 +63,7 @@ export class AnimeImagesComponent implements OnInit {
       const anime = this.data as Anime;
       this.titleControl.setValue(anime.title);
 
-      this.defaultGenres = anime.genres.map(g => g.name);
+      this.defaultGenres = anime.genres.map((g) => g.name);
       this.genresControl.setValue(this.defaultGenres);
 
       this.setTitles(anime);
@@ -82,7 +80,7 @@ export class AnimeImagesComponent implements OnInit {
     for (const t of anime.titles) {
       if (t.title) uniqueTitles.add(t.title);
     }
-    const titlesControls = Array.from(uniqueTitles).map(title => this.fb.group({ title: [title] }));
+    const titlesControls = Array.from(uniqueTitles).map((title) => this.fb.group({ title: [title] }));
     this.titlesForm.setControl('titlesArray', this.fb.array(titlesControls));
   }
 
@@ -104,7 +102,7 @@ export class AnimeImagesComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching anime images:', error);
         this.dialogRef.close([]);
-      }
+      },
     });
   }
 
@@ -130,13 +128,13 @@ export class AnimeImagesComponent implements OnInit {
 
   searchAnime(query: string = ''): void {
     if (!query) return;
-    this._jikanService.getAnimeList({ q: query, limit: 10 }).subscribe(res => {
+    this._jikanService.getAnimeList({ q: query, limit: 10 }).subscribe((res) => {
       this.searchResults = res.data;
     });
   }
 
   linkAnime(anime: Anime) {
-    this._jikanService.getAnimePictures(anime.mal_id).subscribe(res => {
+    this._jikanService.getAnimePictures(anime.mal_id).subscribe((res) => {
       const newImages = res.map((img: any) => ({
         imageUrl: img.imageUrl,
         selected: false,
@@ -145,15 +143,13 @@ export class AnimeImagesComponent implements OnInit {
       this.imagesUrls = [...this.imagesUrls, ...newImages];
 
       const existingTitles = new Set(this.titlesArray.value.map((t: any) => t.title));
-      const newTitles = anime.titles
-        .map(t => t.title)
-        .filter(t => t && !existingTitles.has(t));
+      const newTitles = anime.titles.map((t) => t.title).filter((t) => t && !existingTitles.has(t));
 
-      newTitles.forEach(title => this.titlesArray.push(this.fb.group({ title })));
+      newTitles.forEach((title) => this.titlesArray.push(this.fb.group({ title })));
     });
   }
 
-  activate(active:boolean): void {
+  activate(active: boolean): void {
     const selectedImages = this.selectedImagesControl.value ?? [];
     const answers = this.titlesArray.value;
     const title = this.titleControl.value;
@@ -167,17 +163,17 @@ export class AnimeImagesComponent implements OnInit {
       titleAnswers: answers.map((answer: any) => answer.title),
       status: active ? 'Active' : 'Archived',
     };
-    const id = (this.data as TitleData).id ;
+    const id = (this.data as TitleData).id;
     if (id !== undefined) {
       this._animeService.updateAnimeRequest(id, addObject).subscribe({
-      next: (response) => {
-        this._generalService.showMessage('Anime request updated successfully!', 'success');
-        this.dialogRef.close(response);
-      },
-      error: (error) => {
-        this._generalService.showMessage('Error updating anime request: ' + error.message, 'error');
-        this.dialogRef.close([]);
-      }
+        next: (response) => {
+          this._generalService.showMessage('Anime request updated successfully!', 'success');
+          this.dialogRef.close(response);
+        },
+        error: (error) => {
+          this._generalService.showMessage('Error updating anime request: ' + error.message, 'error');
+          this.dialogRef.close([]);
+        },
       });
     } else {
       this._generalService.showMessage('Invalid ID: Unable to update anime request.', 'error');
@@ -210,7 +206,7 @@ export class AnimeImagesComponent implements OnInit {
         error: (error) => {
           this._generalService.showMessage('Error updating anime request: ' + error.message, 'error');
           this.dialogRef.close([]);
-        }
+        },
       });
     } else {
       this._animeService.registerAnimeRequest(addObject).subscribe({
@@ -221,7 +217,7 @@ export class AnimeImagesComponent implements OnInit {
         error: (error) => {
           this._generalService.showMessage('Error registering anime request: ' + error.message, 'error');
           this.dialogRef.close([]);
-        }
+        },
       });
     }
   }
@@ -231,7 +227,7 @@ export class AnimeImagesComponent implements OnInit {
     if (allSelected) {
       this.selectedImagesControl.setValue([]);
     } else {
-      const allImages: AnimeImage[] = this.imagesUrls.map(image => ({
+      const allImages: AnimeImage[] = this.imagesUrls.map((image) => ({
         imageUrl: image.imageUrl,
         selected: true,
         imageType: 'anime',

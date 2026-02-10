@@ -1,7 +1,6 @@
-.main-container{
+.main-container {
   border-radius: 0px;
 }
-
 
 .image:hover {
   cursor: pointer;
@@ -9,8 +8,7 @@
 }
 
 ::ng-deep .link-anime-menu.mat-mdc-menu-panel {
-  min-width: 300px !important;  /* Aumenta el ancho mínimo */
-  max-width: none !important;   /* Elimina el límite por defecto */
-  width: 100% !important;      /* O fija un ancho */
+  min-width: 300px !important; /* Aumenta el ancho mínimo */
+  max-width: none !important; /* Elimina el límite por defecto */
+  width: 100% !important; /* O fija un ancho */
 }
-

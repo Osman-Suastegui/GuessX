@@ -1,45 +1,61 @@
-<div class=" bg-card flex flex-col h-full ">
+<div class="bg-card flex flex-col h-full">
   <!-- Header -->
   <div class="py-2 px-4 border-b border-purple-500/30 rounded-t-lg bg-purple-600/20">
     <h3 class="font-gaming font-bold text-gaming-neon-pink">Chat & Guesses</h3>
   </div>
 
   <!-- Mensajes (Scroll interno) -->
-  <div class="flex-1 overflow-y-auto scroll-custom p-4 gap-3 flex flex-col bg-white/5 " #chatContainer>
+  <div class="flex-1 overflow-y-auto scroll-custom p-4 gap-3 flex flex-col bg-white/5" #chatContainer>
     @for (message of messages; track $index) {
-        @if (message.sender === 'system') {
-          <div class="bg-gray-600/20 border border-gray-500/30 rounded-lg p-2 text-gray-300 text-center text-xs italic max-w-[90%] mx-auto">
-            <span>{{ message.text }}</span>
-          </div>
-        } @else if (!message.ownMessage) {
-          <div class="bg-gaming-neon/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]"
-               [class.border-green-500]="message.isAnswer"
-               [class.bg-green-500-20]="message.isAnswer">
-            <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
-            <span class="text-gaming-neon text-sm" [class.text-green-400]="message.isAnswer" [class.font-bold]="message.isAnswer">{{ message.text }}</span>
-            @if (message.isAnswer) {
-              <span class="text-green-400 text-xs">✓ Correct answer!</span>
-            }
-          </div>
-        } @else {
-          <div class="bg-gaming-neon-pink/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%] ml-auto"
-               [class.border-green-500]="message.isAnswer"
-               [class.bg-green-500]="message.isAnswer">
-            <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
-            <span class="text-gaming-neon-pink text-sm" [class.text-green-400]="message.isAnswer" [class.font-bold]="message.isAnswer">{{ message.text }}</span>
-            @if (message.isAnswer) {
-              <span class="text-green-400 text-xs">✓ Correct answer!</span>
-            }
-          </div>
-        }
+      @if (message.sender === "system") {
+        <div class="bg-gray-600/20 border border-gray-500/30 rounded-lg p-2 text-gray-300 text-center text-xs italic max-w-[90%] mx-auto">
+          <span>{{ message.text }}</span>
+        </div>
+      } @else if (!message.ownMessage) {
+        <div
+          class="bg-gaming-neon/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%]"
+          [class.border-green-500]="message.isAnswer"
+          [class.bg-green-500-20]="message.isAnswer"
+        >
+          <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
+          <span class="text-gaming-neon text-sm" [class.text-green-400]="message.isAnswer" [class.font-bold]="message.isAnswer">{{
+            message.text
+          }}</span>
+          @if (message.isAnswer) {
+            <span class="text-green-400 text-xs">✓ Correct answer!</span>
+          }
+        </div>
+      } @else {
+        <div
+          class="bg-gaming-neon-pink/10 border border-purple-500/20 rounded-lg p-3 text-white flex flex-col gap-1 max-w-[90%] ml-auto"
+          [class.border-green-500]="message.isAnswer"
+          [class.bg-green-500]="message.isAnswer"
+        >
+          <span class="text-gaming-neon-pink font-bold">{{ message.sender }}</span>
+          <span class="text-gaming-neon-pink text-sm" [class.text-green-400]="message.isAnswer" [class.font-bold]="message.isAnswer">{{
+            message.text
+          }}</span>
+          @if (message.isAnswer) {
+            <span class="text-green-400 text-xs">✓ Correct answer!</span>
+          }
+        </div>
+      }
     }
   </div>
 
   <!-- Input de chat -->
-  <form class="py-3 px-4 border-t border-purple-500/30 bg-purple-600/20"  (submit)="onMessageSend($event)" >
+  <form class="py-3 px-4 border-t border-purple-500/30 bg-purple-600/20" (submit)="onMessageSend($event)">
     <div class="flex gap-2 items-center">
-      <input [formControl]="type" type="text" placeholder="Type your guess..."class="text-white py-2 px-3 bg-white/10 border border-white/20 rounded-md flex-1 w-full h-10"/>
-      <button type="submit" class="bg-purple-500/30 hover:bg-purple-500/50 text-white font-bold py-2 px-2 rounded-full flex items-center  transition duration-300 ease-in-out">
+      <input
+        [formControl]="type"
+        type="text"
+        placeholder="Type your guess..."
+        class="text-white py-2 px-3 bg-white/10 border border-white/20 rounded-md flex-1 w-full h-10"
+      />
+      <button
+        type="submit"
+        class="bg-purple-500/30 hover:bg-purple-500/50 text-white font-bold py-2 px-2 rounded-full flex items-center transition duration-300 ease-in-out"
+      >
         <mat-icon class="text-purple-200">send</mat-icon>
       </button>
     </div>
