@@ -9,7 +9,7 @@
       </div>
     </section>
     <section class="flex items-center justify-end gap-2">
-      <p class="text-sm text-gray-400">Total Players: 3</p>
+      <p class="text-sm text-gray-400">Total Players: {{ roomState?.users?.length || 0 }}</p>
       <button
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:opacity-50 border border-gaming-neon-pink bg-background hover:text-accent-foreground h-9 rounded-md px-3 border-gaming-neon-pink text-gaming-neon-pink hover:bg-gaming-neon-pink/10"
       >

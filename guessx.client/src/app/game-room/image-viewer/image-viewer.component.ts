@@ -1,4 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { SIGNAL_CONST } from '../../const/signal.const';
+import { GameSignalRService } from '../../services/game-signal-r.service';
+import { RoomState } from '../room.model';
 import { TimeBarComponent } from '../time-bar/time-bar.component';
 
 @Component({
@@ -7,35 +10,38 @@ import { TimeBarComponent } from '../time-bar/time-bar.component';
   styleUrl: './image-viewer.component.css',
 })
 export class ImageViewerComponent implements AfterViewInit, OnChanges {
-  @ViewChild(TimeBarComponent, { static: true }) timerBar!: TimeBarComponent;
   /** Size of each reveal window (in CSS px) */
   @Input() fragWidth = 100;
   @Input() fragHeight = 100;
-
-  @ViewChild('imgEl', { static: true }) imgRef!: ElementRef<HTMLImageElement>;
-  @ViewChild('maskCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
-
-  private ctx!: CanvasRenderingContext2D;
-  // canvas and image are the same size
-  private displayW = 0; // canvas or image width size
-  private displayH = 0; // canvas or image height size
-
-  private availableSquares: { r: number; c: number }[] = [];
-  public currentHint: number = 1;
-  public maxHints: number = 9;
+  @Input() totalPlayers: number = 0;
   @Input() animeInformation: any = {
     name: '',
     src: '',
     answers: [],
   };
+  @Input() roomState: RoomState | null = null;
+
+  public currentHint: number = 1;
+  public maxHints: number = 3;
   public animeImageSrc: string = '';
   public isTheWholeAnimeRevealed: boolean = false;
+
+  @ViewChild(TimeBarComponent, { static: true }) timerBar!: TimeBarComponent;
+  @ViewChild('imgEl', { static: true }) imgRef!: ElementRef<HTMLImageElement>;
+  @ViewChild('maskCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+
+  private ctx!: CanvasRenderingContext2D;
+  private displayW = 0; // canvas or image width size
+  private displayH = 0; // canvas or image height size
+  private availableSquares: { r: number; c: number }[] = [];
 
   // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3,
   // the image will be divided into 15 fragments (5 rows x 3 columns).
   // Each hint will reveal one of these fragments
   private gridRows = 5;
   private gridCols = 3;
+
+  constructor(public gameSignalRService: GameSignalRService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
@@ -45,6 +51,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
       this.setUpImageViewer();
     }
   }
+
   ngAfterViewInit() {
     this.setUpImageViewer();
   }
@@ -120,7 +127,18 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   handleTimeEnd(): void {
     // Maximum hints reached, reveal the whole image
     if (this.isMaximunHintsReached()) {
+      console.log("Maximum hints reached. Revealing the whole anime...");
       this.revealTheWholeAnime();
+      // after we reveal the whole anime we should show the next one after a few seconds, for example 5 seconds
+      setTimeout(() => {
+        // we send a signal to the server to show the next anime
+        // only the owner of the room should send this signal,
+        // because if we send it from multiple clients, 
+        // it could cause showing the next picture multiple times
+        if(this.roomState?.owner === localStorage.getItem('playerName')) {
+          this.gameSignalRService.invoke(SIGNAL_CONST.SHOW_NEXT_PICTURE, this.roomState?.roomId);
+        }
+      }, 2000);
       return;
     }
     // Reveal a hint

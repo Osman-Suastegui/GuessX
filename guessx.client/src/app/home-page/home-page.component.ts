@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
 import { GameSignalRService } from '../services/game-signal-r.service';
 import { RoomIdDialogComponent } from './room-id-dialog/room-id-dialog.component';
 
@@ -83,19 +82,19 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     // Open dialog to get room ID
-    const dialogRef = this.dialog.open(RoomIdDialogComponent, {
-      width: '450px',
-      disableClose: false,
-      data: null,
-    });
-
-    let numberOfPictures = await firstValueFrom(dialogRef.afterClosed());
-    if (numberOfPictures && numberOfPictures.trim().length > 0) {
-      numberOfPictures = numberOfPictures.trim();
-    }
-    if (isNaN(numberOfPictures)) {
-      return;
-    }
+    // const dialogRef = this.dialog.open(RoomIdDialogComponent, {
+    //   width: '450px',
+    //   disableClose: false,
+    //   data: null,
+    // });
+    const numberOfPictures = '3';
+    // let numberOfPictures = await firstValueFrom(dialogRef.afterClosed());
+    // if (numberOfPictures && numberOfPictures.trim().length > 0) {
+    //   numberOfPictures = numberOfPictures.trim();
+    // }
+    // if (isNaN(numberOfPictures)) {
+    //   return;
+    // }
 
     this.isLoading = true;
     this.stopCarousel();

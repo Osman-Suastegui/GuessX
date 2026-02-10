@@ -11,6 +11,7 @@ import { ChatMessage } from '../room.model';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatContainer') private chatContainer!: ElementRef<HTMLElement>;
+
   @Input() roomId: string = '';
   @Input() animeInformation: any = {
     name: '',

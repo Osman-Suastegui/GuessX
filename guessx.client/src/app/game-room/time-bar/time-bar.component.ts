@@ -20,6 +20,7 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   private intervalId: any;
   private startTime!: number;
   private endTime!: number;
+  private timerEnded: boolean = false;
 
   ngOnInit(): void {
     this.startTimer();
@@ -37,16 +38,21 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   private startTimer(): void {
+    this.timerEnded = false;
     this.startTime = Date.now();
     this.endTime = this.startTime + this.roundDuration * 1000;
 
+    // THIS FUNCTION IS EXECUTING INFINITELY EVERY 50 MS 
+    // TODO: STOP EXECUTING WHEN  THE REMAINING IS 0
     this.intervalId = setInterval(() => {
       const now = Date.now();
       const remaining = Math.max(this.endTime - now, 0);
       this.timeLeft = Math.ceil(remaining / 1000);
       this.progress = (remaining / (this.roundDuration * 1000)) * 100;
       this.progress2 = 100 - (remaining / (this.roundDuration * 1000)) * 100;
-      if (remaining <= 0) {
+      
+      if (remaining <= 0 && !this.timerEnded) {
+        this.timerEnded = true;
         this.clearTimer();
         this.timeEnded.emit();
       }
@@ -59,8 +65,9 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   private clearTimer(): void {
-    if (this.intervalId) {
+    if (this.intervalId !== null && this.intervalId !== undefined) {
       clearInterval(this.intervalId);
+      this.intervalId = null;
     }
   }
 

@@ -7,7 +7,7 @@ import { GameSignalRService } from './../../services/game-signal-r.service';
   templateUrl: './game-room.component.html',
   styleUrl: './game-room.component.css',
 })
-export class GameRoomComponent implements AfterViewInit, OnDestroy {
+export class GameRoomComponent implements AfterViewInit, OnDestroy, OnDestroy {
   animeInformation: any = {
     name: 'Demon Slayer',
     src: '../../../assets/demon_slayer.webp',

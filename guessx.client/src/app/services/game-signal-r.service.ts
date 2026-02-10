@@ -7,11 +7,11 @@ import { ChatMessage, RoomState } from '../game-room/room.model';
   providedIn: 'root',
 })
 export class GameSignalRService {
-  private hubConnection!: signalR.HubConnection;
   public roomState$ = new BehaviorSubject<RoomState | null>(null);
-
   public messages$ = new Subject<ChatMessage>();
 
+  private hubConnection!: signalR.HubConnection;
+  
   constructor() {}
 
   async startConnection(hubUrl: string) {

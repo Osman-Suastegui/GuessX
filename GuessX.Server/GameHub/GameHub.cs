@@ -1,4 +1,7 @@
-﻿using GuessX.Server.Application.Services;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using GuessX.Server.Application.Services;
 using Microsoft.AspNetCore.SignalR;
 
 namespace GuessX.Server.GameHub
@@ -65,7 +68,18 @@ namespace GuessX.Server.GameHub
                 await Clients.Group(roomId).SendAsync("roomUpdated", room);
             }
 
-
+        }
+        
+        public async Task ShowNextPicture(string roomId)
+        {
+            Console.WriteLine("Show next picture signal received for room: " + roomId);
+            Room room = _rooms.GetRoom(roomId);
+            if (room.CurrentImageIndex < room.Images.Count - 1)
+            {
+                room.CurrentImageIndex++;
+                Console.WriteLine($"Room: {room.ToString()}");
+                Clients.Group(roomId).SendAsync("roomUpdated", room);
+            }
         }
 
     }
