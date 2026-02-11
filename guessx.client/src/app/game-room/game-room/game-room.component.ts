@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { StorageService } from '../../services/storage.service';
 import { GeneralService } from '../../utils/general.service';
 import { RoomState } from '../room.model';
 import { GameSignalRService } from './../../services/game-signal-r.service';
@@ -7,35 +8,36 @@ import { GameSignalRService } from './../../services/game-signal-r.service';
   templateUrl: './game-room.component.html',
   styleUrl: './game-room.component.css',
 })
-export class GameRoomComponent implements AfterViewInit, OnDestroy, OnDestroy {
-  animeInformation: any = {
+export class GameRoomComponent implements OnInit, OnDestroy {
+  public animeInformation: any = {
     name: 'Demon Slayer',
     src: '../../../assets/demon_slayer.webp',
     answers: ['Demon Slayer', 'Kimetsu no Yaiba'],
   };
-  roomId: string = '';
-  roomState: RoomState | null = null;
-  // GameSignalRService
+
+  public roomId: string = '';
+  public roomState: RoomState | null = null;
+
   constructor(
     public gameSignalRService: GameSignalRService,
     public generalService: GeneralService,
+    private storageService: StorageService,
   ) {}
 
-  ngAfterViewInit() {
+  ngOnInit(): void {
     this.setListeners();
     this.initializeRoom();
   }
 
   private async initializeRoom() {
-    console.log('Initializing room...');
     // sacar el id de la ruta
     this.roomId = window.location.pathname.split('/').pop() || '';
-    let playerName: string = localStorage.getItem('playerName') || '';
+    let playerName: string = this.storageService.getPlayerName() || '';
 
     // if we dont have a play name, we open a prompt to ask for it, and save it in local storage
     if (!playerName) {
       playerName = prompt('Please enter your name:') || 'Anonymous';
-      localStorage.setItem('playerName', playerName);
+      this.storageService.setPlayerName(playerName);
     }
 
     try {
@@ -52,32 +54,31 @@ export class GameRoomComponent implements AfterViewInit, OnDestroy, OnDestroy {
 
   private setListeners() {
     this.gameSignalRService.roomState$.subscribe((roomState: RoomState | null) => {
-      this.roomState = roomState;
-      if (roomState) {
-        console.log('Room state updated:', roomState);
-        const src = roomState.images[roomState.currentImageIndex].titleImages[0].imageUrl;
-        const answers = roomState.images[roomState.currentImageIndex].titleAnswers;
-        const name = roomState.images[roomState.currentImageIndex].titleName;
-        this.animeInformation = {
-          name: name,
-          src: src,
-          answers: answers,
-        };
+      if (!roomState) {
+        return;
       }
+
+      this.roomState = roomState;
+      console.log('Room state updated:', roomState);
+
+      const currentImg = roomState.images[roomState.currentImageIndex];
+
+      this.animeInformation = {
+        name: currentImg.titleName,
+        src: currentImg.titleImages[0].imageUrl,
+        answers: currentImg.titleAnswers,
+      };
     });
   }
 
   copyRoomLink(): void {
     const roomLink = window.location.href;
     navigator.clipboard.writeText(roomLink).then(
-      () => {
-        this.generalService.showMessage('Room link copied to clipboard!', 'snackbar-success');
-      },
-      (err) => {
-        this.generalService.showMessage('Failed to copy the room link.', 'snackbar-error');
-      },
+      () => this.generalService.showMessage('Room link copied to clipboard!', 'snackbar-success'),
+      () => this.generalService.showMessage('Failed to copy the room link.', 'snackbar-error'),
     );
   }
+
   ngOnDestroy(): void {
     this.gameSignalRService.roomState$.unsubscribe();
   }

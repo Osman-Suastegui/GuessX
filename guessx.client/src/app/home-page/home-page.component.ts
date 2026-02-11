@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GameSignalRService } from '../services/game-signal-r.service';
+import { StorageService } from '../services/storage.service';
 import { RoomIdDialogComponent } from './room-id-dialog/room-id-dialog.component';
 
 @Component({
@@ -19,7 +20,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
   currentStep: number = 0;
   steps: number[] = [0, 1, 2, 3];
   roomId: string = '';
-  private carouselInterval: any;
 
   instructionSteps = [
     {
@@ -48,10 +48,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
     },
   ];
 
+  private carouselInterval: any;
+
   constructor(
     private router: Router,
     private gameSignalRService: GameSignalRService,
     private dialog: MatDialog,
+    private storageService: StorageService,
   ) {}
 
   ngOnInit() {
@@ -87,7 +90,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     //   disableClose: false,
     //   data: null,
     // });
-    const numberOfPictures = '3';
+    const numberOfPictures = '5';
     // let numberOfPictures = await firstValueFrom(dialogRef.afterClosed());
     // if (numberOfPictures && numberOfPictures.trim().length > 0) {
     //   numberOfPictures = numberOfPictures.trim();
@@ -101,7 +104,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     try {
       // Store player name in localStorage for game use
-      localStorage.setItem('playerName', playerName);
+      this.storageService.setPlayerName(playerName);
 
       // Start SignalR connection
       await this.gameSignalRService.startConnection('http://localhost:5290/gameHub');
@@ -133,7 +136,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(async (roomId: string | undefined) => {
       if (roomId && roomId.trim().length > 0) {
         // Store player name in localStorage
-        localStorage.setItem('playerName', playerName);
+        this.storageService.setPlayerName(playerName);
 
         // Start SignalR connection if not already started
         try {

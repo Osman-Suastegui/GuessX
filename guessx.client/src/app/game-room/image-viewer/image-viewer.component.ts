@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { SIGNAL_CONST } from '../../const/signal.const';
 import { GameSignalRService } from '../../services/game-signal-r.service';
+import { StorageService } from '../../services/storage.service';
 import { RoomState } from '../room.model';
 import { TimeBarComponent } from '../time-bar/time-bar.component';
 
@@ -25,6 +26,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   public maxHints: number = 3;
   public animeImageSrc: string = '';
   public isTheWholeAnimeRevealed: boolean = false;
+  public roundDuration: number = 3; // duration of each round in seconds
 
   @ViewChild(TimeBarComponent, { static: true }) timerBar!: TimeBarComponent;
   @ViewChild('imgEl', { static: true }) imgRef!: ElementRef<HTMLImageElement>;
@@ -41,7 +43,10 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   private gridRows = 5;
   private gridCols = 3;
 
-  constructor(public gameSignalRService: GameSignalRService) {}
+  constructor(
+    public gameSignalRService: GameSignalRService,
+    private storageService: StorageService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
@@ -49,6 +54,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
       this.currentHint = 0;
       this.restartTimer();
       this.setUpImageViewer();
+      this.isTheWholeAnimeRevealed = false;
     }
   }
 
@@ -127,15 +133,16 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   handleTimeEnd(): void {
     // Maximum hints reached, reveal the whole image
     if (this.isMaximunHintsReached()) {
-      console.log("Maximum hints reached. Revealing the whole anime...");
+      console.log('Maximum hints reached. Revealing the whole anime...');
       this.revealTheWholeAnime();
       // after we reveal the whole anime we should show the next one after a few seconds, for example 5 seconds
       setTimeout(() => {
         // we send a signal to the server to show the next anime
         // only the owner of the room should send this signal,
-        // because if we send it from multiple clients, 
+        // because if we send it from multiple clients,
         // it could cause showing the next picture multiple times
-        if(this.roomState?.owner === localStorage.getItem('playerName')) {
+        if (this.roomState?.owner === this.storageService.getPlayerName()) {
+          // SHOW NEXT PICTURE
           this.gameSignalRService.invoke(SIGNAL_CONST.SHOW_NEXT_PICTURE, this.roomState?.roomId);
         }
       }, 2000);
@@ -146,6 +153,8 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   }
 
   revealHint() {
+    // RELEAL NEXT HINT
+    this.gameSignalRService.invoke(SIGNAL_CONST.REVEAL_NEXT_HINT, this.roomState?.roomId);
     this.nextFragment();
     this.timerBar.resetTimer();
     this.currentHint++;
