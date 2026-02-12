@@ -17,6 +17,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
 
   public roomId: string = '';
   public roomState: RoomState | null = null;
+  public showSquareAt: { row: number; col: number } | null = null;
 
   constructor(
     public gameSignalRService: GameSignalRService,
@@ -60,14 +61,20 @@ export class GameRoomComponent implements OnInit, OnDestroy {
 
       this.roomState = roomState;
       console.log('Room state updated:', roomState);
-
       const currentImg = roomState.images[roomState.currentImageIndex];
 
-      this.animeInformation = {
-        name: currentImg.titleName,
-        src: currentImg.titleImages[0].imageUrl,
-        answers: currentImg.titleAnswers,
-      };
+      // if we join we want to show the current image;
+      if (roomState.currentEndPoint === 'ShowNextPicture' || roomState.currentEndPoint === 'JoinRoom') {
+        this.animeInformation = {
+          name: currentImg.titleName,
+          src: currentImg.titleImages[0].imageUrl,
+          answers: currentImg.titleAnswers,
+        };
+      }
+
+      if (roomState.currentEndPoint === 'RevealNextHint') {
+        this.showSquareAt = roomState.availableSquares[roomState.currentSquareToShowIndex || 0] || null;
+      }
     });
   }
 

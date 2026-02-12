@@ -55,11 +55,11 @@ module.exports = defineConfig([
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
     rules: {
       // OFF
-      '@angular-eslint/template/prefer-control-flow': 'off',
       '@angular-eslint/template/label-has-associated-control': 'off',
       '@angular-eslint/template/interactive-supports-focus': 'off',
       '@angular-eslint/template/click-events-have-key-events': 'off',
       // WARNING
+      '@angular-eslint/template/prefer-control-flow': 'warn',
       '@angular-eslint/template/elements-content': 'warn',
       '@angular-eslint/template/alt-text': 'warn',
     },

@@ -11,7 +11,7 @@ export class GameSignalRService {
   public messages$ = new Subject<ChatMessage>();
 
   private hubConnection!: signalR.HubConnection;
-  
+
   constructor() {}
 
   async startConnection(hubUrl: string) {
@@ -52,14 +52,19 @@ export class GameSignalRService {
     return this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected;
   }
 
-  createRoom(owner: string, numberOfPictures: number) {
-    return this.invoke('CreateRoom', owner, numberOfPictures);
+  createRoom(owner: string, numberOfPictures: number, gridRows: number, gridCols: number) {
+    return this.invoke('CreateRoom', owner, numberOfPictures, gridRows, gridCols);
   }
 
   async joinRoom(roomId: string, username: string) {
-    const roomState = await this.invoke('JoinRoom', roomId, username);
-    this.roomState$.next(roomState);
-    return roomState;
+    try {
+      const roomState = await this.invoke('JoinRoom', roomId, username);
+      this.roomState$.next(roomState);
+      return roomState;
+    } catch (error:any) {
+      console.error('Error joining room:', error.message);
+      // throw error;
+    }
   }
 
   invoke(method: string, ...args: any[]) {

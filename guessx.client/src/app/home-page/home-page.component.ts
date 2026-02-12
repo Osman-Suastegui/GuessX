@@ -49,6 +49,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ];
 
   private carouselInterval: any;
+  // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3,
+  // the image will be divided into 15 fragments (5 rows x 3 columns).
+  // Each hint will reveal one of these fragments
+  private gridRows = 5;
+  private gridCols = 3;
 
   constructor(
     private router: Router,
@@ -110,7 +115,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       await this.gameSignalRService.startConnection('http://localhost:5290/gameHub');
 
       // Create room and navigate to game room
-      this.roomId = await this.gameSignalRService.createRoom(playerName, parseInt(numberOfPictures));
+      this.roomId = await this.gameSignalRService.createRoom(playerName, parseInt(numberOfPictures), this.gridRows, this.gridCols);
       this.router.navigate(['/game-room/', this.roomId]);
     } catch (error) {
       console.error('Error starting game:', error);

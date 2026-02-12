@@ -21,6 +21,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     answers: [],
   };
   @Input() roomState: RoomState | null = null;
+  @Input() showSquareAt: { row: number; col: number } | null = null;
 
   public currentHint: number = 1;
   public maxHints: number = 3;
@@ -35,7 +36,6 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   private ctx!: CanvasRenderingContext2D;
   private displayW = 0; // canvas or image width size
   private displayH = 0; // canvas or image height size
-  private availableSquares: { r: number; c: number }[] = [];
 
   // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3,
   // the image will be divided into 15 fragments (5 rows x 3 columns).
@@ -50,11 +50,17 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
-      this.initAvailableSquares();
+      console.log('Anime information changed:', this.animeInformation);
       this.currentHint = 0;
       this.restartTimer();
       this.setUpImageViewer();
       this.isTheWholeAnimeRevealed = false;
+    }
+
+    if (changes['showSquareAt'] && this.showSquareAt) {
+      this.revealSquareAt(this.showSquareAt.row, this.showSquareAt.col);
+      this.timerBar.resetTimer();
+      this.currentHint++;
     }
   }
 
@@ -72,15 +78,6 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     // If already loaded
     if (img.complete) {
       this.setupCanvas();
-    }
-  }
-
-  initAvailableSquares() {
-    this.availableSquares = [];
-    for (let r = 0; r < this.gridRows; r++) {
-      for (let c = 0; c < this.gridCols; c++) {
-        this.availableSquares.push({ r, c });
-      }
     }
   }
 
@@ -105,18 +102,11 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   }
 
   /** Call this to clear one more random hole */
-  nextFragment() {
+  revealSquareAt(row: number, col: number) {
     if (!this.ctx) return;
 
-    // pick a random available square
-    const randomIndex = Math.floor(Math.random() * this.availableSquares.length);
-
-    const { r, c } = this.availableSquares[randomIndex];
-    // remove that square from the available ones so we dont repeat it
-    this.availableSquares.splice(randomIndex, 1);
-
-    const x = c * (this.displayW / this.gridCols);
-    const y = r * (this.displayH / this.gridRows);
+    const x = col * (this.displayW / this.gridCols);
+    const y = row * (this.displayH / this.gridRows);
 
     // clear a rectangle in that position to reveal part of the image
     this.ctx.clearRect(x, y, this.displayW / this.gridCols, this.displayH / this.gridRows);
@@ -154,10 +144,9 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
   revealHint() {
     // RELEAL NEXT HINT
-    this.gameSignalRService.invoke(SIGNAL_CONST.REVEAL_NEXT_HINT, this.roomState?.roomId);
-    this.nextFragment();
-    this.timerBar.resetTimer();
-    this.currentHint++;
+    if (this.roomState?.owner === this.storageService.getPlayerName()) {
+      this.gameSignalRService.invoke(SIGNAL_CONST.REVEAL_NEXT_HINT, this.roomState?.roomId);
+    }
   }
 
   isMaximunHintsReached(): boolean {

@@ -20,11 +20,14 @@ export interface UserRoom {
 }
 
 export interface RoomState {
+  currentEndPoint: string;
   roomId: string;
   images: RoomImage[];
   owner: string;
   currentImageIndex: number;
   users: UserRoom[];
+  availableSquares: { row: number; col: number }[];
+  currentSquareToShowIndex: number | null;
 }
 
 export interface ChatMessage {

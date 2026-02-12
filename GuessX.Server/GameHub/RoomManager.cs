@@ -7,14 +7,12 @@ namespace GuessX.Server.GameHub
     {
         private readonly ConcurrentDictionary<string, Room> _rooms = new();
 
-        public Room CreateRoom(List<CreateTitleDto> titles, string owner)
+        public Room CreateRoom(List<CreateTitleDto> titles, string owner, int gridRows, int gridCols)
         {
             var id = Guid.NewGuid().ToString("N");
-            Room room = new Room
+            Room room = new Room(id, owner, gridRows, gridCols)
             {
-                RoomId = id,
-                Images = titles,
-                Owner = owner
+                Images = titles
             };
             _rooms[id] = room;
             return room;
@@ -27,7 +25,15 @@ namespace GuessX.Server.GameHub
 
         public Room GetRoom(string roomId)
         {
-            return this._rooms[roomId];
+            try
+            {
+                return this._rooms[roomId];
+            }
+            catch (KeyNotFoundException)
+            {
+                Console.WriteLine("test");
+                throw new Exception($"Room with ID {roomId} not found.");
+            }
         }
 
         public void UpdateUserScore(string roomId, string userName, int score)
