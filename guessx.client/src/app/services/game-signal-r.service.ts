@@ -61,7 +61,7 @@ export class GameSignalRService {
       const roomState = await this.invoke('JoinRoom', roomId, username);
       this.roomState$.next(roomState);
       return roomState;
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('Error joining room:', error.message);
       // throw error;
     }

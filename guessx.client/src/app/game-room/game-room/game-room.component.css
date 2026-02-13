@@ -5,9 +5,9 @@
   justify-content: center;
   min-height: 100vh;
   padding: 2rem;
-  background: radial-gradient(circle at 20% 20%, #112035 0, rgba(17, 32, 53, 0.4) 25%, transparent 50%),
-    radial-gradient(circle at 80% 0, #13263d 0, rgba(19, 38, 61, 0.4) 30%, transparent 55%),
-    #090c14;
+  background:
+    radial-gradient(circle at 20% 20%, #112035 0, rgba(17, 32, 53, 0.4) 25%, transparent 50%),
+    radial-gradient(circle at 80% 0, #13263d 0, rgba(19, 38, 61, 0.4) 30%, transparent 55%), #090c14;
   color: #e7f6ff;
 }
 

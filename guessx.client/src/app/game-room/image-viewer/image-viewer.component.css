@@ -90,7 +90,10 @@
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    background 0.2s;
 }
 
 .pill-btn:hover {

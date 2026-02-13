@@ -42,7 +42,7 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
     this.startTime = Date.now();
     this.endTime = this.startTime + this.roundDuration * 1000;
 
-    // THIS FUNCTION IS EXECUTING INFINITELY EVERY 50 MS 
+    // THIS FUNCTION IS EXECUTING INFINITELY EVERY 50 MS
     // TODO: STOP EXECUTING WHEN  THE REMAINING IS 0
     this.intervalId = setInterval(() => {
       const now = Date.now();
@@ -50,7 +50,7 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
       this.timeLeft = Math.ceil(remaining / 1000);
       this.progress = (remaining / (this.roundDuration * 1000)) * 100;
       this.progress2 = 100 - (remaining / (this.roundDuration * 1000)) * 100;
-      
+
       if (remaining <= 0 && !this.timerEnded) {
         this.timerEnded = true;
         this.clearTimer();

@@ -1,82 +1,82 @@
 /* Neon leaderboard styling */
 
 .panel-surface {
-	background: linear-gradient(180deg, rgba(35, 48, 71, 0.6), rgba(31, 39, 57, 0.8));
-	border: 1px solid rgba(0, 255, 221, 0.12);
-	border-radius: 14px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
-	backdrop-filter: blur(6px);
-	overflow: hidden;
-	height: 100%;
+  background: linear-gradient(180deg, rgba(35, 48, 71, 0.6), rgba(31, 39, 57, 0.8));
+  border: 1px solid rgba(0, 255, 221, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  height: 100%;
 }
 
 .panel-header {
-	padding: 0.75rem 1rem;
-	border-bottom: 1px solid rgba(122, 220, 247, 0.25);
-	background: rgba(12, 17, 27, 0.6);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(122, 220, 247, 0.25);
+  background: rgba(12, 17, 27, 0.6);
 }
 
 .panel-title {
-	margin: 0;
-	font-family: "Orbitron", "Exo", "Rajdhani", "Segoe UI", sans-serif;
-	font-weight: 800;
-	color: #7adcf7;
-	letter-spacing: 1px;
+  margin: 0;
+  font-family: "Orbitron", "Exo", "Rajdhani", "Segoe UI", sans-serif;
+  font-weight: 800;
+  color: #7adcf7;
+  letter-spacing: 1px;
 }
 
 .leaderboard-body {
-	padding: 0.5rem 0.75rem 0.75rem;
-	display: flex;
-	flex-direction: column;
-	gap: 0.35rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .lb-row {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0.55rem 0.6rem;
-	border-bottom: 1px solid rgba(122, 220, 247, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid rgba(122, 220, 247, 0.18);
 }
 
 .lb-row:last-child {
-	border-bottom: none;
+  border-bottom: none;
 }
 
 .lb-left {
-	display: flex;
-	align-items: center;
-	gap: 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
 }
 
 .lb-rank {
-	width: 22px;
-	text-align: center;
-	color: #ff78aa;
-	font-weight: 800;
+  width: 22px;
+  text-align: center;
+  color: #ff78aa;
+  font-weight: 800;
 }
 
 .lb-avatar {
-	width: 34px;
-	height: 34px;
-	border-radius: 50%;
-	display: grid;
-	place-items: center;
-	background: rgba(6, 182, 212, 0.12);
-	color: #7adcf7;
-	font-weight: 700;
-	font-size: 12px;
-	border: 1px solid rgba(122, 220, 247, 0.25);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 182, 212, 0.12);
+  color: #7adcf7;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1px solid rgba(122, 220, 247, 0.25);
 }
 
 .lb-name {
-	margin: 0;
-	color: #e8f4ff;
-	font-weight: 600;
+  margin: 0;
+  color: #e8f4ff;
+  font-weight: 600;
 }
 
 .lb-score {
-	color: #7adcf7;
-	font-weight: 800;
-	font-size: 16px;
+  color: #7adcf7;
+  font-weight: 800;
+  font-size: 16px;
 }

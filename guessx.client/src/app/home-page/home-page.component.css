@@ -6,9 +6,9 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: radial-gradient(circle at 20% 20%, #112035 0, rgba(17, 32, 53, 0.4) 25%, transparent 50%),
-    radial-gradient(circle at 80% 0, #13263d 0, rgba(19, 38, 61, 0.4) 30%, transparent 55%),
-    #090c14;
+  background:
+    radial-gradient(circle at 20% 20%, #112035 0, rgba(17, 32, 53, 0.4) 25%, transparent 50%),
+    radial-gradient(circle at 80% 0, #13263d 0, rgba(19, 38, 61, 0.4) 30%, transparent 55%), #090c14;
 }
 
 .card-shell {
@@ -156,7 +156,9 @@
   border-radius: 8px;
   font-size: 15px;
   outline: none;
-  transition: border 0.2s, box-shadow 0.2s;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
 }
 
 .text-input:focus {
@@ -172,7 +174,11 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .primary-btn {
@@ -245,7 +251,9 @@
   justify-content: center;
   opacity: 0;
   transform: translateX(40%);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
   padding: 1rem;
 }
 
@@ -276,7 +284,9 @@
   border: none;
   background: #4f5f75;
   cursor: pointer;
-  transition: transform 0.15s, background 0.15s;
+  transition:
+    transform 0.15s,
+    background 0.15s;
 }
 
 .dot-active {
@@ -301,7 +311,9 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: transform 0.15s, background 0.15s;
+  transition:
+    transform 0.15s,
+    background 0.15s;
 }
 
 .nav-btn:hover {
