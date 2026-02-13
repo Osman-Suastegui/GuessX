@@ -1,25 +1,17 @@
-<div class="image-viewer-container rounded-lg">
+<div class="viewer-shell panel-surface">
   <!-- Titulo -->
-  <header class="flex items-between justify-between my-2 bg-card rounded-t-lg w-full">
-    <section class="flex items-center">
-      <div class="bg-gaming-neon/10 w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold text-gaming-neon">AN</div>
-      <div class="flex flex-col ml-2 mb-2">
-        <p class="ml-1 text-xl font-gaming text-white font-bold">Anime Pixel Peak</p>
-        <p class="ml-1 text-sm text-gray-300 text-muted-foreground">Room #1231</p>
+  <header class="viewer-header">
+    <section class="viewer-brand">
+      <div class="viewer-avatar">AN</div>
+      <div class="viewer-meta">
+        <p class="viewer-title">Anime Pixel Peak</p>
+        <p class="viewer-sub">Room #1231</p>
       </div>
     </section>
-    <section class="flex items-center justify-end gap-2">
-      <p class="text-sm text-gray-400">Total Players: {{ roomState?.users?.length || 0 }}</p>
-      <button
-        class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:opacity-50 border border-gaming-neon-pink bg-background hover:text-accent-foreground h-9 rounded-md px-3 border-gaming-neon-pink text-gaming-neon-pink hover:bg-gaming-neon-pink/10"
-      >
-        How to Play
-      </button>
-      <button
-        class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors bg-destructive text-destructive-foreground hover:bg-destructive h-9 rounded-md px-3"
-      >
-        Leave Room
-      </button>
+    <section class="viewer-actions">
+      <p class="viewer-count">Total Players: {{ roomState?.users?.length || 0 }}</p>
+      <button class="pill-btn ghost">How to Play</button>
+      <button class="pill-btn danger">Leave Room</button>
     </section>
   </header>
 

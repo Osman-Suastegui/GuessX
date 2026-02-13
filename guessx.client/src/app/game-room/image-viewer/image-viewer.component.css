@@ -1,21 +1,124 @@
-.wrapper-image {
-  position: relative;
-  width: 300px; /* or whatever size you need */
-  height: 300px;
+.panel-surface {
+  background: linear-gradient(180deg, rgba(35, 48, 71, 0.6), rgba(31, 39, 57, 0.8));
+  border: 1px solid rgba(0, 255, 221, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
   overflow: hidden;
-  display: inline-block;
-  background-color: #030711;
-  height: 80%;
-  width: 100%;
-  border: 1px solid #1f1f1f;
 }
-.image-viewer-container {
-  background-color: #030711;
+
+.viewer-shell {
   width: 100%;
   height: 100%;
-  padding: 20px 20px 20px 20px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  background: rgba(11, 12, 21, 0.7);
+}
+
+.viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(122, 220, 247, 0.18);
+  background: rgba(12, 17, 27, 0.6);
+}
+
+.viewer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.viewer-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 182, 212, 0.14);
+  color: #7adcf7;
+  font-weight: 800;
+  border: 1px solid rgba(122, 220, 247, 0.25);
+}
+
+.viewer-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.viewer-title {
+  margin: 0;
+  font-family: "Orbitron", "Exo", "Rajdhani", "Segoe UI", sans-serif;
+  color: #e8f4ff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.viewer-sub {
+  margin: 0;
+  color: #b7c7db;
+  font-size: 12px;
+}
+
+.viewer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.viewer-count {
+  margin: 0;
+  color: #c5d7ec;
+  font-size: 13px;
+}
+
+.pill-btn {
+  height: 36px;
+  border-radius: 18px;
+  padding: 0 14px;
+  border: 1px solid rgba(122, 220, 247, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  color: #7adcf7;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+
+.pill-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(6, 182, 212, 0.25);
+  background: rgba(122, 220, 247, 0.12);
+}
+
+.pill-btn.danger {
+  border-color: rgba(255, 120, 170, 0.45);
+  color: #ff78aa;
+  background: rgba(255, 120, 170, 0.08);
+}
+
+.pill-btn.danger:hover {
+  box-shadow: 0 8px 18px rgba(255, 120, 170, 0.25);
+}
+
+.wrapper-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+  display: block;
+  background-color: #030711;
+  border: 1px solid rgba(122, 220, 247, 0.2);
+  border-radius: 12px;
 }
 
 .wrapper-image img {
@@ -31,15 +134,30 @@
   top: 0;
   left: 0;
   display: block;
-  /* no need to set width/height here—they’re set in TS */
-  pointer-events: none; /* allow clicks on the button below */
+  pointer-events: none;
 }
 
 .image-viewer-anime-name {
-  color: #ccc;
-  font-weight: bold;
+  color: #e8f4ff;
+  font-weight: 800;
   font-size: 19px;
   text-align: center;
-  height: 30px;
-  margin-bottom: 10px;
+  min-height: 26px;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .viewer-shell {
+    padding: 14px;
+  }
+
+  .viewer-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .viewer-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

@@ -1,0 +1,64 @@
+/* Neon styling for active players */
+
+.panel-surface {
+	background: linear-gradient(180deg, rgba(35, 48, 71, 0.6), rgba(31, 39, 57, 0.8));
+	border: 1px solid rgba(0, 255, 221, 0.12);
+	border-radius: 14px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+	backdrop-filter: blur(6px);
+	overflow: hidden;
+	height: 100%;
+}
+
+.panel-header {
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid rgba(122, 220, 247, 0.25);
+	background: rgba(12, 17, 27, 0.6);
+}
+
+.panel-title {
+	margin: 0;
+	font-family: "Orbitron", "Exo", "Rajdhani", "Segoe UI", sans-serif;
+	font-weight: 800;
+	color: #7adcf7;
+	letter-spacing: 1px;
+}
+
+.active-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+	gap: 0.75rem;
+	padding: 1rem;
+}
+
+.active-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.6rem;
+	background: rgba(255, 255, 255, 0.02);
+	border: 1px solid rgba(122, 220, 247, 0.18);
+	border-radius: 12px;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.active-avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: rgba(6, 182, 212, 0.12);
+	color: #7adcf7;
+	font-weight: 700;
+	font-size: 12px;
+	border: 1px solid rgba(122, 220, 247, 0.25);
+}
+
+.active-name {
+	margin: 0;
+	color: #e8f4ff;
+	font-size: 12px;
+	text-align: center;
+}

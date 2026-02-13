@@ -1,35 +1,104 @@
-.side-bar {
-  display: grid;
-  gap: 10px;
-  height: 85%;
-}
-
 .page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: #0b0c15;
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at 20% 20%, #112035 0, rgba(17, 32, 53, 0.4) 25%, transparent 50%),
+    radial-gradient(circle at 80% 0, #13263d 0, rgba(19, 38, 61, 0.4) 30%, transparent 55%),
+    #090c14;
+  color: #e7f6ff;
 }
 
 .main-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: 20px;
   width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+}
+
+.side-bar {
+  display: grid;
+  gap: 12px;
   height: 100%;
 }
 
-.image-viewer-container {
-  border: 1px solid #02524f;
-  height: 85%;
-  width: 45%;
+.panel-surface {
+  background: linear-gradient(180deg, rgba(35, 48, 71, 0.6), rgba(31, 39, 57, 0.8));
+  border: 1px solid rgba(0, 255, 221, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
 }
+
+.image-viewer-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: #0b101c;
+  border: 1px solid rgba(0, 255, 221, 0.12);
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
 .chat,
 .leaderboard,
 .active-players {
-  border: 1px solid #02524f;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(35, 48, 71, 0.6), rgba(31, 39, 57, 0.8));
+  border: 1px solid rgba(0, 255, 221, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(6px);
+}
+
+.chat {
+  min-height: 0;
+}
+
+.leaderboard {
+  min-height: 0;
+}
+
+.active-players {
+  min-height: 0;
+}
+
+/* top-right room pill positioning safety on small screens */
+.page-container > .absolute {
+  z-index: 5;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .image-viewer-container {
+    height: 320px;
+  }
+
+  .side-bar {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 1rem;
+  }
+
+  .main-container {
+    gap: 14px;
+  }
 }
