@@ -8,29 +8,29 @@ namespace GuessX.Server.Application.Services
 {
 
 
-public class CreatePictureService
-{
-    private readonly AppDbContext _context;
-
-    public CreatePictureService(AppDbContext context)
+    public class CreatePictureService
     {
-        _context = context;
-    }
+        private readonly AppDbContext _context;
 
-    public async Task<int> CreateTitleAsync(CreateTitleDto dto)
-    {
-        using var transaction = await _context.Database.BeginTransactionAsync();
-
-        try
+        public CreatePictureService(AppDbContext context)
         {
-            var title = new TitlePictureGallery
+            _context = context;
+        }
+
+        public async Task<int> CreateTitleAsync(CreateTitleDto dto)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
             {
-                TitleName = dto.TitleName,
-                Category = dto.Category,
-                Genres = new List<Genre>(),
-                TitleImages = new List<TitleImage>(),
-                TitleAnswers = new List<TitleAnswer>()
-            };
+                var title = new TitlePictureGallery
+                {
+                    TitleName = dto.TitleName,
+                    Category = dto.Category,
+                    Genres = new List<Genre>(),
+                    TitleImages = new List<TitleImage>(),
+                    TitleAnswers = new List<TitleAnswer>()
+                };
 
                 if (dto.Genres != null)
                 {
@@ -92,42 +92,43 @@ public class CreatePictureService
                 }
 
                 _context.TitlePictureGalleries.Add(title);
-            await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
 
-            return title.Id;
+                return title.Id;
+
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
 
         }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync();
-            throw;
-        }
-
-    }
 
         public async Task<List<CreateTitleDto>> GetAllTitlesAsync(int? limit = null, Dictionary<string, string>? filters = null, bool isArchived = false)
-    {
-        var query = _context.TitlePictureGalleries
-            .Include(t => t.Genres)
-            .Include(t => t.TitleImages)
-            .Include(t => t.TitleAnswers)
-            .AsQueryable();
+        {
+            var query = _context.TitlePictureGalleries
+                .Include(t => t.Genres)
+                .Include(t => t.TitleImages)
+                .Include(t => t.TitleAnswers)
+                .AsQueryable();
 
             if (isArchived)
             {
                 query = query.Where(title => title.Status == "Archived");
-            }else
+            }
+            else
             {
                 query = query.Where(title => title.Status != "Archived");
             }
-        if (limit.HasValue)
-        {
-            query = query.Take(limit.Value);
-        }
+            if (limit.HasValue)
+            {
+                query = query.Take(limit.Value);
+            }
 
-        // 🧩 Si hay filtros, se aplican dinámicamente
-        if (filters != null && filters.Count > 0)
+            // 🧩 Si hay filtros, se aplican dinámicamente
+            if (filters != null && filters.Count > 0)
             {
                 var allowedProps = typeof(TitlePictureGallery).GetProperties()
                     .Select(p => p.Name)
@@ -179,55 +180,55 @@ public class CreatePictureService
                 }
             }
 
-        // 📦 Ejecuta la consulta
-        var titles = await query.ToListAsync();
+            // 📦 Ejecuta la consulta
+            var titles = await query.ToListAsync();
 
-        // 🔁 Mapea a DTO
-        return titles.Select(title => new CreateTitleDto
-        {
-            Id = title.Id,
-            TitleName = title.TitleName,
-            Category = title.Category,
-            Genres = title.Genres?.Select(g => g.Name).ToList(),
-            TitleImages = title.TitleImages?.Select(img => new TitleImageDto
+            // 🔁 Mapea a DTO
+            return titles.Select(title => new CreateTitleDto
             {
-                ImageUrl = img.ImageUrl,
-                ImageType = img.ImageType
-            }).ToList(),
-            TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList(),
-            Status = title.Status
-        }).ToList();
-    }
+                Id = title.Id,
+                TitleName = title.TitleName,
+                Category = title.Category,
+                Genres = title.Genres?.Select(g => g.Name).ToList(),
+                TitleImages = title.TitleImages?.Select(img => new TitleImageDto
+                {
+                    ImageUrl = img.ImageUrl,
+                    ImageType = img.ImageType
+                }).ToList(),
+                TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList(),
+                Status = title.Status
+            }).ToList();
+        }
 
 
 
-    public async Task<CreateTitleDto> GetTitleDtoByIdAsync(int id)
-    {
-        var title = await _context.TitlePictureGalleries
-            .Include(t => t.Genres)
-            .Include(t => t.TitleImages)
-            .Include(t => t.TitleAnswers)
-            .FirstOrDefaultAsync(t => t.Id == id);
-
-        if (title == null)
-            return null;
-
-        var dto = new CreateTitleDto
+        public async Task<CreateTitleDto> GetTitleDtoByIdAsync(int id)
         {
-            Id = title.Id,
-            TitleName = title.TitleName,
-            Category = title.Category,
-            Genres = title.Genres?.Select(g => g.Name).ToList(),
-            TitleImages = title.TitleImages?.Select(img => new TitleImageDto
+            var title = await _context.TitlePictureGalleries
+                .Include(t => t.Genres)
+                .Include(t => t.TitleImages)
+                .Include(t => t.TitleAnswers)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (title == null)
+                return null;
+
+            var dto = new CreateTitleDto
             {
-                ImageUrl = img.ImageUrl,
-                ImageType = img.ImageType
-            }).ToList(),
-            TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList()
-        };
+                Id = title.Id,
+                TitleName = title.TitleName,
+                Category = title.Category,
+                Genres = title.Genres?.Select(g => g.Name).ToList(),
+                TitleImages = title.TitleImages?.Select(img => new TitleImageDto
+                {
+                    ImageUrl = img.ImageUrl,
+                    ImageType = img.ImageType
+                }).ToList(),
+                TitleAnswers = title.TitleAnswers?.Select(a => a.Answer).ToList()
+            };
 
-        return dto;
+            return dto;
+        }
+
     }
-
-  }
 }

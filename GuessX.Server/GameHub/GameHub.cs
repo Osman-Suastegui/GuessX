@@ -19,7 +19,7 @@ namespace GuessX.Server.GameHub
 
         // the variable numberOfPictures tell us how many pictures the game will show in the current game
         // the owner variable is for tracking who created the room,so we can give the owner specifics permissions
-        public async Task<string> CreateRoom(string owner,int numberOfPictures,int gridRows,int gridCols)
+        public async Task<string> CreateRoom(string owner, int numberOfPictures, int gridRows, int gridCols)
         {
             Console.WriteLine("number of pictures" + numberOfPictures);
             var titles = await this._createPictureService.GetAllTitlesAsync(numberOfPictures);
@@ -33,11 +33,11 @@ namespace GuessX.Server.GameHub
             Room room;
             try
             {
-                
-                 room = _rooms.GetRoom(roomId);
+
+                room = _rooms.GetRoom(roomId);
                 room.CurrentEndPoint = "JoinRoom";
             }
-            catch ( Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error joining room: {ex.Message}");
                 throw new Exception($"Room with ID {roomId} not found.");
@@ -54,7 +54,7 @@ namespace GuessX.Server.GameHub
 
             await Clients.Group(roomId).SendAsync("roomUpdated", room);
 
-            await SendMessage(roomId,$"{userName} has joined!","system");
+            await SendMessage(roomId, $"{userName} has joined!", "system");
             return _rooms.GetRoom(roomId);
 
         }
@@ -72,7 +72,8 @@ namespace GuessX.Server.GameHub
                 isAnswer = foundAnswer
             });
 
-            if (foundAnswer != null){
+            if (foundAnswer != null)
+            {
                 _rooms.UpdateUserScore(roomId, userName, 1);
                 room.CurrentImageIndex++;
                 Console.WriteLine($"Room: {room.ToString()}");
@@ -80,7 +81,7 @@ namespace GuessX.Server.GameHub
             }
 
         }
-        
+
         public async Task ShowNextPicture(string roomId)
         {
             Console.WriteLine("Show next picture signal received for room: " + roomId);
@@ -107,11 +108,11 @@ namespace GuessX.Server.GameHub
             {
                 int randomIndex = Random.Shared.Next(0, room.AvailableSquares.Count);
                 room.currentSquareToShowIndex = randomIndex;
-                
-            }while (room.RevealedSquares.Contains(room.currentSquareToShowIndex) );
+
+            } while (room.RevealedSquares.Contains(room.currentSquareToShowIndex));
             Console.WriteLine(room.AvailableSquares);
             room.RevealedSquares.Add(room.currentSquareToShowIndex);
-        
+
             await Clients.Group(roomId).SendAsync("roomUpdated", room);
         }
 
