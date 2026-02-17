@@ -12,7 +12,7 @@ import { RoomIdDialogComponent } from './room-id-dialog/room-id-dialog.component
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css',
+  styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   playerName: string = '';
@@ -26,25 +26,21 @@ export class HomePageComponent implements OnInit, OnDestroy {
       number: 1,
       title: 'Draw the Character',
       description: "You'll receive an anime character image clues. Type the name as clearly as possible so others can guess what it is!",
-      bgColor: 'bg-cyan-500',
     },
     {
       number: 2,
       title: "Guess Others' Drawings",
       description: 'Look at types from other players and try to guess which anime character from image is.',
-      bgColor: 'bg-green-500',
     },
     {
       number: 3,
       title: 'Score Points',
       description: 'Earn points for correct guesses and when others guess your animes correctly!',
-      bgColor: 'bg-purple-500',
     },
     {
       number: 4,
       title: 'Have Fun!',
       description: "Enjoy the hilarious results and compete with friends to see who's the ultimate anime expert!",
-      bgColor: 'bg-pink-500',
     },
   ];
 
@@ -180,18 +176,5 @@ export class HomePageComponent implements OnInit, OnDestroy {
   // Validate player name in real-time
   isNameValid(): boolean {
     return this.playerName.trim().length >= 2;
-  }
-
-  // Get button state classes
-  getButtonClasses(): string {
-    if (this.isLoading) {
-      return 'bg-gray-600 text-gray-300 cursor-not-allowed border border-gray-500';
-    }
-
-    if (!this.isNameValid()) {
-      return 'bg-gray-600 text-gray-400 cursor-not-allowed border border-gray-500';
-    }
-
-    return 'bg-cyan-500 hover:bg-cyan-600 text-white border border-cyan-400 hover:border-cyan-300 transform hover:scale-105';
   }
 }
