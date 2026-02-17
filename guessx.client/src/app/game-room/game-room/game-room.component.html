@@ -1,39 +1,25 @@
-<div class="flex h-screen bg-card page-container">
-  <!-- Link de la sala roomId con boton para copiar el link -->
-  <div class="absolute top-4 right-4 flex items-center gap-4">
-    <div class="text-sm font-medium text-gaming-neon-pink border-2 border-gaming-neon-pink p-2 rounded-md bg-gaming-neon-pink/10">
-      Sala ID: {{ roomId }}
+<div class="page-container">
+  <header class="room-header anime-border glass-panel">
+    <div class="room-round">ROOM {{ roomId || "---" }}</div>
+    <div class="room-actions">
+      <button class="room-copy-btn" type="button" (click)="copyRoomLink()">
+        <mat-icon>content_copy</mat-icon>
+        Copy Link
+      </button>
     </div>
-    <button
-      class="inline-flex items-center justify-center gap-2 text-sm font-medium border border-gaming-neon-pink bg-background hover:text-accent-foreground h-9 rounded-md px-3 text-gaming-neon-pink hover:bg-gaming-neon-pink/10"
-      (click)="copyRoomLink()"
-    >
-      <mat-icon>content_copy</mat-icon>
-    </button>
-  </div>
-  <!-- Contenedor principal -->
-  <main class="flex w-full h-full main-container">
-    <!-- Image Viewer (60%) -->
-    <div class="w-[60%] image-viewer-container rounded-lg">
-      <app-image-viewer [showSquareAt]="showSquareAt" [roomState]="roomState"  [animeInformation]="animeInformation" />
-    </div>
+  </header>
 
-    <!-- Barra lateral derecha (40%) -->
-    <div class="w-[20%] flex flex-col h-full side-bar space-y-2">
-      <!-- Chat (50%) -->
-      <section class="basis-1/2 overflow-hidden rounded-lg chat">
-        <app-chat [animeInformation]="animeInformation" [roomId]="roomId"></app-chat>
-      </section>
+  <main class="main-container">
+    <aside class="side-panel leaderboard-panel anime-border glass-panel">
+      <app-leaderboard [users]="roomState?.users || []"></app-leaderboard>
+    </aside>
 
-      <!-- Leaderboard (30%) -->
-      <section class="basis-[30%] overflow-hidden rounded-lg leaderboard">
-        <app-leaderboard [users]="roomState?.users || []"></app-leaderboard>
-      </section>
+    <section class="image-viewer-container anime-border">
+      <app-image-viewer [showSquareAt]="showSquareAt" [roomState]="roomState" [animeInformation]="animeInformation" />
+    </section>
 
-      <!-- Active Players (20%) -->
-      <section class="grow overflow-hidden rounded-lg active-players">
-        <app-active-players></app-active-players>
-      </section>
-    </div>
+    <aside class="side-panel chat-panel anime-border glass-panel">
+      <app-chat [animeInformation]="animeInformation" [roomId]="roomId"></app-chat>
+    </aside>
   </main>
 </div>

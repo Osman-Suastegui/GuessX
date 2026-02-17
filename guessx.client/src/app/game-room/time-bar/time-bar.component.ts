@@ -17,7 +17,7 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
 
   progress: number = 100;
   progress2: number = 0;
-  private intervalId: any;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
   private startTime!: number;
   private endTime!: number;
   private timerEnded: boolean = false;
@@ -81,10 +81,7 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   get formattedTime(): string {
-    const minutes = Math.floor(this.timeLeft / 60);
-    const seconds = this.timeLeft % 60;
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${pad(minutes)}:${pad(seconds)}`;
+    return `${Math.max(this.timeLeft, 0)}`;
   }
 
   get progressColor(): string {

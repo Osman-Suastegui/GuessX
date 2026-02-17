@@ -40,8 +40,8 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3,
   // the image will be divided into 15 fragments (5 rows x 3 columns).
   // Each hint will reveal one of these fragments
-  private gridRows = 5;
-  private gridCols = 3;
+  private gridRows = 2;
+  private gridCols = 2;
 
   constructor(
     public gameSignalRService: GameSignalRService,
