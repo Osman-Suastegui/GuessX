@@ -5,12 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GameSignalRService } from '../services/game-signal-r.service';
 import { StorageService } from '../services/storage.service';
+import { GameConfig, RoomConfigurator } from './room-configurator/room-configurator.component';
 import { RoomIdDialogComponent } from './room-id-dialog/room-id-dialog.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RoomConfigurator],
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
 })
@@ -20,6 +21,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
   currentStep: number = 0;
   steps: number[] = [0, 1, 2, 3];
   roomId: string = '';
+
+  showHowToPanel: boolean = true;
+  showGameSettingsPanel: boolean = false;
+  gameConfig: any = null;
 
   instructionSteps = [
     {
@@ -79,27 +84,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  async createGame() {
+  async createGame(gameConfig: GameConfig) {
+    console.log('Creating game with config:', gameConfig);
     const playerName = this.playerName.trim();
     if (!playerName || playerName.length < 2) {
       return;
     }
-
-    // Open dialog to get room ID
-    // const dialogRef = this.dialog.open(RoomIdDialogComponent, {
-    //   width: '450px',
-    //   disableClose: false,
-    //   data: null,
-    // });
-    const numberOfPictures = '5';
-    // let numberOfPictures = await firstValueFrom(dialogRef.afterClosed());
-    // if (numberOfPictures && numberOfPictures.trim().length > 0) {
-    //   numberOfPictures = numberOfPictures.trim();
-    // }
-    // if (isNaN(numberOfPictures)) {
-    //   return;
-    // }
-
     this.isLoading = true;
     this.stopCarousel();
 
@@ -111,13 +101,27 @@ export class HomePageComponent implements OnInit, OnDestroy {
       await this.gameSignalRService.startConnection('http://localhost:5290/gameHub');
 
       // Create room and navigate to game room
-      this.roomId = await this.gameSignalRService.createRoom(playerName, parseInt(numberOfPictures), this.gridRows, this.gridCols);
+      this.roomId = await this.gameSignalRService.createRoom(playerName, gameConfig, this.gridRows, this.gridCols);
       this.router.navigate(['/game-room/', this.roomId]);
     } catch (error) {
       console.error('Error starting game:', error);
     } finally {
       this.isLoading = false;
     }
+  }
+
+  async showGameSettings() {
+    this.isLoading = true;
+    this.stopCarousel();
+    this.showHowToPanel = false;
+    this.showGameSettingsPanel = true;
+    this.isLoading = false;
+  }
+
+  hideGameSettings() {
+    this.showGameSettingsPanel = false;
+    this.showHowToPanel = true;
+    this.startCarousel();
   }
 
   async requestJoiningCode() {

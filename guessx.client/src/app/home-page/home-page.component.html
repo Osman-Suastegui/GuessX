@@ -11,7 +11,7 @@
 
       <div class="brand-block">
         <h1 id="home-title" class="brand-title">GUESSX</h1>
-        <p class="brand-subtitle">ANIME SHOWDOWN</p>
+        <p class="brand-subtitle">SHOWDOWN</p>
       </div>
     </header>
 
@@ -46,70 +46,73 @@
               maxlength="24"
               autocomplete="nickname"
             />
-
-            <!-- <div class="stats-grid">
-              <div class="stat-card">
-                <span class="stat-label">Total Wins</span>
-                <span class="stat-value">--</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-label">Rank</span>
-                <span class="stat-value">Genin</span>
-              </div>
-            </div> -->
           </div>
         </div>
 
-        <div class="setup-actions">
-          <button class="create-btn" type="button" (click)="createGame()" [disabled]="isLoading || !isNameValid()">
-            <span class="create-btn-text">▶ CREATE ROOM</span>
-            <span class="create-badge">GO!</span>
-          </button>
+        @if (!showGameSettingsPanel) {
+          <div class="setup-actions">
+            <button class="create-btn" type="button" (click)="showGameSettings()" [disabled]="isLoading || !isNameValid()">
+              <span class="create-btn-text">▶ CREATE ROOM</span>
+              <span class="create-badge">GO!</span>
+            </button>
 
-          <button class="join-btn" type="button" (click)="requestJoiningCode()" [disabled]="isLoading || !isNameValid()">JOIN ROOM</button>
-        </div>
+            <button class="join-btn" type="button" (click)="requestJoiningCode()" [disabled]="isLoading || !isNameValid()">JOIN ROOM</button>
+          </div>
+        }
+        @if (showGameSettingsPanel) {
+          <button class="create-btn" type="button" (click)="hideGameSettings()" [disabled]="isLoading || !isNameValid()">
+            <span class="create-btn-text">Return</span>
+            <span class="create-badge">BACK!</span>
+          </button>
+        }
       </section>
 
-      <section class="howto-panel" aria-labelledby="howto-title">
-        <h2 id="howto-title" class="howto-title">HOW TO PLAY</h2>
+      @if (showHowToPanel) {
+        <section class="howto-panel" aria-labelledby="howto-title">
+          <h2 id="howto-title" class="howto-title">HOW TO PLAY</h2>
 
-        <div class="howto-media">
-          <div class="howto-bubble">I think it's Goku!</div>
-          <img
-            alt="Player"
-            class="howto-player-image"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKGjW1LWHY_gH0QAJS1SBIwPSqRwZfp9xScNDPanaLX1s8droB-mwGe8p_HboIDOPzIlfrEmKwKdcYHkx0DcWR4hu77ZjzEJIm70FIa67F6f5Xnq_G0xBY1nS_2rONeCKlIdZhkAcF7hj_mgBQQ9LycBd0iNQdiJfldFglvMiQIWdfbgSJIkGHtjP_KfmmD9jzdgqcy3qNVzEILO5f9jnDLTj2jwSCIPTwHefvUrwjST0dzjxaAR2H5KXH9wmKFbteGh2G2TKEH6SJ"
-          />
-          <div class="howto-puzzle">🧩</div>
-        </div>
+          <div class="howto-media">
+            <div class="howto-bubble">I think it's Goku!</div>
+            <img
+              alt="Player"
+              class="howto-player-image"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKGjW1LWHY_gH0QAJS1SBIwPSqRwZfp9xScNDPanaLX1s8droB-mwGe8p_HboIDOPzIlfrEmKwKdcYHkx0DcWR4hu77ZjzEJIm70FIa67F6f5Xnq_G0xBY1nS_2rONeCKlIdZhkAcF7hj_mgBQQ9LycBd0iNQdiJfldFglvMiQIWdfbgSJIkGHtjP_KfmmD9jzdgqcy3qNVzEILO5f9jnDLTj2jwSCIPTwHefvUrwjST0dzjxaAR2H5KXH9wmKFbteGh2G2TKEH6SJ"
+            />
+            <div class="howto-puzzle">🧩</div>
+          </div>
 
-        <div class="howto-steps" aria-live="polite">
-          @for (step of instructionSteps; track step.number; let index = $index) {
-            <article class="howto-step" [class.step-active]="index === currentStep" [attr.aria-hidden]="index !== currentStep">
-              <h3 class="howto-step-title">{{ step.number }}. {{ step.title.toUpperCase() }}</h3>
-              <p class="howto-step-desc">{{ step.description }}</p>
-            </article>
-          }
-        </div>
-
-        <div class="howto-nav">
-          <button class="howto-arrow" type="button" (click)="previousStep()" aria-label="Previous step">‹</button>
-          <div class="howto-dots" role="tablist" aria-label="Instruction steps">
-            @for (step of steps; track step; let index = $index) {
-              <button
-                class="howto-dot"
-                type="button"
-                role="tab"
-                [class.howto-dot-active]="index === currentStep"
-                [attr.aria-selected]="index === currentStep"
-                [attr.aria-label]="'Go to step ' + (index + 1)"
-                (click)="setCurrentStep(index)"
-              ></button>
+          <div class="howto-steps" aria-live="polite">
+            @for (step of instructionSteps; track step.number; let index = $index) {
+              <article class="howto-step" [class.step-active]="index === currentStep" [attr.aria-hidden]="index !== currentStep">
+                <h3 class="howto-step-title">{{ step.number }}. {{ step.title.toUpperCase() }}</h3>
+                <p class="howto-step-desc">{{ step.description }}</p>
+              </article>
             }
           </div>
-          <button class="howto-arrow" type="button" (click)="nextStep()" aria-label="Next step">›</button>
-        </div>
-      </section>
+
+          <div class="howto-nav">
+            <button class="howto-arrow" type="button" (click)="previousStep()" aria-label="Previous step">‹</button>
+            <div class="howto-dots" role="tablist" aria-label="Instruction steps">
+              @for (step of steps; track step; let index = $index) {
+                <button
+                  class="howto-dot"
+                  type="button"
+                  role="tab"
+                  [class.howto-dot-active]="index === currentStep"
+                  [attr.aria-selected]="index === currentStep"
+                  [attr.aria-label]="'Go to step ' + (index + 1)"
+                  (click)="setCurrentStep(index)"
+                ></button>
+              }
+            </div>
+            <button class="howto-arrow" type="button" (click)="nextStep()" aria-label="Next step">›</button>
+          </div>
+        </section>
+      }
+
+      @if (showGameSettingsPanel) {
+        <app-room-configurator (startGame)="createGame($event)"></app-room-configurator>
+      }
     </div>
 
     <footer class="home-footer">

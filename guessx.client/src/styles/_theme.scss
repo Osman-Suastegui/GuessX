@@ -1,0 +1,101 @@
+/* Theme variables and responsive tokens for GuessX */
+/* Centraliza las variables CSS para permitir theming dinámico */
+
+:root {
+  /* Color tokens (use HSL where friendly) */
+  --color-card: 224 71% 4%;
+  --color-card-foreground: 213 31% 91%;
+  --color-dark-blue: #030711;
+  --color-muted-foreground: 215 20% 65%;
+  --color-accent-foreground: 220 40% 2%;
+  --color-destructive: 0 62.8% 50.6%;
+  --color-destructive-foreground: 210 40% 98%;
+  --color-background: 230 20% 10%;
+
+  /* Status colors */
+  --color-success: 142 70% 40%; /* green-ish */
+  --color-error: 0 78% 58%; /* red-ish */
+
+  /* Gaming accents */
+  --gaming-neon: 0 100% 43%; /* rgb(0 255 221) */
+  --gaming-neon-pink: 320 100% 58%; /* rgb(255 45 182) */
+  --gaming-purple: 264 78% 61%; /* #8B5CF6 */
+  --gaming-pink: 330 82% 57%; /* #EC4899 */
+  --gaming-cyan: 190 85% 46%; /* #06B6D4 */
+
+  /* Layout tokens */
+  --container-padding: 4%;
+  --base-font-size: 16px;
+  --card-radius: 8px;
+  
+  /* Input tokens */
+  --input-bg: 224 71% 4%;
+  --input-border: 190 85% 46%;
+  --input-text: 213 31% 91%;
+  
+  /* Separator tokens */
+  --separator: hsl(264 78% 61% / 0.2);
+  
+  /* Elevation / shadows */
+  --elevation-1: 0 1px 3px rgba(2,6,23,0.06);
+  --elevation-2: 0 6px 18px rgba(2,6,23,0.12);
+  --elevation-3: 0 20px 40px rgba(2,6,23,0.18);
+}
+
+/* Light theme overrides */
+.theme-light {
+  --color-background: 210 20% 98%;
+  --color-card: 210 15% 98%;
+  --color-card-foreground: 213 31% 10%;
+  --color-muted-foreground: 215 20% 40%;
+  --input-bg: 0 0% 100%;
+  --input-border: 190 85% 46%;
+  --input-text: 213 31% 10%;
+  --separator: hsl(264 78% 61% / 0.15);
+}
+
+/* Dark theme overrides (default) */
+.theme-dark {
+  --color-background: 230 20% 10%;
+  --color-card: 224 71% 4%;
+  --color-card-foreground: 213 31% 91%;
+  --color-muted-foreground: 215 20% 65%;
+  --input-bg: 224 71% 4%;
+  --input-border: 190 85% 46%;
+  --input-text: 213 31% 91%;
+  --separator: hsl(264 78% 61% / 0.2);
+}
+
+/* Responsive token adjustments */
+@media (min-width: 640px) {
+  :root {
+    --container-padding: 3%;
+    --base-font-size: 15px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: 2.5%;
+    --base-font-size: 16px;
+  }
+}
+
+/* Surface utility to create light panels with subtle shadows that adapt to theme */
+.surface {
+  background-color: hsl(var(--color-card));
+  color: hsl(var(--color-card-foreground));
+  border-radius: var(--card-radius);
+  box-shadow: var(--elevation-2);
+}
+
+.surface-sm {
+  box-shadow: var(--elevation-1);
+}
+
+.surface-lg {
+  box-shadow: var(--elevation-3);
+}
+
+/* Utility to convert HSL tokens for use where HSL() expects components */
+/* Example: color: hsl(var(--color-card)); */

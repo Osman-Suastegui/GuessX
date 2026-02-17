@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ChatMessage, RoomState } from '../game-room/room.model';
+import { GameConfig } from '../home-page/room-configurator/room-configurator.component';
 
 @Injectable({
   providedIn: 'root',
@@ -52,8 +53,8 @@ export class GameSignalRService {
     return this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected;
   }
 
-  createRoom(owner: string, numberOfPictures: number, gridRows: number, gridCols: number) {
-    return this.invoke('CreateRoom', owner, numberOfPictures, gridRows, gridCols);
+  createRoom(owner: string, gameConfig: GameConfig, gridRows: number, gridCols: number) {
+    return this.invoke('CreateRoom', owner, gameConfig, gridRows, gridCols);
   }
 
   async joinRoom(roomId: string, username: string) {

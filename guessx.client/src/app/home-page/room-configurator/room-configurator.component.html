@@ -1,0 +1,49 @@
+<section class="game-settings-panel" aria-labelledby="game-settings-title">
+  <h2 id="game-settings-title" class="howto-title">GAME SETTINGS</h2>
+  <div class="template-hint">
+    <button class="quick-template-btn" type="button" (click)="applyTemplate('SLOW')">SLOW</button>
+    <button class="quick-template-btn" type="button" (click)="applyTemplate('NORMAL')">NORMAL</button>
+    <button class="quick-template-btn" type="button" (click)="applyTemplate('FAST')">FAST</button>
+  </div>
+
+  <!-- Rounds Slider -->
+  <div class="settings-group">
+    <label for="rounds-slider" class="settings-label">ROUNDS</label>
+    <input type="range" id="rounds-slider" min="5" max="20" [value]="rounds" (input)="setRounds($event)" class="settings-slider" />
+    <span class="settings-value">{{ rounds }} / 20</span>
+  </div>
+
+  <!-- Category Multi-select -->
+  <div class="settings-group">
+    <span class="settings-label">CATEGORY</span>
+    <div class="category-grid">
+      @for (cat of categoryOptions; track cat) {
+        <button class="category-btn" [class.selected]="categories.includes(cat)" type="button" (click)="toggleCategory(cat)">
+          {{ cat }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Fragment Speed Selector -->
+  <div class="settings-group">
+    <span class="settings-label">FRAGMENT SPEED</span>
+    <div class="speed-slider-wrap">
+      <input type="range" id="speed-slider" min="1" max="3" [value]="speed" (input)="setSpeed($event)" class="settings-slider" />
+      <div class="speed-labels">
+        <span class="speed-label">SLOW <small>(15s)</small></span>
+        <span class="speed-label">NORMAL <small>(10s)</small></span>
+        <span class="speed-label">TURBO <small>(5s)</small></span>
+      </div>
+    </div>
+    <!-- <span class="settings-value speed-value"
+      >{{ speedLabel }} <small>({{ speedSeconds }}s)</small></span
+    > -->
+  </div>
+
+  <!-- Output config -->
+
+  <div class="settings-group">
+    <button class="start-btn" type="button" (click)="emitConfig()">START GAME</button>
+  </div>
+</section>
