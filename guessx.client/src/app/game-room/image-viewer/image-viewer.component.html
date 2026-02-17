@@ -1,36 +1,38 @@
-<div class="viewer-shell panel-surface">
-  <!-- Titulo -->
+<div class="viewer-shell">
   <header class="viewer-header">
-    <section class="viewer-brand">
-      <div class="viewer-avatar">AN</div>
-      <div class="viewer-meta">
-        <p class="viewer-title">Anime Pixel Peak</p>
-        <p class="viewer-sub">Room #1231</p>
-      </div>
-    </section>
-    <section class="viewer-actions">
-      <p class="viewer-count">Total Players: {{ roomState?.users?.length || 0 }}</p>
-      <button class="pill-btn ghost">How to Play</button>
-      <button class="pill-btn danger">Leave Room</button>
-    </section>
+    <div class="viewer-title-wrap">
+      <p class="viewer-title">WHO'S THAT ANIME?</p>
+      <p class="viewer-subtitle">Players: {{ roomState?.users?.length || 0 }}</p>
+    </div>
+    <div class="viewer-badge">GUESSX</div>
   </header>
 
-  <app-time-bar
-    #timerBar
-    [roundDuration]="roundDuration"
-    [currentHint]="currentHint"
-    [maxHints]="maxHints"
-    (skip)="handleSkip()"
-    (timeEnded)="handleTimeEnd()"
-  ></app-time-bar>
+  <div class="timer-wrap">
+    <app-time-bar
+      #timerBar
+      [roundDuration]="roundDuration"
+      [currentHint]="currentHint"
+      [maxHints]="maxHints"
+      (skip)="handleSkip()"
+      (timeEnded)="handleTimeEnd()"
+    ></app-time-bar>
+  </div>
 
-  <h1 class="image-viewer-anime-name pt-2">
-    <ng-content *ngIf="isTheWholeAnimeRevealed">
-      {{ animeInformation.name }}
-    </ng-content>
-  </h1>
   <section class="wrapper-image">
-    <img #imgEl [src]="animeImageSrc" alt="Full image doesnt workg" />
+    <img #imgEl [src]="animeImageSrc" alt="Anime image" />
     <canvas #maskCanvas class="mask-canvas"></canvas>
+    <div class="watermark">GUESSX</div>
   </section>
+
+  <section class="reveal-progress">
+    <div class="reveal-top">
+      <span>REVEAL PROGRESS</span>
+      <span>{{ (currentHint / maxHints) * 100 | number: "1.0-0" }}% REVEALED</span>
+    </div>
+    <div class="reveal-track">
+      <div class="reveal-fill" [style.width.%]="(currentHint / maxHints) * 100"></div>
+    </div>
+  </section>
+
+  <h1 class="image-viewer-anime-name" *ngIf="isTheWholeAnimeRevealed">{{ animeInformation.name }}</h1>
 </div>

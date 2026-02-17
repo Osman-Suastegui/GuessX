@@ -1,31 +1,25 @@
-<div class="flex flex-col gap-3 text-white font-medium bg-darkblue rounded-lg">
-  <div class="flex justify-between items-center">
-    <!-- Temporizador con ícono -->
-    <div class="flex items-center gap-2 text-gaming-neon text-lg">
-      <mat-icon>timer</mat-icon>
-      <span class="font-mono">{{ formattedTime }}</span>
+<div class="time-shell">
+  <div class="time-top">
+    <div class="hint-pill">Hint {{ currentHint }} / {{ maxHints }}</div>
+
+    <div class="time-center">
+      <div class="time-circle">
+        <span>{{ formattedTime }}</span>
+      </div>
+      <p class="time-label">TIME LEFT</p>
     </div>
 
-    <div class="flex items-center text-sm text-gray-300">
-      <!-- Hint -->
-      <div class="text-sm text-gaming-neon-pink">Hint {{ currentHint }} of {{ maxHints }}</div>
-
-      <!-- Botón Skip -->
-      <button
-        class="ml-2 self-end bg-purple-600 hover:bg-purple-700 text-white py-1 px-3 rounded flex items-center gap-1 transition duration-300 ease-in-out"
-        (click)="onSkip()"
-      >
-        <mat-icon class="text-purple-200">skip_next</mat-icon>
-        Skip
-      </button>
-    </div>
+    <button class="skip-btn" type="button" (click)="onSkip()">
+      <mat-icon>skip_next</mat-icon>
+      Skip
+    </button>
   </div>
 
-  <div class="w-full h-2 bg-gray-700 rounded overflow-hidden relative">
+  <div class="timeline-track">
     <div
-      class="h-full absolute top-0 left-0 origin-left"
+      class="timeline-fill"
       [style.width.%]="progress2"
-      [ngClass]="progressColor"
+      [style.background]="progress > 66 ? '#39ff14' : progress > 33 ? '#ffd84d' : '#ff4d8d'"
       style="transition: width 50ms linear"
     ></div>
   </div>

@@ -1,10 +1,8 @@
 <div class="chat-shell panel-surface">
-  <!-- Header -->
   <div class="panel-header">
-    <h3 class="panel-title">Chat & Guesses</h3>
+    <h3 class="panel-title">GUESS CHAT</h3>
   </div>
 
-  <!-- Mensajes (Scroll interno) -->
   <div class="message-area" #chatContainer>
     @for (message of messages; track $index) {
       @if (message.sender === "system") {
@@ -16,7 +14,7 @@
           <span class="msg-sender">{{ message.sender }}</span>
           <span class="msg-text" [class.answer-text]="message.isAnswer">{{ message.text }}</span>
           @if (message.isAnswer) {
-            <span class="msg-note">✓ Correct answer!</span>
+            <span class="msg-note">guessed correctly!</span>
           }
         </div>
       } @else {
@@ -24,14 +22,13 @@
           <span class="msg-sender">{{ message.sender }}</span>
           <span class="msg-text" [class.answer-text]="message.isAnswer">{{ message.text }}</span>
           @if (message.isAnswer) {
-            <span class="msg-note">✓ Correct answer!</span>
+            <span class="msg-note">guessed correctly!</span>
           }
         </div>
       }
     }
   </div>
 
-  <!-- Input de chat -->
   <form class="input-bar" (submit)="onMessageSend($event)">
     <div class="input-row">
       <input [formControl]="type" type="text" placeholder="Type your guess..." class="chat-input" />
