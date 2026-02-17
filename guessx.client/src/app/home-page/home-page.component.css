@@ -2,8 +2,8 @@
 
 :host {
   --primary: #ffd700;
-  --background-light: #6366f1;
-  --background-dark: #1e1b4b;
+  --background-light: #2d0a4e;
+  --background-dark: #7c3aed;
   --accent-blue: #3b82f6;
   --accent-purple: #8b5cf6;
   --panel-bg: rgba(255, 255, 255, 0.1);
@@ -22,7 +22,10 @@
   position: relative;
   font-family: "Outfit", sans-serif;
   color: var(--text);
-  background: var(--background-dark);
+  background: linear-gradient(
+      135deg,
+      var(--background-dark) 0%,
+      var(--background-light) 100%);
   overflow-x: hidden;
 }
 
@@ -57,8 +60,8 @@
   width: 100%;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 3rem;
+  justify-content: center;
+  /* margin-bottom: 3rem; */
 }
 
 .language-chip {
@@ -540,7 +543,7 @@
 .home-footer {
   margin-top: auto;
   width: 100%;
-  padding: 2.5rem 0 1rem;
+  /* padding: 2.5rem 0 1rem; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
