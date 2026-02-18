@@ -1,12 +1,16 @@
 <div class="page-container">
   <header class="room-header anime-border glass-panel">
-    <div class="room-round">ROOM {{ roomId || "---" }}</div>
-    <div class="room-actions">
-      <button class="room-copy-btn" type="button" (click)="copyRoomLink()">
-        <mat-icon>content_copy</mat-icon>
-        Copy Link
-      </button>
-    </div>
+    <div class="room-round">ROUND {{ (roomState?.currentImageIndex ?? 0) + 1 }} / {{ roomState?.images?.length || 0 }}</div>
+    <app-time-bar
+      #timerBar
+      [roundDuration]="roundDuration"
+      [currentHint]="currentHint"
+      [maxHints]="maxHints"
+      (skip)="handleSkip()"
+      (timeEnded)="handleTimeEnd()"
+    ></app-time-bar>
+
+    <div class="room-id-pill">ROOM {{ roomId || "---" }}</div>
   </header>
 
   <main class="main-container">
@@ -15,7 +19,13 @@
     </aside>
 
     <section class="image-viewer-container anime-border">
-      <app-image-viewer [showSquareAt]="showSquareAt" [roomState]="roomState" [animeInformation]="animeInformation" />
+      <app-image-viewer
+        [currentHint]="currentHint"
+        [maxHints]="maxHints"
+        [showSquareAt]="showSquareAt"
+        [roomState]="roomState"
+        [animeInformation]="animeInformation"
+      />
     </section>
 
     <aside class="side-panel chat-panel anime-border glass-panel">

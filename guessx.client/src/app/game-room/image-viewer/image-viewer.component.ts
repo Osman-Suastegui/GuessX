@@ -1,9 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { SIGNAL_CONST } from '../../const/signal.const';
 import { GameSignalRService } from '../../services/game-signal-r.service';
-import { StorageService } from '../../services/storage.service';
 import { RoomState } from '../room.model';
-import { TimeBarComponent } from '../time-bar/time-bar.component';
 
 @Component({
   selector: 'app-image-viewer',
@@ -23,13 +20,11 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   @Input() roomState: RoomState | null = null;
   @Input() showSquareAt: { row: number; col: number } | null = null;
 
-  public currentHint: number = 1;
-  public maxHints: number = 3;
+  @Input() currentHint: number = 1;
+  @Input() maxHints: number = 3;
   public animeImageSrc: string = '';
   public isTheWholeAnimeRevealed: boolean = false;
-  public roundDuration: number = 3; // duration of each round in seconds
 
-  @ViewChild(TimeBarComponent, { static: true }) timerBar!: TimeBarComponent;
   @ViewChild('imgEl', { static: true }) imgRef!: ElementRef<HTMLImageElement>;
   @ViewChild('maskCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
@@ -43,24 +38,21 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   private gridRows = 2;
   private gridCols = 2;
 
-  constructor(
-    public gameSignalRService: GameSignalRService,
-    private storageService: StorageService,
-  ) {}
+  constructor(public gameSignalRService: GameSignalRService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
       console.log('Anime information changed:', this.animeInformation);
-      this.currentHint = 0;
-      this.restartTimer();
       this.setUpImageViewer();
       this.isTheWholeAnimeRevealed = false;
     }
 
     if (changes['showSquareAt'] && this.showSquareAt) {
       this.revealSquareAt(this.showSquareAt.row, this.showSquareAt.col);
-      this.timerBar.resetTimer();
-      this.currentHint++;
+    }
+
+    if (changes['currentHint'] && this.isMaximunHintsReached()) {
+      this.revealTheWholeAnime();
     }
   }
 
@@ -72,8 +64,6 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     const img = this.imgRef.nativeElement;
     img.onload = () => {
       this.setupCanvas();
-      // this is for show the first hint immediately, if the image is not already loaded
-      this.revealHint();
     };
     // If already loaded
     if (img.complete) {
@@ -112,41 +102,8 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     this.ctx.clearRect(x, y, this.displayW / this.gridCols, this.displayH / this.gridRows);
   }
 
-  restartTimer(): void {
-    this.timerBar.restartTimer();
-  }
-
   handleSkip(): void {
     console.log('Usuario presionó skip');
-  }
-
-  handleTimeEnd(): void {
-    // Maximum hints reached, reveal the whole image
-    if (this.isMaximunHintsReached()) {
-      console.log('Maximum hints reached. Revealing the whole anime...');
-      this.revealTheWholeAnime();
-      // after we reveal the whole anime we should show the next one after a few seconds, for example 5 seconds
-      setTimeout(() => {
-        // we send a signal to the server to show the next anime
-        // only the owner of the room should send this signal,
-        // because if we send it from multiple clients,
-        // it could cause showing the next picture multiple times
-        if (this.roomState?.owner === this.storageService.getPlayerName()) {
-          // SHOW NEXT PICTURE
-          this.gameSignalRService.invoke(SIGNAL_CONST.SHOW_NEXT_PICTURE, this.roomState?.roomId);
-        }
-      }, 2000);
-      return;
-    }
-    // Reveal a hint
-    this.revealHint();
-  }
-
-  revealHint() {
-    // RELEAL NEXT HINT
-    if (this.roomState?.owner === this.storageService.getPlayerName()) {
-      this.gameSignalRService.invoke(SIGNAL_CONST.REVEAL_NEXT_HINT, this.roomState?.roomId);
-    }
   }
 
   isMaximunHintsReached(): boolean {

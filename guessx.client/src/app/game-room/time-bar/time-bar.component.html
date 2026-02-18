@@ -1,6 +1,6 @@
 <div class="time-shell">
   <div class="time-top">
-    <div class="hint-pill">Hint {{ currentHint }} / {{ maxHints }}</div>
+    <div class="hint-pill">HINT {{ currentHint }} / {{ maxHints }}</div>
 
     <div class="time-center">
       <div class="time-circle">
@@ -9,10 +9,12 @@
       <p class="time-label">TIME LEFT</p>
     </div>
 
-    <button class="skip-btn" type="button" (click)="onSkip()">
-      <mat-icon>skip_next</mat-icon>
-      Skip
-    </button>
+    <div class="time-right">
+      <span class="brand-title">GUESSX</span>
+      <button class="skip-btn" type="button" (click)="onSkip()" aria-label="Skip">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
   </div>
 
   <div class="timeline-track">

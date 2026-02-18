@@ -8,14 +8,7 @@
   </header>
 
   <div class="timer-wrap">
-    <app-time-bar
-      #timerBar
-      [roundDuration]="roundDuration"
-      [currentHint]="currentHint"
-      [maxHints]="maxHints"
-      (skip)="handleSkip()"
-      (timeEnded)="handleTimeEnd()"
-    ></app-time-bar>
+
   </div>
 
   <section class="wrapper-image">
@@ -24,7 +17,7 @@
     <div class="watermark">GUESSX</div>
   </section>
 
-  <section class="reveal-progress">
+  <!-- <section class="reveal-progress">
     <div class="reveal-top">
       <span>REVEAL PROGRESS</span>
       <span>{{ (currentHint / maxHints) * 100 | number: "1.0-0" }}% REVEALED</span>
@@ -32,7 +25,7 @@
     <div class="reveal-track">
       <div class="reveal-fill" [style.width.%]="(currentHint / maxHints) * 100"></div>
     </div>
-  </section>
+  </section> -->
 
   <h1 class="image-viewer-anime-name" *ngIf="isTheWholeAnimeRevealed">{{ animeInformation.name }}</h1>
 </div>
