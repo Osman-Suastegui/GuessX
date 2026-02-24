@@ -9,7 +9,8 @@ namespace GuessX.Server.GameHub
 
         public Room CreateRoom(List<CreateTitleDto> titles, string owner, int gridRows, int gridCols)
         {
-            var id = Guid.NewGuid().ToString("N");
+            var random = new Random();
+            var id = string.Join("", Enumerable.Range(0, 4).Select(_ => random.Next(0, 10)));
             Room room = new Room(id, owner, gridRows, gridCols)
             {
                 Images = titles

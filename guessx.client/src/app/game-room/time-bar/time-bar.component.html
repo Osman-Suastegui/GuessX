@@ -2,11 +2,10 @@
   <div class="time-top">
     <div class="hint-pill">HINT {{ currentHint }} / {{ maxHints }}</div>
 
-    <div class="time-center">
+    <div class="time-center mb-2 ">
       <div class="time-circle">
         <span>{{ formattedTime }}</span>
       </div>
-      <p class="time-label">TIME LEFT</p>
     </div>
 
     <div class="time-right">
@@ -14,6 +13,10 @@
       <button class="skip-btn" type="button" (click)="onSkip()" aria-label="Skip">
         <mat-icon>logout</mat-icon>
       </button>
+      <!-- START BUTTON  -->
+      @if (isCurrentUserOwner()) {
+        <button class="create-btn" type="button" (click)="onStartGame()" aria-label="Start Game">Start Game</button>
+      }
     </div>
   </div>
 

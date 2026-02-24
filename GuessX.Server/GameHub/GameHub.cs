@@ -21,7 +21,6 @@ namespace GuessX.Server.GameHub
         // the owner variable is for tracking who created the room,so we can give the owner specifics permissions
         public async Task<string> CreateRoom(string owner, GameConfig gameConfig, int gridRows, int gridCols)
         {
-            Console.WriteLine("number of pictures" + gameConfig.Rounds);
             var titles = await this._createPictureService.GetAllTitlesAsync(gameConfig.Rounds);
             var room = _rooms.CreateRoom(titles, owner, gridRows, gridCols);
             await Groups.AddToGroupAsync(Context.ConnectionId, room.RoomId);

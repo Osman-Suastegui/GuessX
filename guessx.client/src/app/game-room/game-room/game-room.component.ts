@@ -128,6 +128,10 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleStartGame(): void {
+    console.log('Usuario presionó start game');
+  }
+
   isMaximunHintsReached(): boolean {
     return this.currentHint >= this.maxHints;
   }

@@ -1,3 +1,5 @@
+@import '../../home-page/home-page.component.css';
+
 @keyframes fillProgress {
   from {
     width: 0%;
@@ -49,6 +51,8 @@
   flex-direction: column;
   align-items: center;
   gap: 0.22rem;
+  top: -50%;
+  ;
 }
 
 .time-circle {
@@ -172,4 +176,10 @@
     height: 32px;
     width: 32px;
   }
+}
+
+.create-btn{
+  /* height: 30px; */
+  padding: 5px 25px;
+  font-size: 1.5rem;
 }

@@ -1,16 +1,18 @@
 <div class="page-container">
-  <header class="room-header anime-border glass-panel">
-    <div class="room-round">ROUND {{ (roomState?.currentImageIndex ?? 0) + 1 }} / {{ roomState?.images?.length || 0 }}</div>
+  <header class="room-header ">
     <app-time-bar
       #timerBar
       [roundDuration]="roundDuration"
       [currentHint]="currentHint"
       [maxHints]="maxHints"
+      [roomState]="roomState"
       (skip)="handleSkip()"
       (timeEnded)="handleTimeEnd()"
+      (startGame)="handleStartGame()"
+
     ></app-time-bar>
 
-    <div class="room-id-pill">ROOM {{ roomId || "---" }}</div>
+    <!-- <div class="room-id-pill">ROOM {{ roomId || "---" }}</div> -->
   </header>
 
   <main class="main-container">
