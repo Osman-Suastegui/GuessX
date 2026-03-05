@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { StorageService } from '../../services/storage.service';
 import { RoomState } from '../room.model';
 
@@ -7,7 +7,7 @@ import { RoomState } from '../room.model';
   templateUrl: './time-bar.component.html',
   styleUrl: './time-bar.component.css',
 })
-export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
+export class TimeBarComponent implements OnChanges, OnDestroy {
   @Input() roundDuration!: number;
   @Input() currentHint!: number;
   @Input() maxHints!: number;
@@ -27,9 +27,6 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   private timerEnded: boolean = false;
 
   constructor(private storageService: StorageService) {}
-  ngOnInit(): void {
-    this.startTimer();
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['roundDuration'] && !changes['roundDuration'].firstChange) {
@@ -92,6 +89,10 @@ export class TimeBarComponent implements OnChanges, OnDestroy, OnInit {
   isCurrentUserOwner(): boolean {
     return true;
     return this.roomState?.owner === this.storageService.getPlayerName();
+  }
+
+  get minHints(): number {
+    return Math.min(this.maxHints, this.currentHint);
   }
 
   get formattedTime(): string {

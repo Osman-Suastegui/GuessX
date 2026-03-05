@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SIGNAL_CONST } from '../../const/signal.const';
+import { GameRoomService } from '../../services/game-room.service';
 import { StorageService } from '../../services/storage.service';
 import { GeneralService } from '../../utils/general.service';
 import { RoomState } from '../room.model';
@@ -27,6 +28,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   @ViewChild(TimeBarComponent, { static: true }) timerBar!: TimeBarComponent;
   constructor(
     public gameSignalRService: GameSignalRService,
+    private gameRoomService: GameRoomService,
     public generalService: GeneralService,
     private storageService: StorageService,
   ) {}
@@ -49,7 +51,6 @@ export class GameRoomComponent implements OnInit, OnDestroy {
 
     try {
       if (!this.gameSignalRService.isHubConnected()) {
-        console.log('Hub not connected, starting connection...');
         await this.gameSignalRService.startConnection('http://localhost:5290/gameHub');
       }
 
@@ -66,7 +67,6 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       }
 
       this.roomState = roomState;
-      console.log('Room state updated:', roomState);
       const currentImg = roomState.images[roomState.currentImageIndex];
 
       // if we join we want to show the current image;
@@ -76,14 +76,15 @@ export class GameRoomComponent implements OnInit, OnDestroy {
           src: currentImg.titleImages[0].imageUrl,
           answers: currentImg.titleAnswers,
         };
-        this.timerBar.resetTimer();
-        this.currentHint = 1;
+        this.currentHint = 0;
       }
 
-      if (roomState.currentEndPoint === 'RevealNextHint') {
-        this.showSquareAt = roomState.availableSquares[roomState.currentSquareToShowIndex || 0] || null;
-        this.currentHint++;
-        this.timerBar.resetTimer();
+      if (roomState.currentEndPoint === 'RevealNextHint' || roomState.currentEndPoint === 'ShowNextPicture') {
+        setTimeout(() => {
+          this.showSquareAt = roomState.availableSquares[roomState.currentSquareToShowIndex || 0] || null;
+          this.currentHint++;
+          this.timerBar.resetTimer();
+        }, 200);
       }
     });
   }
@@ -103,7 +104,8 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   handleTimeEnd(): void {
     // Maximum hints reached, reveal the whole image
     if (this.isMaximunHintsReached()) {
-      console.log('Maximum hints reached. Revealing the whole anime...');
+      this.gameRoomService.revealWholeImage();
+
       // after we reveal the whole anime we should show the next one after a few seconds, for example 5 seconds
       setTimeout(() => {
         // we send a signal to the server to show the next anime
@@ -117,8 +119,11 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       }, 2000);
       return;
     }
-    // Reveal a hint
-    this.revealHint();
+
+    if (this.currentHint < this.maxHints) {
+      // Reveal a hint
+      this.revealHint();
+    }
   }
 
   revealHint() {
@@ -129,7 +134,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   }
 
   handleStartGame(): void {
-    console.log('Usuario presionó start game');
+    this.gameSignalRService.invoke(SIGNAL_CONST.SHOW_NEXT_PICTURE, this.roomState?.roomId);
   }
 
   isMaximunHintsReached(): boolean {

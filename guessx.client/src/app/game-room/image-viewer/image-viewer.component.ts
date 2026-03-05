@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { GameRoomService } from '../../services/game-room.service';
 import { GameSignalRService } from '../../services/game-signal-r.service';
 import { RoomState } from '../room.model';
 
@@ -35,10 +36,13 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   // gridRows and gridCols determine how many fragments the image will be divided into. For example, if gridRows=5 and gridCols=3,
   // the image will be divided into 15 fragments (5 rows x 3 columns).
   // Each hint will reveal one of these fragments
-  private gridRows = 2;
-  private gridCols = 2;
+  private gridRows = 4;
+  private gridCols = 4;
 
-  constructor(public gameSignalRService: GameSignalRService) {}
+  constructor(
+    public gameSignalRService: GameSignalRService,
+    private gameRoomService: GameRoomService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['animeInformation']) {
@@ -50,14 +54,17 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     if (changes['showSquareAt'] && this.showSquareAt) {
       this.revealSquareAt(this.showSquareAt.row, this.showSquareAt.col);
     }
-
-    if (changes['currentHint'] && this.isMaximunHintsReached()) {
-      this.revealTheWholeAnime();
-    }
   }
 
   ngAfterViewInit() {
     this.setUpImageViewer();
+    this.revealWholeAnimeListener();
+  }
+
+  private revealWholeAnimeListener() {
+    this.gameRoomService.revealWholeImage$.subscribe(() => {
+      this.revealTheWholeAnime();
+    });
   }
 
   setUpImageViewer() {
@@ -106,11 +113,8 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
     console.log('Usuario presionó skip');
   }
 
-  isMaximunHintsReached(): boolean {
-    return this.currentHint >= this.maxHints;
-  }
-
   revealTheWholeAnime() {
+    console.log('Revealing the whole anime...');
     this.ctx.clearRect(0, 0, this.displayW, this.displayH);
     this.isTheWholeAnimeRevealed = true;
   }
