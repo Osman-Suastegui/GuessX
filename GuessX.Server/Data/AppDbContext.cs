@@ -16,6 +16,12 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Character> Characters { get; set; }
+
+    public virtual DbSet<CharacterOfTheDay> CharacterOfTheDays { get; set; }
+
+    public virtual DbSet<SplashOfTheDay> SplashOfTheDays { get; set; }
+
     public virtual DbSet<Genre> Genres { get; set; }
 
     public virtual DbSet<TitleAnswer> TitleAnswers { get; set; }
@@ -37,6 +43,28 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Character>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__characte__3213E83F00000000");
+
+            entity.ToTable("characters");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.GameId).HasColumnName("game_id");
+            entity.Property(e => e.Metadata)
+                .HasColumnType("nvarchar(max)")
+                .HasColumnName("metadata");
+            entity.Property(e => e.Name)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("name");
+
+            entity.HasOne(d => d.Game).WithMany(p => p.Characters)
+                .HasForeignKey(d => d.GameId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__character__game___title_picture_gallery");
+        });
+
         modelBuilder.Entity<Genre>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__genres__3213E83F11A1BFCE");

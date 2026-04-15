@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.game-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.eyebrow,
+.mission-label {
+  margin: 0;
+  color: #f09a93;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.game-title,
+.mission-title {
+  margin: 0;
+  color: #fff1ee;
+}
+
+.game-title {
+  max-width: 15ch;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 0.95;
+}
+
+.game-copy,
+.mission-note {
+  margin: 0;
+  color: #e4c7c2;
+  line-height: 1.65;
+}
+
+.game-copy {
+  max-width: 42rem;
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.mission-card {
+  padding: 1.15rem;
+  border: 1px solid rgba(240, 154, 147, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(96, 30, 36, 0.82), rgba(35, 14, 18, 0.9));
+}
+
+.mission-title {
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .mission-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,115 @@
+:host {
+  display: block;
+}
+
+.search-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.search-label {
+  color: #8fa6b9;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.search-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(157, 181, 208, 0.22);
+  border-radius: 0.75rem;
+  background: rgba(11, 19, 33, 0.9);
+  color: #edf3fb;
+  padding: 0.72rem 0.85rem;
+  font: inherit;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: rgba(124, 166, 188, 0.72);
+  box-shadow: 0 0 0 3px rgba(124, 166, 188, 0.18);
+}
+
+.search-input:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.search-action {
+  border: 1px solid rgba(142, 183, 255, 0.45);
+  background: rgba(18, 38, 78, 0.9);
+  color: #e7f0ff;
+  border-radius: 0.7rem;
+  padding: 0.72rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.search-action:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  border: 1px solid rgba(157, 181, 208, 0.22);
+  border-radius: 0.75rem;
+  background: rgba(10, 16, 27, 0.98);
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.autocomplete-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: left;
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.58rem 0.62rem;
+  background: transparent;
+  color: #d8e4f2;
+  font: inherit;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item:focus-visible {
+  outline: none;
+  background: rgba(124, 166, 188, 0.18);
+}
+
+.autocomplete-thumb {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.2rem;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.autocomplete-name {
+  flex: 1;
+}
+
+@media (max-width: 560px) {
+  .search-action {
+    padding-inline: 0.85rem;
+  }
+}

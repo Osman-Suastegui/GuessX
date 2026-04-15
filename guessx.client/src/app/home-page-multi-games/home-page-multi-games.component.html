@@ -1,0 +1,48 @@
+<div class="multi-games-page">
+  <div class="page-shell">
+    <aside class="sidebar-panel" aria-label="Category navigation">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="material-symbols-outlined">joystick</span>
+        </div>
+
+        <div>
+          <p class="brand-kicker">GuessX Arcade</p>
+          <h2 class="brand-title">Franchise Select</h2>
+        </div>
+      </div>
+
+      <div class="sidebar-scroll">
+        @for (section of navigationSections; track section.title) {
+          <section class="nav-section" [attr.aria-labelledby]="section.title + '-title'">
+            <h3 class="nav-title" [id]="section.title + '-title'">{{ section.title }}</h3>
+
+            <div class="nav-list">
+              @for (item of section.items; track item.label) {
+                <a class="nav-item" [routerLink]="item.path" routerLinkActive="nav-item-active" [routerLinkActiveOptions]="{ exact: true }">
+                  <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+                  <span>{{ item.label }}</span>
+                </a>
+              }
+            </div>
+          </section>
+        }
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="ghost-button" type="button">
+          <span class="material-symbols-outlined">tune</span>
+          Preferences
+        </button>
+      </div>
+    </aside>
+
+    <div class="content-panel">
+      <header class="topbar"></header>
+
+      <main class="content-body">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+</div>

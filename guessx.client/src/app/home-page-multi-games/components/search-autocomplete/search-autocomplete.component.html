@@ -1,0 +1,38 @@
+<div class="search-shell">
+  <label class="search-label" [for]="inputId">{{ label }}</label>
+
+  <div class="search-row">
+    <input
+      [id]="inputId"
+      class="search-input"
+      type="text"
+      autocomplete="off"
+      [placeholder]="placeholder"
+      [value]="term"
+      [disabled]="disabled"
+      (focus)="onFocus()"
+      (input)="onInput($any($event.target).value)"
+      (keydown.enter)="onEnter()"
+    />
+
+    @if (hasAction) {
+      <button type="button" class="search-action" [disabled]="actionDisabled" (click)="onActionClick()">{{ actionLabel }}</button>
+    }
+  </div>
+
+  @if (shouldRenderResults) {
+    <ul class="autocomplete-list" role="listbox">
+      @for (option of results; track trackOption($index, option)) {
+        <li>
+          <button type="button" class="autocomplete-item" (click)="selectOption(option)">
+            @if (shouldShowImage) {
+              <img class="autocomplete-thumb" [src]="getOptionImage(option)" [alt]="getOptionLabel(option)" />
+            }
+
+            <span class="autocomplete-name">{{ getOptionLabel(option) }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>

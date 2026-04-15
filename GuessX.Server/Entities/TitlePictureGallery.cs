@@ -15,6 +15,8 @@ public partial class TitlePictureGallery
     [Column("status")] // Para indicar el nombre exacto de la prop
     public string Status { get; set; } = "Active";
 
+    public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
+
     public virtual ICollection<TitleAnswer> TitleAnswers { get; set; } = new List<TitleAnswer>();
 
     public virtual ICollection<TitleImage> TitleImages { get; set; } = new List<TitleImage>();

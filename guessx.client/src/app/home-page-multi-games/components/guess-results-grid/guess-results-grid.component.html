@@ -1,0 +1,31 @@
+<section class="guess-grid-shell" aria-label="Guess results table">
+  <div class="guess-grid-scroll">
+    <div class="guess-grid" [style.--column-count]="columns.length">
+      <div class="grid-cell grid-cell-spacer" aria-hidden="true"></div>
+
+      @for (column of columns; track column.key) {
+        <p class="grid-head">{{ column.label }}</p>
+      }
+
+      @for (row of computedRows; track row.guessNumber; let rowIndex = $index) {
+        <div class="grid-row-label">
+          <p class="row-kicker">Guess {{ row.guessNumber }}</p>
+          <p class="row-name">{{ row.guessName }}</p>
+          <img [src]="'https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/' + row.guessName + '.png'" alt="" srcset="">
+
+        </div>
+
+        @for (cell of row.cells; track $index; let columnIndex = $index) {
+          <article
+            class="guess-cell"
+            [ngClass]="cellClass(cell.state)"
+            [style.--row-index]="rowIndex"
+            [style.--column-index]="columnIndex"
+          >
+            <span class="cell-value">{{ cell.value }}</span>
+          </article>
+        }
+      }
+    </div>
+  </div>
+</section>

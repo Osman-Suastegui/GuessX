@@ -1,0 +1,17 @@
+<app-splash-guess
+	[answerCharacter]="answerCharacterSplash"
+	[answerKey]="'name'"
+	[splashKey]="'splash'"
+	[maxAttempts]="5"
+	[heading]="'Who is this?'"
+	[subtitle]="'Identify the champion from this splash art fragment.'"
+	[placeholder]="'Guess the champion...'"
+	[searchResults]="searchResults"
+	[searchResultKey]="'name'"
+	(answerGuessed)="onAnswerGuessed($event)"
+	(searchTermChanged)="onSearchTermChanged($event)"
+></app-splash-guess>
+
+@if (solvedCharacterName) {
+	<p class="solved-copy">You solved it with {{ solvedCharacterName }}.</p>
+}

@@ -4,6 +4,7 @@ using GuessX.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuessX.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260409193551_removePictureUrl")]
+    partial class removePictureUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,36 +106,6 @@ namespace GuessX.Server.Migrations
                         .IsUnique();
 
                     b.ToTable("genres", (string)null);
-                });
-
-            modelBuilder.Entity("GuessX.Server.Entities.SplashOfTheDay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SplashImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CharacterId");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("SplashOfTheDays");
                 });
 
             modelBuilder.Entity("GuessX.Server.Entities.TitleAnswer", b =>
@@ -265,25 +238,6 @@ namespace GuessX.Server.Migrations
                 {
                     b.HasOne("GuessX.Server.Entities.Character", "Character")
                         .WithMany("CharacterOfTheDays")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GuessX.Server.Entities.TitlePictureGallery", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
-
-                    b.Navigation("Game");
-                });
-
-            modelBuilder.Entity("GuessX.Server.Entities.SplashOfTheDay", b =>
-                {
-                    b.HasOne("GuessX.Server.Entities.Character", "Character")
-                        .WithMany()
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

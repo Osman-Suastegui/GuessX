@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.game-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.eyebrow,
+.world-type {
+  margin: 0;
+  color: #8ecf99;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.game-title,
+.world-title {
+  margin: 0;
+  color: #ecf7ee;
+}
+
+.game-title {
+  max-width: 16ch;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 0.95;
+}
+
+.game-copy,
+.world-note {
+  margin: 0;
+  color: #c5ddc9;
+  line-height: 1.65;
+}
+
+.game-copy {
+  max-width: 42rem;
+}
+
+.world-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.world-card {
+  padding: 1.15rem;
+  border: 1px solid rgba(142, 207, 153, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(31, 69, 35, 0.82), rgba(14, 31, 15, 0.9));
+}
+
+.world-title {
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .world-grid {
+    grid-template-columns: 1fr;
+  }
+}

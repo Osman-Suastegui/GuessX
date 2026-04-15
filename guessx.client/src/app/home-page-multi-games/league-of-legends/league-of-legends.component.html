@@ -1,0 +1,28 @@
+<section class="game-page">
+  <p class="eyebrow">League of Legends</p>
+
+  <app-search-autocomplete
+    [inputId]="'character-search'"
+    [label]="'Search champion'"
+    [placeholder]="'search...'"
+    [term]="searchTerm"
+    [results]="searchResults"
+    [displayKey]="'name'"
+    [imageKey]="'imageUrl'"
+    [showResults]="!isSearching"
+    (termChanged)="onSearchInput($event)"
+    (optionSelected)="selectCharacterOption($event)"
+  ></app-search-autocomplete>
+
+  <app-guess-results-grid
+    [columns]="tableColumns"
+    [answer]="answerCharacter"
+    [guesses]="guessedCharacters"
+    [guessLabelKey]="'name'"
+    (characterGuessed)="onCharacterGuessed($event)"
+  ></app-guess-results-grid>
+
+  @if (guessedCharacterName) {
+    <p class="game-copy">Solved: {{ guessedCharacterName }} is the correct character.</p>
+  }
+</section>

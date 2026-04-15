@@ -1,0 +1,68 @@
+:host {
+  display: block;
+}
+
+.game-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.eyebrow,
+.playlist-queue {
+  margin: 0;
+  color: #8fa6b9;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.game-title,
+.playlist-mode {
+  margin: 0;
+  color: #edf3fb;
+}
+
+.game-title {
+  max-width: 16ch;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 0.95;
+}
+
+.game-copy,
+.playlist-note {
+  margin: 0;
+  color: #9aa9bb;
+  line-height: 1.55;
+}
+
+.game-copy {
+  max-width: 52rem;
+  margin-bottom: 0.35rem;
+}
+
+.playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.playlist-card {
+  padding: 1.15rem;
+  border: 1px solid rgba(157, 181, 208, 0.14);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(29, 45, 66, 0.9), rgba(15, 23, 34, 0.88));
+}
+
+.playlist-mode {
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .playlist-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,65 @@
+<section class="splash-guess-shell" aria-label="Splash guess challenge">
+  <header class="splash-copy">
+    <h2 class="splash-title">{{ heading }}</h2>
+    <p class="splash-subtitle">{{ subtitle }}</p>
+  </header>
+
+  <div class="splash-frame">
+    <img
+      class="splash-image"
+      [ngClass]="{ 'splash-image-solved': solved }"
+      [style.transform]="'scale(' + revealScale + ')'"
+      [src]="splashImage"
+      [alt]="'Splash art of ' + answerName"
+    />
+  </div>
+
+  <div class="search-shell">
+    <app-search-autocomplete
+      [inputId]="'splash-guess-input'"
+      [label]="'Guess character'"
+      [placeholder]="placeholder"
+      [term]="guessSearchTerm"
+      [disabled]="solved || remainingAttempts === 0"
+      [results]="searchResults"
+      [displayKey]="searchResultKey"
+      [imageKey]="'imageUrl'"
+      [showResults]="shouldShowSearchResults"
+      [actionLabel]="'Enter'"
+      [actionDisabled]="solved || remainingAttempts === 0"
+      (termChanged)="onGuessInput($event)"
+      (optionSelected)="selectSearchResult($event)"
+      (enterPressed)="submitGuess()"
+      (actionClicked)="submitGuess()"
+    ></app-search-autocomplete>
+  </div>
+
+  <div class="splash-status-row">
+    <p class="attempts">Attempts {{ attemptsUsed }} / {{ maxAttempts }}</p>
+  </div>
+
+  @if (solved) {
+    <p class="result-text result-correct">Correct! {{ answerName }} was the right answer.</p>
+  } @else if (remainingAttempts === 0) {
+    <p class="result-text result-fail">No attempts left. The answer was {{ answerName }}.</p>
+  }
+
+  <section class="previous-guesses" aria-label="Previous guesses">
+
+    @if (previousGuesses.length === 0) {
+      <p class="no-guesses">No guesses yet.</p>
+    } @else {
+      <ul class="guess-list">
+        @for (guess of previousGuesses; track guess.name + "-" + $index) {
+          <li class="guess-item" [ngClass]="{ 'guess-correct': isGuessCorrect(guess), 'guess-wrong': !isGuessCorrect(guess) }">
+            <p class="guess-name">{{ guess.name }}</p>
+
+            @if (guess.imageUrl) {
+              <img class="guess-image" [src]="guess.imageUrl" [alt]="guess.name + ' portrait'" />
+            }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</section>

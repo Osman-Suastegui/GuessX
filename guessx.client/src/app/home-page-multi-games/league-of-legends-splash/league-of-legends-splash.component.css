@@ -1,0 +1,9 @@
+:host {
+	display: block;
+}
+
+.solved-copy {
+	margin: 1rem 0 0;
+	color: #bcd7ff;
+	text-align: center;
+}
