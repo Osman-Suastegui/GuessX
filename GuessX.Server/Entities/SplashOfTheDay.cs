@@ -15,9 +15,13 @@ public partial class SplashOfTheDay
 
     public TitlePictureGallery Game { get; set; } = null!;
 
-    public Character Character { get; set; } = null!;
+    public Character? Character { get; set; } = null!;
 
-    public int CharacterId { get; set; }
+    public int? CharacterId { get; set; }
 
     public string SplashImageUrl { get; set; } = null!;
+
+    public Anime? Anime { get; set; }
+
+    public int? AnimeId { get; set; }
 }

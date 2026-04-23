@@ -4,6 +4,7 @@ using GuessX.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuessX.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260417205354_addManyToMany")]
+    partial class addManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,10 +162,7 @@ namespace GuessX.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AnimeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CharacterId")
+                    b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<DateOnly>("Date")
@@ -176,8 +176,6 @@ namespace GuessX.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnimeId");
 
                     b.HasIndex("CharacterId");
 
@@ -352,13 +350,11 @@ namespace GuessX.Server.Migrations
 
             modelBuilder.Entity("GuessX.Server.Entities.SplashOfTheDay", b =>
                 {
-                    b.HasOne("GuessX.Server.Entities.Anime", null)
-                        .WithMany("SplashOfTheDays")
-                        .HasForeignKey("AnimeId");
-
                     b.HasOne("GuessX.Server.Entities.Character", "Character")
                         .WithMany()
-                        .HasForeignKey("CharacterId");
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GuessX.Server.Entities.TitlePictureGallery", "Game")
                         .WithMany()
@@ -411,8 +407,6 @@ namespace GuessX.Server.Migrations
             modelBuilder.Entity("GuessX.Server.Entities.Anime", b =>
                 {
                     b.Navigation("AnimeOfTheDays");
-
-                    b.Navigation("SplashOfTheDays");
                 });
 
             modelBuilder.Entity("GuessX.Server.Entities.Character", b =>

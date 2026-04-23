@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  color: #edf3fb;
+}
+
+.league-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.league-hero {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #8fa6b9;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.league-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.league-copy {
+  max-width: 50ch;
+  margin: 0.7rem 0 0;
+  color: #9aa9bb;
+  line-height: 1.55;
+}
+
+.league-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.league-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 11rem;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid rgba(157, 181, 208, 0.16);
+  border-radius: 0.95rem;
+  background: rgba(10, 16, 27, 0.72);
+  color: #9aa9bb;
+  text-decoration: none;
+  transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease, color 140ms ease;
+}
+
+.league-tab:hover,
+.league-tab:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  border-color: rgba(167, 198, 215, 0.32);
+  color: #edf3fb;
+  background: rgba(124, 166, 188, 0.1);
+}
+
+.league-tab-active,
+.league-tab-active:hover,
+.league-tab-active:focus-visible {
+  color: #edf3fb;
+  border-color: rgba(124, 166, 188, 0.38);
+  background: linear-gradient(180deg, rgba(124, 166, 188, 0.16), rgba(10, 16, 27, 0.88));
+  box-shadow: inset 0 0 0 1px rgba(167, 198, 215, 0.08);
+}
+
+.league-tab-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.league-tab-description {
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.league-panel {
+  padding: 1.2rem;
+  border: 1px solid rgba(157, 181, 208, 0.14);
+  border-radius: 1.1rem;
+  background: linear-gradient(180deg, rgba(15, 23, 34, 0.9), rgba(11, 17, 28, 0.92));
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 900px) {
+  .league-hero {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .league-tab {
+    min-width: 0;
+    flex: 1 1 10rem;
+  }
+}

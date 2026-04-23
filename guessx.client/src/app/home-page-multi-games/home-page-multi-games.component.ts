@@ -24,6 +24,8 @@ const NAVIGATION_SECTIONS: readonly NavigationSection[] = [
   {
     title: 'Anime',
     items: [
+      { icon: 'auto_awesome', label: 'Anime', path: '/anime' },
+
       { icon: 'auto_awesome', label: 'Naruto', path: '/anime-request' },
       { icon: 'sailing', label: 'One Piece', path: '/anime-request' },
     ],

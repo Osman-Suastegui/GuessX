@@ -1,0 +1,26 @@
+<section class="league-page">
+  <header class="league-hero">
+    <div>
+      <p class="eyebrow">League of Legends</p>
+    </div>
+  </header>
+
+  <nav class="league-tabs" aria-label="League of Legends sections">
+    @for (item of navigationItems; track item.path) {
+      <a
+        class="league-tab"
+        [routerLink]="item.path"
+        routerLinkActive="league-tab-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="league-tab-label">{{ item.label }}</span>
+        <span class="league-tab-description">{{ item.description }}</span>
+      </a>
+    }
+  </nav>
+
+  <section class="league-panel">
+    <router-outlet></router-outlet>
+  </section>
+</section>
+

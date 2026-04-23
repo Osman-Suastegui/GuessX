@@ -3,7 +3,7 @@ using GuessX.Server.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GuessX.Server.Application.Dtos;
-
+using GuessX.Server.Application.Services;
 namespace GuessX.Server.Controllers
 {
     [ApiController]
@@ -13,10 +13,11 @@ namespace GuessX.Server.Controllers
     {
 
         private readonly AppDbContext _dbContext;
-
-        public CharactersController(AppDbContext dbContext)
+        private readonly LeagueOfLegends _randomLeagueOfLegends;
+        public CharactersController(AppDbContext dbContext, LeagueOfLegends randomLeagueOfLegends)
         {
             _dbContext = dbContext;
+            _randomLeagueOfLegends = randomLeagueOfLegends;
         }
 
 
@@ -74,7 +75,6 @@ namespace GuessX.Server.Controllers
                   Metadata = c.Character.Metadata,
               })
                 .FirstOrDefaultAsync();
-            Console.Write(characterOfTheDay.ToString());
             if (characterOfTheDay == null)
             {
                 return NotFound("Character of the day not found.");
@@ -108,6 +108,14 @@ namespace GuessX.Server.Controllers
             }
 
             return Ok(splashOfTheDay);
+        }
+
+        [HttpPost("generateCharacterOfTheDayLOL")]
+        public async Task<ActionResult<CharacterOfTheDayResponseDto>> GenerateCharacterOfTheDayLOL()
+        {
+            var characterOfTheDay = await _randomLeagueOfLegends.GenerateCharacterOfTheDay();
+            return StatusCode(201, characterOfTheDay);
+         
         }
 
     }

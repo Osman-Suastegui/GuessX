@@ -4,6 +4,7 @@ using GuessX.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuessX.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260417204453_addAnimeTable")]
+    partial class addAnimeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace GuessX.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("AnimeGenre", b =>
-                {
-                    b.Property<int>("AnimesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GenresId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnimesId", "GenresId");
-
-                    b.HasIndex("GenresId");
-
-                    b.ToTable("AnimeGenre");
-                });
 
             modelBuilder.Entity("GuessX.Server.Entities.Anime", b =>
                 {
@@ -106,7 +94,7 @@ namespace GuessX.Server.Migrations
                     b.Property<int?>("AnimeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CharacterId")
+                    b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<DateOnly>("Date")
@@ -135,6 +123,9 @@ namespace GuessX.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AnimeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -144,6 +135,8 @@ namespace GuessX.Server.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK__genres__3213E83F11A1BFCE");
+
+                    b.HasIndex("AnimeId");
 
                     b.HasIndex(new[] { "Name" }, "UQ__genres__72E12F1BA4FD6A64")
                         .IsUnique();
@@ -159,10 +152,7 @@ namespace GuessX.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AnimeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CharacterId")
+                    b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<DateOnly>("Date")
@@ -176,8 +166,6 @@ namespace GuessX.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnimeId");
 
                     b.HasIndex("CharacterId");
 
@@ -301,21 +289,6 @@ namespace GuessX.Server.Migrations
                     b.ToTable("title_genres", (string)null);
                 });
 
-            modelBuilder.Entity("AnimeGenre", b =>
-                {
-                    b.HasOne("GuessX.Server.Entities.Anime", null)
-                        .WithMany()
-                        .HasForeignKey("AnimesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GuessX.Server.Entities.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("GuessX.Server.Entities.Character", b =>
                 {
                     b.HasOne("GuessX.Server.Entities.TitlePictureGallery", "Game")
@@ -329,13 +302,15 @@ namespace GuessX.Server.Migrations
 
             modelBuilder.Entity("GuessX.Server.Entities.CharacterOfTheDay", b =>
                 {
-                    b.HasOne("GuessX.Server.Entities.Anime", "Anime")
+                    b.HasOne("GuessX.Server.Entities.Anime", null)
                         .WithMany("AnimeOfTheDays")
                         .HasForeignKey("AnimeId");
 
                     b.HasOne("GuessX.Server.Entities.Character", "Character")
                         .WithMany("CharacterOfTheDays")
-                        .HasForeignKey("CharacterId");
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GuessX.Server.Entities.TitlePictureGallery", "Game")
                         .WithMany()
@@ -343,22 +318,25 @@ namespace GuessX.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Anime");
-
                     b.Navigation("Character");
 
                     b.Navigation("Game");
                 });
 
-            modelBuilder.Entity("GuessX.Server.Entities.SplashOfTheDay", b =>
+            modelBuilder.Entity("GuessX.Server.Entities.Genre", b =>
                 {
                     b.HasOne("GuessX.Server.Entities.Anime", null)
-                        .WithMany("SplashOfTheDays")
+                        .WithMany("Genres")
                         .HasForeignKey("AnimeId");
+                });
 
+            modelBuilder.Entity("GuessX.Server.Entities.SplashOfTheDay", b =>
+                {
                     b.HasOne("GuessX.Server.Entities.Character", "Character")
                         .WithMany()
-                        .HasForeignKey("CharacterId");
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GuessX.Server.Entities.TitlePictureGallery", "Game")
                         .WithMany()
@@ -412,7 +390,7 @@ namespace GuessX.Server.Migrations
                 {
                     b.Navigation("AnimeOfTheDays");
 
-                    b.Navigation("SplashOfTheDays");
+                    b.Navigation("Genres");
                 });
 
             modelBuilder.Entity("GuessX.Server.Entities.Character", b =>

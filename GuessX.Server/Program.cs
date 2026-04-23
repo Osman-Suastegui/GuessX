@@ -2,7 +2,6 @@ using GuessX.Server.Controllers;
 using Microsoft.EntityFrameworkCore;
 using GuessX.Server.Data;
 using GuessX.Server.Application.Services;
-using GuessX.Server.GameHub;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -11,13 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<CreatePictureService>();
-builder.Services.AddScoped<EditPictureService>();
-builder.Services.AddScoped<GetPictureByImageUrlService>();
-builder.Services.AddScoped<SearchPictureService>();
+
+builder.Services.AddScoped<LeagueOfLegends>();
+builder.Services.AddScoped<AnimeService>();
 builder.Services.AddSignalR();
 
-builder.Services.AddSingleton<RoomManager>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -52,7 +49,6 @@ app.UseStaticFiles();
 //app.UseCors("AllowSpecificOrigin");
 app.UseCors("AllowAngular");
 
-app.MapHub<GameHub>("/gamehub");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -66,7 +62,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-//app.MapHub<GameHub>("/hubs/game");
 
 app.MapFallbackToFile("/index.html");
 

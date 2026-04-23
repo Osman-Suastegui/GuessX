@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
-interface LeagueNavigationItem {
+export interface LeagueNavigationItem {
   readonly label: string;
   readonly path: string;
   readonly description: string;

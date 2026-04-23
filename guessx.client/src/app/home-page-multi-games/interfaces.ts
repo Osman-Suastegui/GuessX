@@ -25,3 +25,10 @@ export interface SplashOfTheDay {
   date: string; 
   gameName: string;
 }
+
+export interface Anime{ 
+  id: string;
+  gameId: string;
+  name: string;
+  malId: number;
+}

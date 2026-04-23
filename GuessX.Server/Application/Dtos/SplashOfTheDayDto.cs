@@ -1,3 +1,5 @@
+using GuessX.Server.Entities;
+
 namespace GuessX.Server.Application.Dtos;
 
 public class SplashOfTheDayDto
@@ -10,5 +12,6 @@ public class SplashOfTheDayDto
     public string Name { get; set; } = null!;
 
     public string SplashImageUrl { get; set; } = null!;
+
 
 }

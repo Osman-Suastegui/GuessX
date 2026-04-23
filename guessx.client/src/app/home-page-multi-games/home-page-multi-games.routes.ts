@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AnimePageComponent } from './anime-page/anime-page.component';
 import { HomePageMultiGamesComponent } from './home-page-multi-games.component';
 import { LeagueOfLegendsPageComponent } from './league-of-legends-page/league-of-legends-page.component';
 
@@ -23,11 +24,27 @@ export const homePageMultiGamesRoutes: Routes = [
           },
           {
             path: 'splash',
-            loadComponent: () => import('./league-of-legends-splash/league-of-legends-splash.component').then((m) => m.LeagueOfLegendsSplashComponent),
+            loadComponent: () =>
+              import('./league-of-legends-splash/league-of-legends-splash.component').then((m) => m.LeagueOfLegendsSplashComponent),
           },
           {
             path: 'play',
             loadComponent: () => import('./league-of-legends/league-of-legends.component').then((m) => m.LeagueOfLegendsComponent),
+          },
+        ],
+      },
+      {
+        path: 'anime',
+        component: AnimePageComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'splash',
+            pathMatch: 'full',
+          },
+          {
+            path: 'splash',
+            loadComponent: () => import('./anime-splash/anime-splash.component').then((m) => m.AnimeSplashComponent),
           },
         ],
       },

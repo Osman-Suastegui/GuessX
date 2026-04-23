@@ -22,6 +22,7 @@ export class SplashGuessComponent implements OnChanges {
   @Input({ required: true }) public answerCharacter: SplashAnswer | null = null;
   @Input() public answerKey: string = 'name';
   @Input() public splashKey: string = 'splash';
+  @Input() public enableZoom: boolean = true;
   @Input() public searchResults: readonly SplashAnswer[] = [];
   @Input() public searchResultKey: string = 'name';
   @Input() public maxAttempts: number = 5;
@@ -71,6 +72,10 @@ export class SplashGuessComponent implements OnChanges {
   }
 
   public get revealScale(): number {
+    if (!this.enableZoom) {
+      return 1;
+    }
+
     if (this.solved) {
       return 1;
     }
