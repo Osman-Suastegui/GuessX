@@ -9,7 +9,7 @@ public partial class Anime
     public string Name { get; set; } = null!;
 
     public ICollection<Genre> Genres { get; set; } = new List<Genre>();
-    
+
     public ICollection<CharacterOfTheDay> AnimeOfTheDays { get; set; } = new List<CharacterOfTheDay>();
 
     public int? MalId { get; set; } // this value is used for jikan api

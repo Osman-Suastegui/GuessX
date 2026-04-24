@@ -13,11 +13,11 @@ namespace GuessX.Server.Controllers
     {
 
         private readonly AppDbContext _dbContext;
-        private readonly LeagueOfLegends _randomLeagueOfLegends;
+        private readonly LeagueOfLegends _leagueOfLegends;
         public CharactersController(AppDbContext dbContext, LeagueOfLegends randomLeagueOfLegends)
         {
             _dbContext = dbContext;
-            _randomLeagueOfLegends = randomLeagueOfLegends;
+            _leagueOfLegends = randomLeagueOfLegends;
         }
 
 
@@ -110,12 +110,19 @@ namespace GuessX.Server.Controllers
             return Ok(splashOfTheDay);
         }
 
+        [HttpPost("generateSplashOfTheDay")]
+        public async Task<ActionResult<SplashOfTheDayDto>> GenerateSplashOfTheDay()
+        {
+            var splashOfTheDay = await _leagueOfLegends.GenerateSplashOfTheDay();
+            return StatusCode(201, splashOfTheDay);
+        }
+
         [HttpPost("generateCharacterOfTheDayLOL")]
         public async Task<ActionResult<CharacterOfTheDayResponseDto>> GenerateCharacterOfTheDayLOL()
         {
-            var characterOfTheDay = await _randomLeagueOfLegends.GenerateCharacterOfTheDay();
+            var characterOfTheDay = await _leagueOfLegends.GenerateCharacterOfTheDay();
             return StatusCode(201, characterOfTheDay);
-         
+
         }
 
     }

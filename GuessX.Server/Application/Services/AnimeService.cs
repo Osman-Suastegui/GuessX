@@ -24,7 +24,7 @@ public class AnimeService
             .Include(s => s.Game)
             .OrderByDescending(s => s.Date)
             .FirstOrDefaultAsync();
-        if(splash == null)
+        if (splash == null)
         {
             throw new InvalidOperationException("No splash of the day found for the specified game.");
         }
@@ -78,7 +78,7 @@ public class AnimeService
         await _context.SaveChangesAsync();
 
         return animeResponseJikan;
-         
+
     }
 
     public async Task<AnimeDto[]> SearchAnimes(string name)

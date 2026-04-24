@@ -3,8 +3,9 @@ using GuessX.Server.Data;
 using GuessX.Server.Entities;
 using Microsoft.EntityFrameworkCore;
 using GuessX.Server.Application.Dtos;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 namespace GuessX.Server.Application.Services;
-
 // this class is responsible for population each day a single record
 // for the tables CharacterOfTheDay and splashofTheDay specifically from league of legends
 public class LeagueOfLegends
@@ -24,7 +25,7 @@ public class LeagueOfLegends
        .Where(c => c.GameId == 1)
        .CountAsync();
 
-        if(count == 0)
+        if (count == 0)
         {
             throw new InvalidOperationException("No characters found for the specified game.");
         }
@@ -35,7 +36,7 @@ public class LeagueOfLegends
             .Where(c => c.GameId == 1)
             .Skip(randomIndex)
             .FirstOrDefaultAsync();
-        
+
         if (randomCharacter == null)
         {
             throw new InvalidOperationException("Failed to retrieve a random character.");
@@ -43,13 +44,13 @@ public class LeagueOfLegends
         }
 
 
-        var characterOfTheDay  = new CharacterOfTheDay
+        var characterOfTheDay = new CharacterOfTheDay
         {
-            GameId = 1, 
+            GameId = 1,
             CharacterId = randomCharacter.Id,
             Date = DateOnly.FromDateTime(DateTime.UtcNow)
         };
-         _context.CharacterOfTheDays.Add(characterOfTheDay);
+        _context.CharacterOfTheDays.Add(characterOfTheDay);
 
         await _context.SaveChangesAsync();
         var characterOfTheDayResponse = new CharacterOfTheDayResponseDto
@@ -69,6 +70,62 @@ public class LeagueOfLegends
         return characterOfTheDayResponse;
     }
 
+    public async Task<SplashOfTheDayDto> GenerateSplashOfTheDay()
+    {
+        var count = await _context.Characters
+      .CountAsync();
 
-       
+        if (count == 0)
+        {
+            throw new InvalidOperationException("No character found for the specified game.");
+        }
+        Character character = await _context.Characters
+                   .Skip(Random.Shared.Next(count))
+                   .FirstOrDefaultAsync() ?? throw new InvalidOperationException("No character found for the specified game.");
+
+        var http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+
+        var url = $"https://ddragon.leagueoflegends.com/cdn/12.6.1/data/en_US/champion/{character.Name}.json";
+        var json = await http.GetStringAsync(url);
+
+        var jsonDoc = JsonDocument.Parse(json);
+
+        // data → Ahri → skins
+        var root = jsonDoc.RootElement
+            .GetProperty("data")
+            .EnumerateObject()
+            .First()
+            .Value;
+
+        var skins = root.GetProperty("skins");
+
+        var skinList = skins.EnumerateArray().ToList();
+
+        // pick random
+        var randomSkin = skinList[Random.Shared.Next(skinList.Count)];
+
+        var num = randomSkin.GetProperty("num").GetInt32();
+
+        var splashUrl = $"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{character.Name}_{num}.jpg";
+
+        var splashOfTheDay = new SplashOfTheDay
+        {
+            GameId = 1,
+            CharacterId = character.Id,
+            Date = DateOnly.FromDateTime(DateTime.UtcNow),
+            SplashImageUrl = splashUrl
+        };
+        _context.SplashOfTheDays.Add(splashOfTheDay);
+        await _context.SaveChangesAsync();
+        
+        return new SplashOfTheDayDto
+        {
+            GameName = "Anime",
+            Name = character.Name,
+            Date = DateOnly.FromDateTime(DateTime.UtcNow),
+            SplashImageUrl = splashUrl
+        };
+
+    }
 }

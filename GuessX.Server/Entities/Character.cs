@@ -15,7 +15,7 @@ public partial class Character
     public string? Metadata { get; set; }
 
     public TitlePictureGallery Game { get; set; } = null!;
-    
+
     public ICollection<CharacterOfTheDay> CharacterOfTheDays { get; set; } = new List<CharacterOfTheDay>();
 
     public int? MalId { get; set; } // this value is used for jikan api
