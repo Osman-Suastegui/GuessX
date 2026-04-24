@@ -3,6 +3,7 @@ using GuessX.Server.Application.Dtos;
 using GuessX.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using GuessX.Server.Entities;
+using GuessX.Server.Application.Exceptions;
 namespace GuessX.Server.Application.Services;
 
 public class AnimeService
@@ -26,7 +27,7 @@ public class AnimeService
             .FirstOrDefaultAsync();
         if (splash == null)
         {
-            throw new InvalidOperationException("No splash of the day found for the specified game.");
+            throw new NotFoundException("No splash of the day found for the specified game.");
         }
         return new SplashOfTheDayDto
         {
@@ -45,22 +46,22 @@ public class AnimeService
 
         if (count == 0)
         {
-            throw new InvalidOperationException("No anime found for the specified game.");
+              throw new NotFoundException("No anime found for the specified game.");
         }
 
         Anime anime = await _context.Animes
              .Skip(Random.Shared.Next(count))
-             .FirstOrDefaultAsync() ?? throw new InvalidOperationException("No anime found for the specified game.");
+               .FirstOrDefaultAsync() ?? throw new NotFoundException("No anime found for the specified game.");
 
 
-        int malId = anime.MalId ?? throw new InvalidOperationException("Anime does not have a MAL ID.");
+           int malId = anime.MalId ?? throw new ArgumentException("Anime does not have a MAL ID.");
 
         var httpClient = _httpClientFactory.CreateClient();
         var response = await httpClient.GetAsync($"https://api.jikan.moe/v4/anime/{malId}/full");
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException($"Jikan request failed for MAL ID {malId}. Status code: {(int)response.StatusCode}.");
+            throw new ExternalServiceException($"Jikan request failed for MAL ID {malId}. Status code: {(int)response.StatusCode}.");
         }
 
         var content = await response.Content.ReadAsStringAsync();

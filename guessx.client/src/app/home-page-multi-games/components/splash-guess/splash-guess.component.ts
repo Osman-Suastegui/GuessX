@@ -47,7 +47,7 @@ export class SplashGuessComponent implements OnChanges {
 
   public submitGuess(): void {
     const guess: PreviousGuess | null = this.guessInput;
-    if (!guess || this.solved || this.remainingAttempts === 0 || !this.answerCharacter) {
+    if (!guess || this.solved || !this.answerCharacter) {
       return;
     }
 
@@ -65,10 +65,6 @@ export class SplashGuessComponent implements OnChanges {
 
   public get attemptsUsed(): number {
     return this.previousGuesses.length;
-  }
-
-  public get remainingAttempts(): number {
-    return Math.max(this.maxAttempts - this.attemptsUsed, 0);
   }
 
   public get revealScale(): number {
@@ -109,7 +105,6 @@ export class SplashGuessComponent implements OnChanges {
     this.hideSearchResults = false;
     this.searchTermChanged.emit(term.trim());
   }
-
   public selectSearchResult(item: any): void {
     this.guessInput = item;
     this.guessSearchTerm = item.name || '';
@@ -121,7 +116,6 @@ export class SplashGuessComponent implements OnChanges {
     return !!(
       !this.hideSearchResults &&
       !this.solved &&
-      this.remainingAttempts > 0 &&
       this.guessSearchTerm.trim().length > 0 &&
       this.searchResults.length > 0
     );

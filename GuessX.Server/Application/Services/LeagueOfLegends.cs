@@ -3,18 +3,20 @@ using GuessX.Server.Data;
 using GuessX.Server.Entities;
 using Microsoft.EntityFrameworkCore;
 using GuessX.Server.Application.Dtos;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using GuessX.Server.Application.Exceptions;
 namespace GuessX.Server.Application.Services;
 // this class is responsible for population each day a single record
 // for the tables CharacterOfTheDay and splashofTheDay specifically from league of legends
 public class LeagueOfLegends
 {
     private readonly AppDbContext _context;
+    private readonly HttpClient _http;
 
-    public LeagueOfLegends(AppDbContext context)
+    public LeagueOfLegends(AppDbContext context,HttpClient http)
     {
         _context = context;
+        _http = http;
     }
 
 
@@ -27,7 +29,7 @@ public class LeagueOfLegends
 
         if (count == 0)
         {
-            throw new InvalidOperationException("No characters found for the specified game.");
+            throw new NotFoundException("No characters found for the specified game.");
         }
 
         var randomIndex = Random.Shared.Next(count);
@@ -39,7 +41,7 @@ public class LeagueOfLegends
 
         if (randomCharacter == null)
         {
-            throw new InvalidOperationException("Failed to retrieve a random character.");
+            throw new NotFoundException("Failed to retrieve a random character.");
 
         }
 
@@ -77,17 +79,16 @@ public class LeagueOfLegends
 
         if (count == 0)
         {
-            throw new InvalidOperationException("No character found for the specified game.");
+            throw new NotFoundException("No character found for the specified game.");
         }
         Character character = await _context.Characters
                    .Skip(Random.Shared.Next(count))
-                   .FirstOrDefaultAsync() ?? throw new InvalidOperationException("No character found for the specified game.");
+                   .FirstOrDefaultAsync() ?? throw new NotFoundException("No character found for the specified game.");
 
-        var http = new HttpClient();
-        http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+        _http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
 
         var url = $"https://ddragon.leagueoflegends.com/cdn/12.6.1/data/en_US/champion/{character.Name}.json";
-        var json = await http.GetStringAsync(url);
+        var json = await _http.GetStringAsync(url);
 
         var jsonDoc = JsonDocument.Parse(json);
 
@@ -118,10 +119,10 @@ public class LeagueOfLegends
         };
         _context.SplashOfTheDays.Add(splashOfTheDay);
         await _context.SaveChangesAsync();
-        
+
         return new SplashOfTheDayDto
         {
-            GameName = "Anime",
+            GameName = "League of Legends",
             Name = character.Name,
             Date = DateOnly.FromDateTime(DateTime.UtcNow),
             SplashImageUrl = splashUrl

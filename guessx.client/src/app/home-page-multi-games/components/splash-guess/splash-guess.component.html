@@ -20,13 +20,13 @@
       [label]="'Guess character'"
       [placeholder]="placeholder"
       [term]="guessSearchTerm"
-      [disabled]="solved || remainingAttempts === 0"
+      [disabled]="solved"
       [results]="searchResults"
       [displayKey]="searchResultKey"
       [imageKey]="'imageUrl'"
       [showResults]="shouldShowSearchResults"
       [actionLabel]="'Enter'"
-      [actionDisabled]="solved || remainingAttempts === 0"
+      [actionDisabled]="solved"
       (termChanged)="onGuessInput($event)"
       (optionSelected)="selectSearchResult($event)"
       (enterPressed)="submitGuess()"
@@ -35,13 +35,11 @@
   </div>
 
   <div class="splash-status-row">
-    <p class="attempts">Attempts {{ attemptsUsed }} / {{ maxAttempts }}</p>
+    <p class="attempts">Attempts {{ attemptsUsed }}</p>
   </div>
 
   @if (solved) {
     <p class="result-text result-correct">Correct! {{ answerName }} was the right answer.</p>
-  } @else if (remainingAttempts === 0) {
-    <p class="result-text result-fail">No attempts left. The answer was {{ answerName }}.</p>
   }
 
   <section class="previous-guesses" aria-label="Previous guesses">
