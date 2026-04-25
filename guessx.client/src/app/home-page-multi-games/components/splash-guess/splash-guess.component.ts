@@ -113,12 +113,7 @@ export class SplashGuessComponent implements OnChanges {
   }
 
   public get shouldShowSearchResults(): boolean {
-    return !!(
-      !this.hideSearchResults &&
-      !this.solved &&
-      this.guessSearchTerm.trim().length > 0 &&
-      this.searchResults.length > 0
-    );
+    return !!(!this.hideSearchResults && !this.solved && this.guessSearchTerm.trim().length > 0 && this.searchResults.length > 0);
   }
 
   private resetGameState(): void {

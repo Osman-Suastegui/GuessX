@@ -1,0 +1,88 @@
+<section class="anime-clue-shell" aria-label="Anime clue challenge">
+  <header class="clue-copy">
+    <h2 class="clue-title">{{ heading }}</h2>
+    <p class="clue-subtitle">{{ subtitle }}</p>
+  </header>
+
+  <div class="clue-frame">
+    <img
+      class="clue-image"
+      [ngClass]="{ 'clue-image-solved': solved }"
+      [src]="activeStageImage"
+      [alt]="activeStageAlt"
+    />
+  </div>
+
+  <nav class="clue-stage-nav" aria-label="Clue stages">
+    @for (stage of clueStages; track stage.index) {
+      <button
+        type="button"
+        class="clue-stage-button"
+        [ngClass]="{
+          'clue-stage-button-active': stage.index === selectedStageIndex,
+          'clue-stage-button-locked': !stage.unlocked
+        }"
+        [disabled]="!stage.unlocked"
+        (click)="selectClueStage(stage.index)"
+      >
+        <span class="stage-label">{{ stage.label }}</span>
+        @if (!stage.unlocked) {
+          <span class="stage-meta">{{ stage.wrongGuessesLeft }} wrong left</span>
+        }
+      </button>
+    }
+  </nav>
+
+  <p class="clue-rules">
+    First clue unlocks after {{ firstClueUnlockWrongGuesses }} wrong guesses. Second clue unlocks after
+    {{ secondClueUnlockWrongGuesses }} wrong guesses.
+  </p>
+  <p class="clue-progress">{{ clueProgressText }}</p>
+
+  <div class="search-shell">
+    <app-search-autocomplete
+      [inputId]="'anime-clue-guess-input'"
+      [label]="'Guess anime'"
+      [placeholder]="placeholder"
+      [term]="guessSearchTerm"
+      [disabled]="solved"
+      [results]="searchResults"
+      [displayKey]="searchResultKey"
+      [imageKey]="'imageUrl'"
+      [showResults]="shouldShowSearchResults"
+      [actionLabel]="'Enter'"
+      [actionDisabled]="solved"
+      (termChanged)="onGuessInput($event)"
+      (optionSelected)="selectSearchResult($event)"
+      (enterPressed)="submitGuess()"
+      (actionClicked)="submitGuess()"
+    ></app-search-autocomplete>
+  </div>
+
+  <div class="status-row">
+    <p class="attempts">Attempts {{ attemptsUsed }}</p>
+    <p class="wrong-guesses">Wrong guesses {{ wrongGuessesCount }}</p>
+  </div>
+
+  @if (solved) {
+    <p class="result-text result-correct">Correct! {{ answerName }} was the right answer.</p>
+  }
+
+  <section class="previous-guesses" aria-label="Previous guesses">
+    @if (previousGuesses.length === 0) {
+      <p class="no-guesses">No guesses yet.</p>
+    } @else {
+      <ul class="guess-list">
+        @for (guess of previousGuesses; track guess.name + '-' + $index) {
+          <li class="guess-item" [ngClass]="{ 'guess-correct': isGuessCorrect(guess), 'guess-wrong': !isGuessCorrect(guess) }">
+            <p class="guess-name">{{ guess.name }}</p>
+
+            @if (guess.imageUrl) {
+              <img class="guess-image" [src]="guess.imageUrl" [alt]="guess.name + ' cover'" />
+            }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</section>

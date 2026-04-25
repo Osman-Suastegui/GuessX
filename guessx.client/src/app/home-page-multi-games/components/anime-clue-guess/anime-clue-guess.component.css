@@ -1,0 +1,203 @@
+:host {
+  display: block;
+}
+
+.anime-clue-shell {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(86, 137, 255, 0.22);
+  border-radius: 0.8rem;
+  background: linear-gradient(170deg, rgba(8, 15, 35, 0.96), rgba(5, 12, 26, 0.98));
+}
+
+.clue-copy {
+  text-align: center;
+}
+
+.clue-title {
+  margin: 0;
+  color: #eff5ff;
+  letter-spacing: 0.04em;
+}
+
+.clue-subtitle {
+  margin: 0.35rem 0 0;
+  color: rgba(222, 234, 255, 0.75);
+}
+
+.clue-frame {
+  width: min(100%, 460px);
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(112, 191, 255, 0.35);
+  background: #060d1f;
+}
+
+.clue-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transform-origin: center;
+  transition: transform 320ms ease;
+}
+
+.clue-image-solved {
+  transition-duration: 420ms;
+}
+
+.clue-stage-nav {
+  width: min(100%, 460px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.clue-stage-button {
+  min-height: 48px;
+  padding: 0.5rem 0.45rem;
+  border-radius: 0.45rem;
+  border: 1px solid rgba(127, 170, 241, 0.45);
+  background: rgba(15, 29, 59, 0.92);
+  color: #dbe8ff;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+.clue-stage-button:hover:not(:disabled) {
+  border-color: rgba(150, 198, 255, 0.82);
+  background: rgba(21, 43, 86, 0.95);
+}
+
+.clue-stage-button-active {
+  border-color: rgba(178, 221, 255, 0.95);
+  background: rgba(30, 62, 122, 0.96);
+  color: #f5fbff;
+}
+
+.clue-stage-button-locked {
+  opacity: 0.66;
+  cursor: not-allowed;
+}
+
+.stage-label {
+  display: block;
+  font-weight: 600;
+}
+
+.stage-meta {
+  display: block;
+  margin-top: 0.18rem;
+  font-size: 0.72rem;
+  color: rgba(224, 236, 255, 0.88);
+}
+
+.clue-rules,
+.clue-progress {
+  width: min(100%, 460px);
+  margin: 0 auto;
+  color: rgba(219, 234, 255, 0.88);
+  font-size: 0.87rem;
+}
+
+.search-shell,
+.previous-guesses {
+  width: min(100%, 460px);
+  margin: 0 auto;
+}
+
+.status-row {
+  width: min(100%, 460px);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.attempts,
+.wrong-guesses {
+  margin: 0;
+  color: rgba(221, 236, 255, 0.86);
+  font-size: 0.9rem;
+}
+
+.result-text {
+  width: min(100%, 460px);
+  margin: 0 auto;
+  font-weight: 600;
+}
+
+.result-correct {
+  color: #6cf0a7;
+}
+
+.no-guesses {
+  margin: 0.6rem 0 0;
+  color: rgba(205, 222, 248, 0.7);
+}
+
+.guess-list {
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.guess-item {
+  min-height: 92px;
+  padding: 0.55rem 0.75rem 0.65rem;
+  border-radius: 0.45rem;
+  border: 1px solid transparent;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.35rem;
+}
+
+.guess-name {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.1;
+  font-weight: 600;
+  text-align: center;
+}
+
+.guess-image {
+  width: 44px;
+  height: 44px;
+  border-radius: 0.2rem;
+  object-fit: cover;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.guess-wrong {
+  color: #ffe8ea;
+  background: rgba(205, 73, 85, 0.92);
+  border-color: rgba(255, 194, 200, 0.8);
+}
+
+.guess-correct {
+  color: #ecfff4;
+  background: rgba(44, 141, 88, 0.88);
+  border-color: rgba(185, 255, 215, 0.85);
+}
+
+@media (max-width: 560px) {
+  .anime-clue-shell {
+    padding: 1rem;
+  }
+
+  .clue-stage-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .status-row {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}

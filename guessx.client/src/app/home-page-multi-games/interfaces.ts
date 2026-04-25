@@ -22,6 +22,7 @@ export interface SplashOfTheDay {
   id: string;
   name: string;
   splashImageUrl: string;
+  clueImageUrls?: string[];
   date: string; 
   gameName: string;
 }
